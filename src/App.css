@@ -2,24 +2,19 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
 .App-header {
-  background-color: #282c34;
+  background-color: rgb(236, 240, 253);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(52, 52, 59);
 }
 
 .App-link {
-  color: #61dafb;
+  color: #fa6c67;
 }
 
 @keyframes App-logo-spin {
