@@ -2,8 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from "react-router-dom"
 import AppControl from "./AppControl"
-
 import './index.css'
+
+//Reactstrap import:
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
     <Router>
