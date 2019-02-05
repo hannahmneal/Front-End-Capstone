@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 import GameData from "./components/GameData"
+import NewGameForm from "./components/NewGameForm"
 
 // First steps: POST, define state, create a form
 //Complete "first steps" in this component first; when successful, separate components.
@@ -19,7 +20,7 @@ class AppControl extends Component {
   // Methods:
 
   createGame = (newGame) => {
-    // because this uses a fat-arrow function, it is necessary to use a "return" on next line?
+    // because this uses a fat-arrow function, is it necessary to use a "return" on next line?
     GameData.postNewGame(newGame)
       .then(() => GameData.getAllGames())
       .then(newGame =>
@@ -60,6 +61,7 @@ class AppControl extends Component {
               {/* {this.state.users}
               {this.state.games}
               {this.state.categories} */}
+              <NewGameForm/>
             </React.Fragment>
         </header>
       </div>
