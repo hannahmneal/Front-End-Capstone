@@ -2,13 +2,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
+import GameData from "./components/GameData"
 
-// First steps:
-// GET all
-// POST, define state, create a form
-
+// First steps: POST, define state, create a form
 //Complete "first steps" in this component first; when successful, separate components.
-
 class AppControl extends Component {
 
   state = {
@@ -19,27 +16,35 @@ class AppControl extends Component {
 
   }
 //============================================================================================================
-  // Fetch:
+  // Methods:
+
+  createGame = (newGame) => {
+    // because this uses a fat-arrow function, it is necessary to use a "return" on next line?
+    GameData.postNewGame(newGame)
+      .then(() => GameData.getAllGames())
+      .then(newGame =>
+        this.setState({
+          games: newGame
+        })
+      )
+    }
+
 
   componentDidMount() {
-    const newState = {}
+    // When the fetch calls were contained in this component, this is how state was set:
+    // const newState = {}
+    //     .then(() => this.setState(newState));
 
-    fetch("http://localhost:5002/users")
-        .then(r => r.json())
-        .then(users => (newState.users = users))
-        .then(() => fetch("http://localhost:5002/games")
-        .then(r => r.json()))
-        .then(games => (newState.games = games))
-        .then(() => fetch("http://localhost:5002/categories")
-        .then(r => r.json()))
-        .then(categories => (newState.categories = categories))
-
-        .then(() => this.setState(newState));
+    //Now that the fetch calls are in GameData, state is set this way:
+    GameData.getAllGames().then(allGames => {
+      // console.log(allGames);
+      //Logs the database "games" array to the console.
+      this.setState({
+        games: allGames
+      })
+    })
 }
-
-
   //============================================================================================================
-
 
   render() {
 
