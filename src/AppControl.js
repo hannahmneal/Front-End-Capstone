@@ -21,7 +21,7 @@ class AppControl extends Component {
 
   createGame = (newGame) => {
     // because this uses a fat-arrow function, is it necessary to use a "return" on next line?
-    GameData.postNewGame(newGame)
+    GameData.post(newGame)  // Why isn't GameData.postNewGame(newGame) correct?
       .then(() => GameData.getAllGames())
       .then(newGame =>
         this.setState({
@@ -29,7 +29,6 @@ class AppControl extends Component {
         })
       )
     }
-
 
   componentDidMount() {
     // When the fetch calls were contained in this component, this is how state was set:
@@ -49,9 +48,9 @@ class AppControl extends Component {
 
   render() {
 
-    console.log(this.state.users);
-    console.log(this.state.games);
-    console.log(this.state.categories);
+    // console.log(this.state.users);
+    // console.log(this.state.games);
+    // console.log(this.state.categories);
 
     return (
       <div className="App">
