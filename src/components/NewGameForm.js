@@ -16,7 +16,7 @@ export default class NewGameForm extends React.Component {
         title: "",
         minPlayers: "",
         maxPlayers: "",
-        // isCoop: "",
+        isCoop: "",
         categoryId: "",
         userId: ""
     };
@@ -25,7 +25,7 @@ export default class NewGameForm extends React.Component {
   // Update state whenever an input field is edited
   handleFieldChange = evt => {
     const stateToChange = {};
-    console.log(evt.target.id, evt.target.value);
+    console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = evt.target.value;
     //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
     this.setState(stateToChange);
@@ -42,7 +42,7 @@ constructNewGame = evt => {
         title: this.state.title,
         minPlayers: this.state.minPlayers,
         maxPlayers: this.state.maxPlayers,
-        //   isCoop: this.state.isCoop,
+        isCoop: this.state.isCoop,
         categoryId: this.state.categoryId,
 
 
@@ -74,6 +74,8 @@ constructNewGame = evt => {
                 <Input type="text" name="minPlayers" id="minPlayers" placeholder="Min Players" onChange={this.handleFieldChange}/>
                 <Label for="minPlayers">Max. Players</Label>
                 <Input type="text" name="minPlayers" id="maxPlayers" placeholder="Max Players" onChange={this.handleFieldChange}/>
+                <Label for="minPlayers">Cooperative</Label>
+                <Input addon type="checkbox" name="checkbox" id="isCoop" onChange={this.handleFieldChange} />
                 </FormGroup>
 
                 <FormGroup>
