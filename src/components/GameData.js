@@ -20,30 +20,17 @@ export default {
     },
 
     getAllCategories() {
-        fetch(`${remoteURL}/categories`)
+        return fetch(`${remoteURL}/categories`)
         .then(r => r.json())
     },
 
-    // postNewGame(foo) {
-    //     fetch(remoteURL, {
-    //         method: "POST",
-    //         header: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(foo)
-    //       }).then(newGame => newGame.json());
-    //     }
-
-    // ^^^ This was my original post; it is missing the "/games" address
-
-        postNewGame(foo) {
-        fetch(`${remoteURL}/games`, {
-            method: "POST",
-            header: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(foo)
-          }).then(newGame => newGame.json());
-        }
-
+    post(newGameObj) {
+    return fetch(`${remoteURL}/games`, {
+        method: "POST",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGameObj)
+        }).then(r => r.json());
+    }
 }

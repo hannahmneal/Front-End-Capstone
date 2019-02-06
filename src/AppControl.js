@@ -1,9 +1,9 @@
 // This component maintains state, routing and acts as the "dispatcher" to other components.
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import './App.css';
+import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
 import NewGameForm from "./components/NewGameForm"
+import './App.css';
 
 // First steps: POST, define state, create a form
 //Complete "first steps" in this component first; when successful, separate components.
@@ -19,23 +19,20 @@ class AppControl extends Component {
 //============================================================================================================
   // Methods:
 
-  createGame = (newGame) => {
-    // because this uses a fat-arrow function, is it necessary to use a "return" on next line?
-    GameData.post(newGame)  // Why isn't GameData.postNewGame(newGame) correct?
+  //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
+  addGame = (newGameObj) => {
+    GameData.post(newGameObj)
       .then(() => GameData.getAllGames())
-      .then(newGame =>
+      .then(game =>
         this.setState({
-          games: newGame
-        })
-      )
-    }
+          games: game
+      })
+    )
+
+  }
 
   componentDidMount() {
-    // When the fetch calls were contained in this component, this is how state was set:
-    // const newState = {}
-    //     .then(() => this.setState(newState));
 
-    //Now that the fetch calls are in GameData, state is set this way:
     GameData.getAllGames().then(allGames => {
       // console.log(allGames);
       //Logs the database "games" array to the console.
@@ -53,19 +50,22 @@ class AppControl extends Component {
     // console.log(this.state.categories);
 
     return (
-      <div className="App">
+      <React.Fragment>
+      {/* <div className="App">
         <header className="App-header">
-          <h5>Game Closet</h5>
-            <React.Fragment>
-              {/* {this.state.users}
-              {this.state.games}
-              {this.state.categories} */}
-              <NewGameForm/>
-            </React.Fragment>
-        </header>
-      </div>
+          <h5>Game Closet</h5> */}
+          <Route exact path ="/" render={props => {
+            return <NewGameForm {...props} addGame={this.addGame} game={this.state.games}/>
+          }}
+          />
+        {/* </header>
+      </div> */}
+      </React.Fragment>
     );
   }
 }
 
 export default AppControl;
+
+// After resolving error resulting from onClick (see bottom of NewGameForm for notes), I added {...this.props} to <NewGameForm/>.
+//Still nothing posts to database.
