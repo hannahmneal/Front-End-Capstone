@@ -25,6 +25,7 @@ export default {
     },
 
     post(newGameObj) {
+        console.log(newGameObj);
     return fetch(`${remoteURL}/games`, {
         method: "POST",
         header: {

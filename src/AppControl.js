@@ -4,6 +4,7 @@ import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
 import NewGameForm from "./components/NewGameForm"
 import './App.css';
+// import NavBar from "./nav/NavBar"
 
 // First steps: POST, define state, create a form
 //Complete "first steps" in this component first; when successful, separate components.
@@ -21,14 +22,15 @@ class AppControl extends Component {
 
   //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   addGame = (newGameObj) => {
-    GameData.post(newGameObj)
+    console.log(newGameObj);
+
+    return GameData.post(newGameObj)
       .then(() => GameData.getAllGames())
       .then(game =>
         this.setState({
           games: game
       })
     )
-
   }
 
   componentDidMount() {
@@ -64,7 +66,6 @@ class AppControl extends Component {
     );
   }
 }
-
 export default AppControl;
 
 // After resolving error resulting from onClick (see bottom of NewGameForm for notes), I added {...this.props} to <NewGameForm/>.

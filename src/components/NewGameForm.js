@@ -2,6 +2,12 @@ import React from 'react';
 import { Button, Form, FormGroup, Label, Input,  } from 'reactstrap';
 export default class NewGameForm extends React.Component {
 
+    // constructor(props) {
+    //     super(props);
+
+    //     this.constructNewGame=this.constructNewGame.bind(this);
+    // }
+
     // Set the initial (empty) state; we have to have a reference point for the games added via the form
     // To "add" a game, there must be a situation of "no game"; this is how to do that: set initial state.
 //=======================================================================================================
@@ -31,13 +37,15 @@ export default class NewGameForm extends React.Component {
 
 constructNewGame = evt => {
     evt.preventDefault();
-
+// debugger
     const newGameObj = {
         title: this.state.title,
         minPlayers: this.state.minPlayers,
         maxPlayers: this.state.maxPlayers,
         //   isCoop: this.state.isCoop,
         categoryId: this.state.categoryId,
+
+
         // userId: this.state.userId
         //.find(category => category.name === this.state.category).id
     }
@@ -46,12 +54,12 @@ constructNewGame = evt => {
         //   employeeId: this.props.employees.find(
             //     employee => employee.name === this.state.employee
             //   ).id
+            // console.log(newGameObj);
+            // console.log(this.props);
+
     this.props.addGame(newGameObj)
-    console.log(this.state.title);
-    console.log(newGameObj);
-    
-    
-        // This refers to createGame that was created in AppControl:
+    // console.log(this.state.title);
+    // This refers to createGame that was created in AppControl:
     }
 //=======================================================================================================
 
@@ -60,7 +68,7 @@ constructNewGame = evt => {
         <React.Fragment>
             <Form>
                 <FormGroup>
-                <Label for="gameTitle">Game title</Label>
+                <Label for="title">Game title</Label>
                 <Input type="text" name="gameTitle" id="title" placeholder="Game title" onChange={this.handleFieldChange}/>
                 <Label for="minPlayers">Min. Players</Label>
                 <Input type="text" name="minPlayers" id="minPlayers" placeholder="Min Players" onChange={this.handleFieldChange}/>
@@ -69,7 +77,7 @@ constructNewGame = evt => {
                 </FormGroup>
 
                 <FormGroup>
-                <Label for="gameCategories">Select</Label>
+                <Label for="categoryId">Select</Label>
                 <Input type="select" name="select" id="categoryId" onChange={this.handleFieldChange}>
                     <option>Roleplay</option>
                     <option>Strategy</option>
@@ -77,9 +85,7 @@ constructNewGame = evt => {
                     <option>Party</option>
                 </Input>
                 </FormGroup>
-                <FormGroup>
                 <Button type="submit" onClick={this.constructNewGame} className="new-game-submit-btn">Submit</Button>
-                </FormGroup>
             </Form>
       </React.Fragment>
     );
