@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import GameCards from "./GameCards"
 // initial state is set OUTSIDE of the component:
 const initialState = {
   title: "",
@@ -58,13 +59,9 @@ state = { ...initialState };
    // // console.log(this.props);
 
 //=====================================================
-    // Work with categoryId here:
-
-    // console.log(this.props.setCategory)
-
-//=====================================================
     this.props.addGame(this.state).then(() => this.setState(initialState));
     // Refactored from: this.props.addGame(newGame)
+
   };
   //=======================================================================================================
 
@@ -134,6 +131,7 @@ state = { ...initialState };
           type="submit"
           onClick={this.constructNewGame}
           className="new-game-submit-btn"
+          {...this.props}
         >
           Submit
         </Button>
