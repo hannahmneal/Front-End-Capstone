@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
-import NewGameForm from "./components/NewGameForm"
+import GameForm from "./components/GameForm"
 import './App.css';
 // import NavBar from "./nav/NavBar"
 
@@ -57,7 +57,7 @@ class AppControl extends Component {
         <header className="App-header">
           <h5>Game Closet</h5> */}
           <Route exact path ="/" render={props => {
-            return <NewGameForm {...props} addGame={this.addGame} game={this.state.games}/>
+            return <GameForm {...props} addGame={this.addGame}/>
           }}
           />
         {/* </header>
