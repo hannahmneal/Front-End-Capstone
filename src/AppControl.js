@@ -34,14 +34,21 @@ class AppControl extends Component {
   }
 
   // Create a method you can use to map over category objects in json:
-  
+
   componentDidMount() {
-    
+
     GameData.getAllGames().then(allGames => {
       // console.log(allGames);
       //Logs the database "games" array to the console.
       this.setState({
         games: allGames
+      })
+    })
+    GameData.getAllCategories().then(allCategories => {
+      console.log(allCategories);
+      // Logs the game categories to the console
+      this.setState({
+        categories: allCategories
       })
     })
   }

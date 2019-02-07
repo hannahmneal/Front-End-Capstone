@@ -1,12 +1,13 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
+// initial state is set OUTSIDE of the component:
 const initialState = {
   title: "",
   minPlayers: 0,
   maxPlayers: 0,
   isCoop: false,
-  categoryId: 1
+  categoryId: 1     //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
 
