@@ -24,11 +24,6 @@ export default {
         .then(r => r.json())
     },
 
-    getCategory(setCategoryObj) {
-        return fetch(`${remoteURL}/categories`)
-        .then(r => r.json())
-    },
-
     post(newGameObj) {
         console.log(newGameObj);
     return fetch(`${remoteURL}/games`, {

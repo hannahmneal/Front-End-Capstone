@@ -60,7 +60,7 @@ state = { ...initialState };
 //=====================================================
     // Work with categoryId here:
 
-    console.log(this.props.setCategory)
+    // console.log(this.props.setCategory)
 
 //=====================================================
     this.props.addGame(this.state).then(() => this.setState(initialState));
@@ -141,7 +141,5 @@ state = { ...initialState };
     );
   }
 }
-
-
 
 // NOTE 2/6: Category ids are currently matched to categoryIds (in games) through happenstance and their placement order, not by a true connection. To fix this, you need to map over "categories", iterate through them, grab their ids and assign them a value; you could do this by connecting the category name (catName) to the category id in json. See note at the top of this file, just below where initial state was set, for ideas about how to do this.

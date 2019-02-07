@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
 import GameForm from "./components/GameForm"
+import GameCards from "./components/GameCards"
 import './App.css';
 // import NavBar from "./nav/NavBar"
 
@@ -66,9 +67,21 @@ class AppControl extends Component {
         <header className="App-header">
           <h5>Game Closet</h5>
           <Route exact path ="/" render={props => {
+            return <GameCards {...props} />
+          }}
+          />
+
+          <Route exact path ="/games" render={props => {
             return <GameForm {...props} addGame={this.addGame} setCategory={this.state.categories}/>
           }}
           />
+
+
+          {/* <Route exact path ="/" render={props => {
+            return <GameCards {...props}/>
+          }}
+          /> */}
+
         </header>
       </div>
       </React.Fragment>
