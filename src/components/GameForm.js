@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-
 // initial state is set OUTSIDE of the component:
 const initialState = {
   title: "",
@@ -17,22 +16,21 @@ export default class NewGameForm extends React.Component {
 state = { ...initialState };
 
 // See note at the bottom of this file regarding categories.
-// If categoryId === categories.id
-// If catName === categoryId
+// If categoryId === categories[0].id
+// If catName === categoryId or categories[0].id
 
   //==========================================================================================================
 
   // Update state whenever an input field is edited
   handleFieldChange = evt => {
     const stateToChange = {};
-    console.log(evt.target.id, evt.target.value, evt.target.checked);
+    // console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = evt.target.value;
     //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
     this.setState(stateToChange);
   };
   //=======================================================================================================
-  // The constructNewGame object is called by the form submit button (see bottom of form)
-  // When the form is submitted, a new game will be created and it's keys will match those in json
+  // The constructNewGame object is called by the form submit button. When the form is submitted, a new game will be created and it's keys will match those in json.
 
   constructNewGame = evt => {
     evt.preventDefault();
@@ -59,17 +57,21 @@ state = { ...initialState };
    // // console.log(newGameObj);
    // // console.log(this.props);
 
+//=====================================================
+    // Work with categoryId here:
+
+    console.log(this.props.setCategory)
+
+//=====================================================
     this.props.addGame(this.state).then(() => this.setState(initialState));
     // Refactored from: this.props.addGame(newGame)
   };
   //=======================================================================================================
 
-
-
-
   render() {
 
     const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
+    // console.log(categoryId)
 
     return (
       <Form>
@@ -115,17 +117,17 @@ state = { ...initialState };
         </FormGroup>
 
         <FormGroup>
-          <Label for="catName">Select</Label>
+          <Label for="categoryId">Select</Label>
           <Input
             type="select"
-            name="catName"
-            id="catName"
+            name="categoryId"
+            id="categoryId"
             onChange={this.handleFieldChange}
           >
-            <option >Roleplay</option>
-            <option>Strategy</option>
-            <option>Cards</option>
-            <option>Party</option>
+            <option value={categoryId}>Roleplay</option>
+            <option value={categoryId + 1}>Strategy</option>
+            <option value={categoryId + 2}>Cards</option>
+            <option value={categoryId + 3}>Party</option>
           </Input>
         </FormGroup>
         <Button
@@ -139,5 +141,7 @@ state = { ...initialState };
     );
   }
 }
+
+
 
 // NOTE 2/6: Category ids are currently matched to categoryIds (in games) through happenstance and their placement order, not by a true connection. To fix this, you need to map over "categories", iterate through them, grab their ids and assign them a value; you could do this by connecting the category name (catName) to the category id in json. See note at the top of this file, just below where initial state was set, for ideas about how to do this.

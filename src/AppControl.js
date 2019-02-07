@@ -33,17 +33,9 @@ class AppControl extends Component {
     )
   }
 
-  // Create a method you can use to map over category objects in json:
-
   componentDidMount() {
+    // Create a method you can use to map over category objects in json:
 
-    GameData.getAllGames().then(allGames => {
-      // console.log(allGames);
-      //Logs the database "games" array to the console.
-      this.setState({
-        games: allGames
-      })
-    })
     GameData.getAllCategories().then(allCategories => {
       console.log(allCategories);
       // Logs the game categories to the console
@@ -51,6 +43,13 @@ class AppControl extends Component {
         categories: allCategories
       })
     })
+    // GameData.getAllGames().then(allGames => {
+    //   console.log(allGames);
+    //   //Logs the database "games" array to the console.
+    //   this.setState({
+    //     games: allGames
+    //   })
+    // })
   }
 
   //============================================================================================================
@@ -67,7 +66,7 @@ class AppControl extends Component {
         <header className="App-header">
           <h5>Game Closet</h5>
           <Route exact path ="/" render={props => {
-            return <GameForm {...props} addGame={this.addGame}/>
+            return <GameForm {...props} addGame={this.addGame} setCategory={this.state.categories}/>
           }}
           />
         </header>
