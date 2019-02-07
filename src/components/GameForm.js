@@ -6,16 +6,20 @@ const initialState = {
   minPlayers: 0,
   maxPlayers: 0,
   isCoop: false,
-  categoryId: null
+  categoryId: 1
   // userId: null
 };
 
 export default class NewGameForm extends React.Component {
-  // Set the initial (empty) state; we have to have a reference point for the games added via the form
-  //=======================================================================================================
 
-  state = { ...initialState };
-  //=======================================================================================================
+// This replaced the "state" object that was originally written to initialize an "empty" state for the form:
+state = { ...initialState };
+
+// See note at the bottom of this file regarding categories.
+// If categoryId === categories.id
+// If catName === categoryId
+
+  //==========================================================================================================
 
   // Update state whenever an input field is edited
   handleFieldChange = evt => {
@@ -26,13 +30,15 @@ export default class NewGameForm extends React.Component {
     this.setState(stateToChange);
   };
   //=======================================================================================================
-
   // The constructNewGame object is called by the form submit button (see bottom of form)
   // When the form is submitted, a new game will be created and it's keys will match those in json
 
   constructNewGame = evt => {
     evt.preventDefault();
-    // debugger
+
+    // This is how the form was originally written (prior to alumni-night); it is based off of Nutshell
+    // I wanted to make the form more reusible, so the "initial state" variable was created outside the component to replace the "state" object that was originally written in the component, modeling the Nutshell project.
+
     // const newGameObj = {
     //   title: this.state.title,
     //   minPlayers: this.state.minPlayers,
@@ -44,21 +50,26 @@ export default class NewGameForm extends React.Component {
     //   //.find(category => category.name === this.state.category).id
     // };
 
-    // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
-    //   employeeId: this.props.employees.find(
-    //     employee => employee.name === this.state.employee
-    //   ).id
-    // console.log(newGameObj);
-    // console.log(this.props);
+    // //NOTE:
+    // // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
+   // //   employeeId: this.props.employees.find(
+   // //     employee => employee.name === this.state.employee
+   // //   ).id
+   // // console.log(newGameObj);
+   // // console.log(this.props);
 
     this.props.addGame(this.state).then(() => this.setState(initialState));
-    // console.log(this.state.title);)
-    // This refers to createGame that was created in AppControl:
+    // Refactored from: this.props.addGame(newGame)
   };
   //=======================================================================================================
 
+
+
+
   render() {
+
     const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
+
     return (
       <Form>
         <FormGroup>
@@ -103,14 +114,14 @@ export default class NewGameForm extends React.Component {
         </FormGroup>
 
         <FormGroup>
-          <Label for="categoryId">Select</Label>
+          <Label for="catName">Select</Label>
           <Input
             type="select"
-            name="categoryId"
-            id="categoryId"
+            name="catName"
+            id="catName"
             onChange={this.handleFieldChange}
           >
-            <option>Roleplay</option>
+            <option >Roleplay</option>
             <option>Strategy</option>
             <option>Cards</option>
             <option>Party</option>
@@ -128,9 +139,4 @@ export default class NewGameForm extends React.Component {
   }
 }
 
-//  Changed button onClick from
-// onClick={this.constructNewGame}
-// to
-// onClick={this.constructNewGame}
-// which resolved the error message "addGame(newGameObj) is undefined",
-// however, still nothing posts to database
+// NOTE 2/6: Category ids are currently matched to categoryIds (in games) through happenstance and their placement order, not by a true connection. To fix this, you need to map over "categories", iterate through them, grab their ids and assign them a value; you could do this by connecting the category name (catName) to the category id in json. See note at the top of this file, just below where initial state was set, for ideas about how to do this.

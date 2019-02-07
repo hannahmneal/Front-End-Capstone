@@ -28,7 +28,7 @@ export default {
         console.log(newGameObj);
     return fetch(`${remoteURL}/games`, {
         method: "POST",
-        header: {
+        headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(newGameObj)
