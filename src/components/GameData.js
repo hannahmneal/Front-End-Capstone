@@ -20,17 +20,23 @@ export default {
     },
 
     getAllCategories() {
-        fetch(`${remoteURL}/categories`)
+        return fetch(`${remoteURL}/categories`)
         .then(r => r.json())
     },
 
-    postNewGame(foo) {
-        fetch(remoteURL, {
-            method: "POST",
-            header: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(foo)
-          }).then(newGame => newGame.json());
-        }
+    getCategory(setCategoryObj) {
+        return fetch(`${remoteURL}/categories`)
+        .then(r => r.json())
+    },
+
+    post(newGameObj) {
+        console.log(newGameObj);
+    return fetch(`${remoteURL}/games`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGameObj)
+        }).then(r => r.json());
+    }
 }
