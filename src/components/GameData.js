@@ -25,7 +25,8 @@ export default {
     },
 
     post(newGameObj) {
-        console.log(newGameObj);
+        // console.log(newGameObj);
+    // The newGameObj is created in GameForm, within constructNewGame; it is triggered on form submit
     return fetch(`${remoteURL}/games`, {
         method: "POST",
         headers: {
