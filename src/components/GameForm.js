@@ -51,10 +51,10 @@ constructNewGame = evt => {
 
         // //NOTE:
         // // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
-        // //   employeeId: this.props.employees.find(
-            // //     employee => employee.name === this.state.employee
-            // //   ).id
-            // // console.log(newGameObj);
+        //   employeeId: this.props.employees.find(
+            //     employee => employee.name === this.state.employee
+            //   ).id
+            // console.log(newGameObj);
             // // console.log(this.props);
 
             //=====================================================
@@ -121,15 +121,15 @@ constructNewGame = evt => {
             name="categoryId"
             id="categoryId"
             onChange={this.handleFieldChange}
-
+            // value="categoryId"
+            // value={}
           >
-          {/* <option value={category.id}>Select</option> */}
             {this.props.categories.map(category => (
+                <option key={category.id} value={category.id}>{category.catName}</option>
+                ))}
 
-                <option key={category.id} id={category.id}>{category.catName}</option>
-            ))}
 
-
+          {/* <option value={category.id}>Select</option> */}
             {/* <option value={categoryId + 1}>Strategy</option>
             <option value={categoryId + 2}>Cards</option>
             <option value={categoryId + 3}>Party</option> */}
