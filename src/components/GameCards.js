@@ -8,7 +8,7 @@ import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 
 class GameCards extends Component {
-  
+
   // const GameCards = ({newGameCard: {title, minPlayers, maxPlayers, categoryId, isCoop} button: {deleteBtn, editBtn}) => (
   render () {
     return(

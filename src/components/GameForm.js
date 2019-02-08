@@ -121,13 +121,16 @@ constructNewGame = evt => {
             name="categoryId"
             id="categoryId"
             onChange={this.handleFieldChange}
+            // value="category"
             // value="categoryId"
             // value={}
+// NOTE 2/8 13:15 - As long as there is no value set for "input", category items can be chosen from the drop-down. When value="categoryId", categories were visible from the drop-down but the user cannot select them. 
+
+
           >
             {this.props.categories.map(category => (
                 <option key={category.id} value={category.id}>{category.catName}</option>
                 ))}
-
 
           {/* <option value={category.id}>Select</option> */}
             {/* <option value={categoryId + 1}>Strategy</option>
@@ -142,6 +145,7 @@ constructNewGame = evt => {
         >
           Submit
         </Button>
+{/* NOTE 2/8 13:15 - When the form is submitted, all fields refresh EXCEPT FOR the dropdown menu. The category that was previously selected remains selected. Also, the "isCoop" field is set to "on" instead of "true".*/}
       </Form>
     );
   }
