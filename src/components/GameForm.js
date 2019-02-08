@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import GameList from "./GameList"
 import GameCards from "./GameCards"
+
+
 // initial state is set OUTSIDE of the component:
 const initialState = {
   title: "",
@@ -16,10 +19,6 @@ export default class NewGameForm extends React.Component {
 // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
 state = { ...initialState };
 
-// See note at the bottom of this file regarding categories.
-// If categoryId === categories[0].id
-// If catName === categoryId or categories[0].id
-
   //==========================================================================================================
 
   // Update state whenever an input field is edited
@@ -29,39 +28,41 @@ state = { ...initialState };
     stateToChange[evt.target.id] = evt.target.value;
     //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
     this.setState(stateToChange);
-  };
-  //=======================================================================================================
-  // The constructNewGame object is called by the form submit button. When the form is submitted, a new game will be created and it's keys will match those in json.
+};
+//=======================================================================================================
+// The constructNewGame object is called by the form submit button. When the form is submitted, a new game will be created and it's keys will match those in json.
 
-  constructNewGame = evt => {
+constructNewGame = evt => {
     evt.preventDefault();
 
     // This is how the form was originally written (prior to alumni-night); it is based off of Nutshell
-    // I wanted to make the form more reusible, so the "initial state" variable was created outside the component to replace the "state" object that was originally written in the component, modeling the Nutshell project.
+    // I wanted to make the form more reusible, so the "initial state" variable was created outside the component to replace the "state" object that was originally modeled off Nutshell.
 
     // const newGameObj = {
-    //   title: this.state.title,
-    //   minPlayers: this.state.minPlayers,
-    //   maxPlayers: this.state.maxPlayers,
-    //   isCoop: this.state.isCoop,
-    //   categoryId: this.state.categoryId
+        //   title: this.state.title,
+        //   minPlayers: this.state.minPlayers,
+        //   maxPlayers: this.state.maxPlayers,
+        //   isCoop: this.state.isCoop,
+        //   categoryId: this.state.categoryId
 
-    //   // userId: this.state.userId
-    //   //.find(category => category.name === this.state.category).id
-    // };
+        //   // userId: this.state.userId
+        //   //.find(category => category.name === this.state.category).id
+        // };
 
-    // //NOTE:
-    // // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
-   // //   employeeId: this.props.employees.find(
-   // //     employee => employee.name === this.state.employee
-   // //   ).id
-   // // console.log(newGameObj);
-   // // console.log(this.props);
+        // //NOTE:
+        // // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
+        // //   employeeId: this.props.employees.find(
+            // //     employee => employee.name === this.state.employee
+            // //   ).id
+            // // console.log(newGameObj);
+            // // console.log(this.props);
 
-//=====================================================
-    this.props.addGame(this.state).then(() => this.setState(initialState));
-    // Refactored from: this.props.addGame(newGame)
+            //=====================================================
+            this.props.addGame(this.state).then(() => this.setState(initialState));
+            // Refactored from: this.props.addGame(newGame)
 
+            //2/8: Add another promise to do something like this:
+            // <GameList gameAdded={...this.props}/>
   };
   //=======================================================================================================
 
@@ -120,18 +121,24 @@ state = { ...initialState };
             name="categoryId"
             id="categoryId"
             onChange={this.handleFieldChange}
+
           >
-            <option value={categoryId}>Roleplay</option>
-            <option value={categoryId + 1}>Strategy</option>
+          {/* <option value={category.id}>Select</option> */}
+            {this.props.categories.map(category => (
+
+                <option key={category.id} id={category.id}>{category.catName}</option>
+            ))}
+
+
+            {/* <option value={categoryId + 1}>Strategy</option>
             <option value={categoryId + 2}>Cards</option>
-            <option value={categoryId + 3}>Party</option>
+            <option value={categoryId + 3}>Party</option> */}
           </Input>
         </FormGroup>
         <Button
           type="submit"
           onClick={this.constructNewGame}
           className="new-game-submit-btn"
-          {...this.props}
         >
           Submit
         </Button>

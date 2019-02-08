@@ -4,6 +4,7 @@ import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
 import GameForm from "./components/GameForm"
 import GameCards from "./components/GameCards"
+import GameList from "./components/GameList"
 import './App.css';
 // import NavBar from "./nav/NavBar"
 
@@ -13,7 +14,7 @@ class AppControl extends Component {
 
   state = {
 
-    users: [],
+    // users: [],
     categories: [],
     games: []
 
@@ -44,13 +45,13 @@ class AppControl extends Component {
         categories: allCategories
       })
     })
-    // GameData.getAllGames().then(allGames => {
-    //   console.log(allGames);
-    //   //Logs the database "games" array to the console.
-    //   this.setState({
-    //     games: allGames
-    //   })
-    // })
+    GameData.getAllGames().then(allGames => {
+      console.log(allGames);
+      //Logs the database "games" array to the console.
+      this.setState({
+        games: allGames
+      })
+    })
   }
 
   //============================================================================================================
@@ -67,12 +68,12 @@ class AppControl extends Component {
         <header className="App-header">
           <h5>Game Closet</h5>
           <Route exact path ="/" render={props => {
-            return <GameCards {...props} />
+            return <GameList {...props} games={this.state.games} />
           }}
           />
 
           <Route exact path ="/games" render={props => {
-            return <GameForm {...props} addGame={this.addGame} setCategory={this.state.categories}/>
+            return <GameForm {...props} addGame={this.addGame} categories={this.state.categories}/>
           }}
           />
 
