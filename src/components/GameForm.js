@@ -13,22 +13,35 @@ const initialState = {
   categoryId: 1     //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
-
 export default class NewGameForm extends React.Component {
-
 // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
 state = { ...initialState };
 
   //==========================================================================================================
-
   // Update state whenever an input field is edited
-  handleFieldChange = evt => {
+  handleIntFieldChange = evt => {
     const stateToChange = {};
     // console.log(evt.target.id, evt.target.value, evt.target.checked);
-    stateToChange[evt.target.id] = evt.target.value;
+    stateToChange[evt.target.id] = Number(evt.target.value);
+
     //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
     this.setState(stateToChange);
 };
+
+handleFieldChange = evt => {
+    const stateToChange = {};
+    stateToChange[evt.target.id] = evt.target.value;
+
+    this.setState(stateToChange);
+};
+
+handleBoolFieldChange = evt => {
+    const stateToChange = {};
+    stateToChange[evt.target.id] = evt.target.checked;
+
+    this.setState(stateToChange);
+};
+
 //=======================================================================================================
 // The constructNewGame object is called by the form submit button. When the form is submitted, a new game will be created and it's keys will match those in json.
 
@@ -36,7 +49,7 @@ constructNewGame = evt => {
     evt.preventDefault();
 
     // This is how the form was originally written (prior to alumni-night); it is based off of Nutshell
-    // I wanted to make the form more reusible, so the "initial state" variable was created outside the component to replace the "state" object that was originally modeled off Nutshell.
+    // To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
 
     // const newGameObj = {
         //   title: this.state.title,
@@ -44,20 +57,16 @@ constructNewGame = evt => {
         //   maxPlayers: this.state.maxPlayers,
         //   isCoop: this.state.isCoop,
         //   categoryId: this.state.categoryId
-
         //   // userId: this.state.userId
         //   //.find(category => category.name === this.state.category).id
         // };
-
-        // //NOTE:
         // // Don't forget: you need to link a userId and categoryId to the right id in JSON; here's an example from Kennel:
         //   employeeId: this.props.employees.find(
             //     employee => employee.name === this.state.employee
             //   ).id
             // console.log(newGameObj);
             // // console.log(this.props);
-
-            //=====================================================
+//=========================================================================================================
             this.props.addGame(this.state).then(() => this.setState(initialState));
             // Refactored from: this.props.addGame(newGame)
 
@@ -109,7 +118,7 @@ constructNewGame = evt => {
             type="checkbox"
             name="checkbox"
             id="isCoop"
-            onChange={this.handleFieldChange}
+            onChange={this.handleBoolFieldChange}
             checked={isCoop}
           />
         </FormGroup>
@@ -120,18 +129,14 @@ constructNewGame = evt => {
             type="select"
             name="categoryId"
             id="categoryId"
-            onChange={this.handleFieldChange}
+            onChange={this.handleIntFieldChange}
             // value="category"
-            // value="categoryId"
+            // value="categoryId"   // NOTE 2/8 13:15 - When value="categoryId", categories are visible on the dropdown but the user cannot select them.
             // value={}
-// NOTE 2/8 13:15 - As long as there is no value set for "input", category items can be chosen from the drop-down. When value="categoryId", categories were visible from the drop-down but the user cannot select them. 
-
-
           >
             {this.props.categories.map(category => (
                 <option key={category.id} value={category.id}>{category.catName}</option>
                 ))}
-
           {/* <option value={category.id}>Select</option> */}
             {/* <option value={categoryId + 1}>Strategy</option>
             <option value={categoryId + 2}>Cards</option>
@@ -145,10 +150,10 @@ constructNewGame = evt => {
         >
           Submit
         </Button>
-{/* NOTE 2/8 13:15 - When the form is submitted, all fields refresh EXCEPT FOR the dropdown menu. The category that was previously selected remains selected. Also, the "isCoop" field is set to "on" instead of "true".*/}
       </Form>
     );
-  }
 }
+}
+// NOTE 2/8 13:15 - When the form is submitted, all fields refresh EXCEPT FOR the dropdown menu. The category that was previously selected remains selected. Also, the "isCoop" field is set to "on" instead of "true".
 
 // NOTE 2/6: Category ids are currently matched to categoryIds (in games) through happenstance and their placement order, not by a true connection. To fix this, you need to map over "categories", iterate through them, grab their ids and assign them a value; you could do this by connecting the category name (catName) to the category id in json. See note at the top of this file, just below where initial state was set, for ideas about how to do this.
