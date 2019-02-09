@@ -6,13 +6,19 @@ const remoteURL = "http://localhost:5002"
 export default {
 
     get(id) {
-        return fetch(`${remoteURL}/${id}`).then(r => r.json())
+        return fetch(`${remoteURL}/games/${id}`)
+        .then(r => r.json())
       },
 
+    // getAllGames() {
+    //     return fetch(`${remoteURL}/games/?_embed=categories`)
+    //     .then(r => r.json())
+    // },
     getAllGames() {
         return fetch(`${remoteURL}/games`)
         .then(r => r.json())
     },
+
 
     getAllUsers() {
         return fetch(`${remoteURL}/users`)
@@ -25,9 +31,9 @@ export default {
     },
 
     post(newGameObj) {
-        // console.log(newGameObj);
+        console.log(newGameObj);
     // The newGameObj is created in GameForm, within constructNewGame; it is triggered on form submit
-    return fetch(`${remoteURL}/games`, {
+        return fetch(`${remoteURL}/games`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,3 +42,9 @@ export default {
         }).then(r => r.json());
     }
 }
+
+// Example from json-server for getting children:
+// GET /posts/1?_embed=comments
+
+// assuming that "1" is the id, I need this:
+// GET /games/${id}?_embed=categories

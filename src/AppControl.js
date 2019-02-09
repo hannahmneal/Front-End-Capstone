@@ -24,32 +24,31 @@ class AppControl extends Component {
 
   //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   addGame = (newGameObj) => {
-    console.log(newGameObj);
-
+    // console.log(newGameObj);
     return GameData.post(newGameObj)
       .then(() => GameData.getAllGames())
       .then(game =>
         this.setState({
-          games: game
-      })
-    )
-  }
+        games: game
+      }))
+    }
+    // The addGame method creates a newGameObj whose state is set in GameForm when the submit button on the form is clicked.
 
   componentDidMount() {
     // Create a method you can use to map over category objects in json:
 
-    GameData.getAllCategories().then(allCategories => {
-      console.log(allCategories);
-      // Logs the game categories to the console
-      this.setState({
-        categories: allCategories
-      })
-    })
     GameData.getAllGames().then(allGames => {
       console.log(allGames);
       //Logs the database "games" array to the console.
       this.setState({
         games: allGames
+      })
+    })
+    GameData.getAllCategories().then(allCategories => {
+      console.log(allCategories);
+      // Logs the game categories to the console
+      this.setState({
+        categories: allCategories
       })
     })
   }

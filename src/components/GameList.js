@@ -2,6 +2,11 @@
 import React, { Component } from "react";
 import GameCards from "./GameCards"
 
+// const newCardState = {
+    // state
+//     categoryId: {categories.catName}
+//   };
+
 
 
 class GameList extends Component {
@@ -23,35 +28,4 @@ class GameList extends Component {
 }
  export default GameList
 
-// Example from Kennel:
-
-// import React, { Component } from "react";
-// import dog from "./DogIcon.png";
-// import "./Animal.css";
-// import { Link } from "react-router-dom";
-// import AnimalCard from "./AnimalCard";
-
-// export default class AnimalList extends Component {
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <div className="animalButton">
-//           <button
-//             type="button"
-//             className="btn btn-success"
-//             onClick={() => {
-//               this.props.history.push("/animals/new");
-//             }}
-//           >
-//             Admit Animal
-//           </button>
-//         </div>
-//         <section className="animals">
-//           {this.props.animals.map(animal => (
-//             <AnimalCard key={animal.id} animal={animal} {...this.props} />
-//           ))}
-//         </section>
-//       </React.Fragment>
-//     );
-//   }
-// }
+ // 2/8 23:00: I added category={game.categories}to <GameCards/> and removed it for testing. No change.

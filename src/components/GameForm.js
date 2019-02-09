@@ -7,7 +7,7 @@ const initialState = {
   minPlayers: 0,
   maxPlayers: 0,
   isCoop: false,
-  categoryId: 1
+  categoryId: ""
   //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
@@ -25,7 +25,8 @@ state = { ...initialState };
   };
 
   // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
-  handleIntFieldChange = evt => {
+
+    handleIntFieldChange = evt => {
     const stateToChange = {};
     // console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = Number(evt.target.value);
@@ -33,6 +34,7 @@ state = { ...initialState };
 };
 
 // This handler resolves the issue of the checkbox sending itself to the games object in json as a string value of "on" ("on") instead of a boolean value of true when checked, and a boolean false only when not checked:
+
 handleBoolFieldChange = evt => {
     const stateToChange = {};
     stateToChange[evt.target.id] = evt.target.checked;
@@ -45,12 +47,12 @@ handleBoolFieldChange = evt => {
 constructNewGame = evt => {
     evt.preventDefault();
 
-    // To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
+// To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
 
 // the "newGameObj" object passed in as the parameter in the post in GameData is created here:
 
-            this.props.addGame(this.state).then(() => this.setState(initialState));
-            // Refactored from: this.props.addGame(newGame)
+    this.props.addGame(this.state).then(() => this.setState(initialState));
+    // Refactored from: this.props.addGame(newGame)
 
 // The creation of newGameObj is triggered on form submit
   };
@@ -58,9 +60,9 @@ constructNewGame = evt => {
 
   render() {
 
-    const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
+    const { title, minPlayers, maxPlayers, isCoop, categoryId} = this.state;
     // console.log(categoryId)
-    // Why isn't categoryId used and should it be used somwhere? How is it being sent to state?
+    // Why isn't categoryId used and should it be used somewhere? How is it being sent to state?
 
     return (
       <Form>
@@ -101,6 +103,8 @@ constructNewGame = evt => {
             name="checkbox"
             id="isCoop"
             onChange={this.handleBoolFieldChange}
+            // onChange={this.handleFieldChange}
+            // Using "handleBoolFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
             checked={isCoop}
           />
         </FormGroup>
@@ -112,10 +116,13 @@ constructNewGame = evt => {
             name="categoryId"
             id="categoryId"
             onChange={this.handleIntFieldChange}
+            // onChange={this.handleFieldChange}
+            // Using "handleIntFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
           >
             {this.props.categories.map(category => (
                 <option key={category.id} value={category.id}>{category.catName}</option>
                 ))}
+
           </Input>
         </FormGroup>
         <Button

@@ -3,26 +3,31 @@
 import React, {Component} from "react";
 import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 //============================================================================================================
-// NOTE 2/7: This is a reusible card; Replace the active code (starting on line 48) with this code after the list component has been made.
-// A new card needs to automatically generate whenever a new item is added to the database
-
+// NOTE 2/7: This is a reusible card; A new card needs to automatically generate whenever a new item is added to the database
 
 class GameCards extends Component {
 
+
   // const GameCards = ({newGameCard: {title, minPlayers, maxPlayers, categoryId, isCoop} button: {deleteBtn, editBtn}) => (
   render () {
+    // console.log(this);
+
     return(
-    <Card key={this.props.game.id}>
+        // <Row>
+      <Col sm="20">
+      <Card key={this.props.game.id}>
         <CardTitle>{this.props.game.title}</CardTitle>
-        <CardText>{this.props.game.minPlayers}</CardText>
-        <CardText>{this.props.game.maxPlayers}</CardText>
-        <CardText>{this.props.game.categoryId}</CardText>
+        <CardText>Min. Players: {this.props.game.minPlayers}</CardText>
+        <CardText>Max. Players: {this.props.game.maxPlayers}</CardText>
+        <CardText>Category: {this.props.game.categoryId}</CardText>
         <CardText>{this.props.game.isCoop}</CardText>
         {/* <br/>
         <Button>{deleteBtn}</Button>
         <br/>
-        <Button>{editBtn}</Button> */}
+      <Button>{editBtn}</Button> */}
     </Card>
+    </Col>
+      // </Row>
   )
 }
 }
@@ -52,7 +57,6 @@ export default GameCards
 //         </Card>
 //   );
 // }
-
 // }
 
 
