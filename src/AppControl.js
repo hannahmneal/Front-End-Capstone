@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import { Route } from "react-router-dom"
 import GameData from "./components/GameData"
-import GameForm from "./components/GameForm"
-import GameCards from "./components/GameCards"
+import GameForm from "./components/form/GameForm"
 import GameList from "./components/GameList"
 import './App.css';
 // import NavBar from "./nav/NavBar"
@@ -24,28 +23,33 @@ class AppControl extends Component {
 
   //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   addGame = (newGameObj) => {
+
     // console.log(newGameObj);
     return GameData.post(newGameObj)
-      .then(() => GameData.getAllGames())
+      .then(() => GameData.getAllGames(() => {
+        console.log("addGame GameData.getAllGames:", GameData.getAllGames);
+      }))
       .then(game =>
         this.setState({
         games: game
       }))
     }
+
+
     // The addGame method creates a newGameObj whose state is set in GameForm when the submit button on the form is clicked.
 
   componentDidMount() {
     // Create a method you can use to map over category objects in json:
 
     GameData.getAllGames().then(allGames => {
-      console.log(allGames);
+      console.log("componentDidMount: getallGames:", allGames);
       //Logs the database "games" array to the console.
       this.setState({
         games: allGames
       })
     })
     GameData.getAllCategories().then(allCategories => {
-      console.log(allCategories);
+      console.log("componentDidMount: getallCategories:", allCategories);
       // Logs the game categories to the console
       this.setState({
         categories: allCategories
@@ -67,7 +71,7 @@ class AppControl extends Component {
         <header className="App-header">
           <h5>Game Closet</h5>
           <Route exact path ="/" render={props => {
-            return <GameList {...props} games={this.state.games} />
+            return <GameList {...props} games={this.state.games} categories={this.state.categories} />
           }}
           />
 
@@ -75,12 +79,6 @@ class AppControl extends Component {
             return <GameForm {...props} addGame={this.addGame} categories={this.state.categories}/>
           }}
           />
-
-
-          {/* <Route exact path ="/" render={props => {
-            return <GameCards {...props}/>
-          }}
-          /> */}
 
         </header>
       </div>

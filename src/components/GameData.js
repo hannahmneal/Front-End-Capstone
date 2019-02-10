@@ -10,14 +10,14 @@ export default {
         .then(r => r.json())
       },
 
-    // getAllGames() {
-    //     return fetch(`${remoteURL}/games/?_embed=categories`)
-    //     .then(r => r.json())
-    // },
     getAllGames() {
-        return fetch(`${remoteURL}/games`)
+        return fetch(`${remoteURL}/categories/?_embed=games`)
         .then(r => r.json())
     },
+    // getAllGames() {
+    //     return fetch(`${remoteURL}/games`)
+    //     .then(r => r.json())
+    // },
 
 
     getAllUsers() {

@@ -11,7 +11,9 @@ const initialState = {
   //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
-export default class NewGameForm extends React.Component {
+
+export default class GameForm extends React.Component {
+
 // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
 state = { ...initialState };
 
@@ -48,21 +50,33 @@ constructNewGame = evt => {
     evt.preventDefault();
 
 // To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
-
 // the "newGameObj" object passed in as the parameter in the post in GameData is created here:
 
-    this.props.addGame(this.state).then(() => this.setState(initialState));
+      if (this.state.category === "") {
+        window.alert("Please select a category");
+      } else {
+        const catName = {
+          categoryId: this.props.categories.find(category => category.id === this.state.categoryId).catName
+      } = this.state;
+    }
+
+    this.props.addGame(this.state).then(() =>
+    {console.log("this.state:", this.state)})
+    // {
+    //   console.log( GameData.getAllCategories());
+    // })
+    .then(()=>
+
+      this.setState(initialState));
+
     // Refactored from: this.props.addGame(newGame)
 
 // The creation of newGameObj is triggered on form submit
   };
   //=======================================================================================================
-
   render() {
 
-    const { title, minPlayers, maxPlayers, isCoop, categoryId} = this.state;
-    // console.log(categoryId)
-    // Why isn't categoryId used and should it be used somewhere? How is it being sent to state?
+    const { title, minPlayers, maxPlayers, isCoop} = this.state;
 
     return (
       <Form>
@@ -120,7 +134,8 @@ constructNewGame = evt => {
             // Using "handleIntFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
           >
             {this.props.categories.map(category => (
-                <option key={category.id} value={category.id}>{category.catName}</option>
+                <option key={category.id} value={category.id}>
+                  {category.catName}</option>
                 ))}
 
           </Input>
