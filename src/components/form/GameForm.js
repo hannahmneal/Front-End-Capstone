@@ -52,13 +52,13 @@ constructNewGame = evt => {
 // To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
 // the "newGameObj" object passed in as the parameter in the post in GameData is created here:
 
-      if (this.state.category === "") {
-        window.alert("Please select a category");
-      } else {
-        const catName = {
-          categoryId: this.props.categories.find(category => category.id === this.state.categoryId).catName
-      } = this.state;
-    }
+    //   if (this.state.category === "") {
+    //     window.alert("Please select a category");
+    //   } else {
+    //     const games = {
+    //       categoryId: this.props.games.find(game => category.id === this.state.categoryId).catName
+    //   } = this.state;
+    // }
 
     this.props.addGame(this.state).then(() =>
     {console.log("this.state:", this.state)})

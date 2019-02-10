@@ -15,10 +15,14 @@ import GameCards from "./cards/GameCards"
 //     }
 // }
 
+
 class GameList extends Component {
     // console.log("hello");
 
     render() {
+        this.props.games.map(game => (
+        console.log(game)))
+
         return(
             <React.Fragment>
                 <div>
@@ -26,15 +30,15 @@ class GameList extends Component {
                     {console.log("this.props.categories", this.props.categories)}
 
                     {this.props.games.map(game =>
-                    (<GameCards key={game.id} game={game} {...this.props} />)
-                    )
+                    (<GameCards key={game.id} game={game} category={game.category} title={game.title} minPlayers={game.minPlayers} maxPlayers={game.maxPlayers} {...this.props} />))
+                }
 
-                    // Here, "game" is an individual game object from the array of games in json
+                    {/* {this.props.game.forEach(game => )} */}
+
+                    {/* // Here, "game" is an individual game object from the array of games in json
                     // When the form was submitted, addGame was triggered which posted the new game to the database and performed another fetch to refresh the data. Each object was set to "game".
 
-                    //map over categories in game.categories and grab categories.catName
-
-                }
+                    //map over categories in game.categories and grab categories.catName */}
                 </div>
              </React.Fragment>
         )

@@ -22,17 +22,33 @@ class AppControl extends Component {
   // Methods:
 
   //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
-  addGame = (newGameObj) => {
+  // addGame = (newGameObj) => {
 
-    // console.log(newGameObj);
-    return GameData.post(newGameObj)
-      .then(() => GameData.getAllGames(() => {
-        console.log("addGame GameData.getAllGames:", GameData.getAllGames);
-      }))
-      .then(game =>
-        this.setState({
-        games: game
-      }))
+  //   // console.log(newGameObj);
+  //   return GameData.post(newGameObj)
+  //     .then(() => GameData.getAllGames(() => {
+  //       console.log("addGame GameData.getAllGames:", GameData.getAllGames);
+  //     }))
+  //     .then(game =>
+  //       this.setState({
+  //       games: game
+  //     }))
+  //   }
+
+    addGame = (newGameObj) => {
+
+      // console.log(newGameObj);
+      return GameData.post(newGameObj)
+        .then(() => GameData.getAllGames(() => {
+          console.log("addGame GameData.getAllGames:", GameData.getAllGames);
+        }))
+          .then(games => (games.map(games => {
+            return games.games
+          })))
+            .then(game => (
+              this.setState({
+              games: game
+            })))
     }
 
 

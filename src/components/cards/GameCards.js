@@ -6,7 +6,6 @@ import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 // NOTE 2/7: This is a reusible card; A new card needs to automatically generate whenever a new item is added to the database
 class GameCards extends Component {
 
-
   // const GameCards = ({newGameCard: {title, minPlayers, maxPlayers, categoryId, isCoop} button: {deleteBtn, editBtn}) => (
     render () {
       // console.log(this);
@@ -15,7 +14,7 @@ class GameCards extends Component {
       <Row sm="1">
       <Col sm="20">
       <Card key={this.props.game.id}>
-        <CardTitle>{this.props.game.title}</CardTitle>
+        <CardTitle>Title: {this.props.game.title}</CardTitle>
         <CardText>Min. Players: {this.props.game.minPlayers}</CardText>
         <CardText>Max. Players: {this.props.game.maxPlayers}</CardText>
         <CardText>Category:{this.props.game.catName}</CardText>
@@ -31,6 +30,7 @@ class GameCards extends Component {
   )
 }
 }
+
 
 export default GameCards
 
