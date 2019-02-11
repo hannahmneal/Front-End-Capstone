@@ -1,30 +1,52 @@
 // Uses props from GameForm to populate cards with json game object
-// This is the user's dashboard display (once login is established)
+// This needs to be routed to the user's dashboard
+
 import React from "react";
 import { Card, CardTitle, CardText, Row, Col, Button } from 'reactstrap';
 
-//============================================================================================================
-// NOTE 2/7: This is a reusible card; A new card needs to automatically generate whenever a new item is added to the database
 
-const GameCards = ({id, title, minPlayers, maxPlayers, isCoop, categoryId}) => (
+
+
+//============================================================================================================
+// This is a reusible card; A new card automatically generates whenever a new item is added to the database
+
+const GameCards = ({id, title, minPlayers, maxPlayers, isCoop, categoryId, deleteGame, game}) => (
       <Row sm="1">
       <Col sm="20">
       <Card key={id}>
-        <CardTitle>Title: {title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         <CardText>Min. Players: {minPlayers}</CardText>
         <CardText>Max. Players: {maxPlayers}</CardText>
+        {/* Don't forget to set a condition for the "isCoop" text (if isCoop === true, else) */}
         <CardText>{isCoop}</CardText>
-        <CardText>Category:{categoryId}</CardText>
+        <CardText>{categoryId}</CardText>
         <br/>
-        <Button>Delete</Button>
+        <Button
+          className="editGameBtn"
+          color="success"
+          // onClick ={()=> this.props.editGame(this.props.game.id)}
+        >Edit
+        </Button>
         <br/>
-        <Button>Edit</Button>
+        <Button
+          className="deleteGameBtn"
+          color="danger"
+          type="submit"
+          id={id}
+          // onClick={this.deleteGame}
+          // onClick={() => {deleteGameButton({id})}}
+          onClick={ () => deleteGame(game.id) }
+        >Delete
+        </Button>
       </Card>
-      <br/>
+        <br/>
      </Col>
     </Row>
 )
-// console.log(this);
+console.log("Game Cards: 'this'", this);
+// this is undefined
+// console.log("GameCards: 'this.props'", this.props);
+
 export default GameCards
 
 //=============================================================================================

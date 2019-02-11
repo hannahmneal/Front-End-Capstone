@@ -10,23 +10,6 @@ export default {
         .then(r => r.json())
       },
 
-    //   getAllGames() {
-    //     return fetch(`${remoteURL}/games/?_embed=categories`)
-    //     .then(r => r.json())
-    // },
-// Produces an empty categories array embedded in the games array
-
-    // getAllGames() {
-    //     return fetch(`${remoteURL}/categories/?_embed=games`)
-    //     .then(r => r.json())
-    // },
-// Produces: games [{id: "", catName: "", games [{id: "", title: "", etc.}], }]
-
-    // getAllGames() {
-    //     return fetch(`${remoteURL}/games`)
-    //     .then(r => r.json())
-    // },
-
     getAllGames() {
         return fetch(`${remoteURL}/games?_expand=category`)
         .then(r => r.json())
@@ -34,12 +17,6 @@ export default {
 //   .then(text => console.log(text))
     },
 // Produces T error
-
-// getAllGames() {
-//     return fetch(`${remoteURL}/games/?_expand=categories`)
-//     .then(r => r.json())
-// },
-
 
     getAllUsers() {
         return fetch(`${remoteURL}/users`)
@@ -49,22 +26,6 @@ export default {
         return fetch(`${remoteURL}/categories`)
         .then(r => r.json())
     },
-    // getAllCategories() {
-    //     return fetch(`${remoteURL}/categories/?_embed=games`)
-    //     .then(r => r.json())
-    // },
-    // getAllCategories() {
-    //     return fetch(`${remoteURL}/games/?_embed=categories`)
-    //     .then(r => r.json())
-    // },
-    // getAllCategories() {
-    //     return fetch(`${remoteURL}/categories/?_expand=games`)
-    //     .then(r => r.json())
-    // },
-    // getAllCategories() {
-    //     return fetch(`${remoteURL}/games/?_expand=categories`)
-    //     .then(r => r.json())
-    // },
 
     post(newGameObj) {
         console.log(newGameObj);
@@ -78,10 +39,3 @@ export default {
         }).then(r => r.json());
     }
 }
-
-// Example from json-server for getting children:
-// GET /posts/1?_embed=comments
-
-// assuming that "1" is the id, I need this:
-// GET /games/${id}?_embed=categories
-

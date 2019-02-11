@@ -5,12 +5,13 @@ import GameCards from "./cards/GameCards"
 class GameList extends Component {
 
     render() {
+console.log(this.props.games);
 
         return(
             <React.Fragment>
                 <div>
-                    {console.log("this.props.games", this.props.games)}
-                    {console.log("this.props.categories", this.props.categories)}
+                    {/* {console.log("this.props.games", this.props.games)}
+                    {console.log("this.props.categories", this.props.categories)} */}
                     {this.props.games.map(game =>
                     (<GameCards
                         key={game.id}
@@ -20,25 +21,11 @@ class GameList extends Component {
                         minPlayers={game.minPlayers}
                         maxPlayers={game.maxPlayers}
                         isCoop={game.isCoop}
+                        // isCoop={
+                        //     if(game.isCoop.value !== )
+                        // }
+                        deleteGame={this.props.deleteGame}
                         categoryId={game.category.catName}
-//======================================================================================
-                        // categoryId={game.categoryId}
-//======================================================================================
-                        // categoryId={this.props.categories.map(category => (
-                        //     // console.log(category)
-                        //     {category}.catName
-                        // ))}
-//======================================================================================
-                        // categoryId={this.props.games.filter(gm => gm.categoryId gm.categories.id).map(gm=>(
-                        //     console.log(gm)
-                        // ))}
-//======================================================================================
-                        // categoryId={this.props.categories.map(category => (
-                        //     <CategorySection
-                        //         key={category.id}
-                        //         categoryId={category.catName}
-                        // />))}
-//======================================================================================
                     />
                     ))}
                 </div>
@@ -47,9 +34,3 @@ class GameList extends Component {
     }
 }
  export default GameList
-
-//map categories to get {category}
-// {this.props.games.categories.map(category => (category)}
-
-
- // 2/8 23:00: I added category={game.categories}to <GameCards/> and removed it for testing. No change.
