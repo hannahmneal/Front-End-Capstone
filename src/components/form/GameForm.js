@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import GameData from "../GameData";
 
 // initial state is set OUTSIDE of the component:
 const initialState = {
@@ -11,7 +12,6 @@ const initialState = {
   //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
-
 export default class GameForm extends React.Component {
 
 // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
@@ -25,16 +25,37 @@ state = { ...initialState };
       //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
       this.setState(stateToChange);
   };
+//===========================================================================================
 
   // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
 
-    handleIntFieldChange = evt => {
+    handleDropdownChange = evt => {
+
     const stateToChange = {};
     // console.log(evt.target.id, evt.target.value, evt.target.checked);
-    stateToChange[evt.target.id] = Number(evt.target.value);
-    this.setState(stateToChange);
-};
+    stateToChange[evt.target.id] = parseInt(evt.target.value);
+    // stateToChange[evt.target.id] = evt.target.value;
 
+    // = evt.target.defaultValue; // returns null
+
+    // write an if statement before forcing integer values
+
+    // if(evt.target.id !== evt.target.value) {
+    //   stateToChange[evt.target.id] = parseInt(evt.target.value);
+    // } else {
+
+
+    //   stateToChange[evt.target.id] = this.props.categories.map(category => (category.catName)).catName;
+    // }
+
+      // return GameData.getAllCategories().then(() => {
+      //   GameData.getAllCategories.find(category => (
+      //     category.id ===
+      //   ))
+      // })
+      this.setState(stateToChange);
+    }
+//===========================================================================================
 // This handler resolves the issue of the checkbox sending itself to the games object in json as a string value of "on" ("on") instead of a boolean value of true when checked, and a boolean false only when not checked:
 
 handleBoolFieldChange = evt => {
@@ -43,37 +64,62 @@ handleBoolFieldChange = evt => {
     this.setState(stateToChange);
 };
 
-//=======================================================================================================
-// The constructNewGame object is called by the form submit button. When the form is submitted, a new game will be created and it's keys will match those in json.
+//==========================================================================================
+// The constructNewGame object is triggered by the form submit button. When the form is submitted, a new game object will be created and it's keys will match those in json.
+// addGame is declared in AppControl and the newly created newGameObj is its parameter
+// newGameObj is the parameter passed in as the parameter in the post method in GameData
 
 constructNewGame = evt => {
     evt.preventDefault();
+    // console.log(this.state);
+  // At this point, "state" does not include the embedded categories array; set state for categories prior to this
+//===========================================================================================
+// Trying to create an if/else that will compare the categoryId to the categories.id but display the value of categories.catName in place of the categoryId integer.
 
-// To make the form more reusible, the "initial state" variable was created outside the component to replace the original "state" object model
-// the "newGameObj" object passed in as the parameter in the post in GameData is created here:
+//Kennel example:
+  // constructNewAnimal = evt => {
+  //   evt.preventDefault();
+  //   if (this.state.employee === "") {
+  //     window.alert("Please select a caretaker");
+  //   } else {
+  //     const animal = {
+  //       name: this.state.animalName,
+  //       breed: this.state.breed,
+  //       employeeId: this.props.employees.find(
+  //         employee => employee.name === this.state.employee
+  //       ).id
+  //     };
 
-    //   if (this.state.category === "") {
-    //     window.alert("Please select a category");
-    //   } else {
-    //     const games = {
-    //       categoryId: this.props.games.find(game => category.id === this.state.categoryId).catName
-    //   } = this.state;
-    // }
+// Errors when modeling off of Kennel:
 
-    this.props.addGame(this.state).then(() =>
-    {console.log("this.state:", this.state)})
-    // {
-    //   console.log( GameData.getAllCategories());
+      // if(this.state.category === "") {
+      //   console.log("no category");
+      // } else {
+
+      //   const newGameObj = {
+
+      //     title: this.state.title,
+      //     minPlayers: this.state.minPlayers,
+      //     maxPlayers:  this.state.maxPlayers,
+      //     isCoop: this.state.isCoop,
+      //     categoryId:
+      //     // this.props.games.map(categories => (categories.catName))
+      //     this.props.games.categories.find(category => category.catName === this.state.category.catName)
+      //   }
+      //   console.log(newGameObj);
+
+      //   }
+//===========================================================================================
+    this.props.addGame(this.state)
+    // console.log for testing:
+    // .then(() => {
+    // {console.log("this.state:", this.state)}
     // })
-    .then(()=>
+        .then(() =>
+        this.setState(initialState));
+    }
 
-      this.setState(initialState));
-
-    // Refactored from: this.props.addGame(newGame)
-
-// The creation of newGameObj is triggered on form submit
-  };
-  //=======================================================================================================
+//===========================================================================================
   render() {
 
     const { title, minPlayers, maxPlayers, isCoop} = this.state;
@@ -122,27 +168,33 @@ constructNewGame = evt => {
             checked={isCoop}
           />
         </FormGroup>
-
+        {/* <GameDropdown {...this.props}/> */}
         <FormGroup>
           <Label for="categoryId">Select</Label>
           <Input
             type="select"
             name="categoryId"
             id="categoryId"
-            onChange={this.handleIntFieldChange}
+            // value={categoryId}
+            onChange={this.handleDropdownChange}
             // onChange={this.handleFieldChange}
-            // Using "handleIntFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
+            // Using "handleDropdownChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
           >
             {this.props.categories.map(category => (
-                <option key={category.id} value={category.id}>
+                <option key={category.id} value={category.id}
+                // defaultValue={category.catName}
+                // {...this.props}
+                >
                   {category.catName}</option>
                 ))}
-
+                {/* defaultValue added as a prop */}
           </Input>
         </FormGroup>
+
         <Button
           type="submit"
           onClick={this.constructNewGame}
+          // {()=> this.props.history.push("/list")}
           className="new-game-submit-btn"
         >
           Submit
