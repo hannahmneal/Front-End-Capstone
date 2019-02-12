@@ -1,176 +1,211 @@
 // This component maintains state, routing and acts as the "dispatcher" to other components.
-import React, { Component } from 'react';
-import { Route } from "react-router-dom"
-import GameData from "./components/GameData"
-import GameForm from "./components/form/GameForm"
-import GameList from "./components/GameList"
-import GameCards from "./components/cards/GameCards"
-import './App.css';
+import React, { Component } from "react";
+import { Route, Redirect } from "react-router-dom";
+import GameData from "./modules/GameData";
+import GameForm from "./components/games/GameForm";
+import GameList from "./components/games/GameList";
+import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import UserLoginForm from "./components/users/UserLoginForm";
+import UsersManager from "./modules/UsersManager";
+
+import "./App.css";
 // import NavBar from "./nav/NavBar"
 
 // First steps: POST, define state, create a form
 //Complete "first steps" in this component first; when successful, separate components.
 class AppControl extends Component {
-
+  isAuthenticated = () => sessionStorage.getItem("user") !== null
   state = {
-
-    // users: [],
+    users: [],
     games: [],
-    categories: []
+    categories: [],
+    userId: sessionStorage.getItem("user")
+    // userId: sessionStorage.getItem("user")
+  };
+  //=================================================================================================
 
-  }
-//=================================================================================================
+
   // Methods:
 
   //createGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   // The addGame method creates a newGameObj whose state is set in GameForm when the submit button is clicked.
 
-    addGame = (newGameObj) => {
-
-      // console.log(newGameObj);
-      return GameData.post(newGameObj)
-        .then(() => GameData.getAllGames()
-        .then(game => (
+  addGame = newGameObj => {
+    // console.log(newGameObj);
+    return GameData.post(newGameObj)
+      .then(() =>
+        GameData.getAllGames().then(game =>
           this.setState({
             games: game
           })
         )
-        ))
-        .then(() => console.log("this.state.games:", this.state.games))
-      }
+      )
+      .then(() => console.log("this.state.games:", this.state.games));
+  };
 
-          getCategory = () => {
-            GameData.getAllCategories().then(() => (
-              category => (
-                this.setState({
-                  categories: category
-                })
-              )
-            )
-            )
-          }
-//==============================================================================================
+  getCategory = () => {
+    GameData.getAllCategories().then(() => category =>
+      this.setState({
+        categories: category
+      })
+    );
+  };
 
-// Delete method:
-// add prevent default for the click event
+  // User Verification:
 
-          deleteGame = (id) => {
-            return fetch(`http://localhost:5002/games/${id}`, {
-              method: "DELETE"
-            })
-              .then(response => response.json())
-              .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-              .then(response => response.json())
-              .then(games =>
-                this.setState({
-                  games: games
-                })
-                )
-              };
+  verifyUser = (userInput, passInput) => {
+    UsersManager.getUser(userInput, passInput)
+    .then(allUsers => this.setState({
+      users: allUsers
+    }))
+  }
 
-// Check:
-// componentWillMount() {
+  // Delete method:
+  // add prevent default for the click event
 
-//   GameData.getAllCategories().then(allCategories => {
-//     console.log("componentWillMount: getallCategories:", allCategories);
-//     // Logs the game categories to the console
-//     this.setState({
-//       categories: allCategories
-//     })
-//   })
-// }
+  deleteGame = id => {
+    return fetch(`http://localhost:5002/games/${id}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .then(() => fetch(`http://localhost:5002/games?_expand=category`))
+      .then(response => response.json())
+      .then(games =>
+        this.setState({
+          games: games
+        })
+      );
+  };
+  //==============================================================================================
+  //  LIFE CYCLE METHODS:
+
+  // Check:
+  // componentWillMount() {
+
+  //   GameData.getAllCategories().then(allCategories => {
+  //     console.log("componentWillMount: getallCategories:", allCategories);
+  //     // Logs the game categories to the console
+  //     this.setState({
+  //       categories: allCategories
+  //     })
+  //   })
+  // }
 
   componentDidMount() {
-    // Create a method you can use to map over category objects in json:
-
-    GameData.getAllGames().then(allGames => {
-      console.log("componentDidMount: getallGames:", allGames);
-      //Logs the database "games" array to the console.
-      this.setState({
-        games: allGames
+    GameData.getAllGames()
+      .then(allGames => {
+        // console.log("componentDidMount: getallGames:", allGames);
+        this.setState({
+          games: allGames
+        });
       })
-    })
-    .then(() => {
-      console.log(this.state.games)
-    })
+      .then(() => {
+        console.log(this.state.games);
+      });
     GameData.getAllCategories().then(allCategories => {
-      console.log("componentDidMount: getallCategories:", allCategories);
-      // Logs the game categories to the console
+      // console.log("componentDidMount: getallCategories:", allCategories);
       this.setState({
         categories: allCategories
-      })
-    })
+      });
+    });
+    UsersManager.getAllUsers().then(allUsers => {
+      console.log("componentDidMount: getallUsers:", allUsers);
+      this.setState({
+        users: allUsers
+      });
+    });
   }
   //=======================================================================================================
 
   render() {
-
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
 
     return (
       <React.Fragment>
-      <div className="App">
-        <header className="App-header">
-          <h5>Game Closet</h5>
+        <div className="App">
+          <header className="App-header">
+            <h5>Game Closet</h5>
 
-{/* DASHBOARD (LIST) */}
-
-          <Route exact path ="/list" render={props => {
-            return (<GameList {...props} games={this.state.games}
-            categories={this.state.categories} />)
-          }}
-          />
-
-{/*  GAME */}
-
-          <Route exact path ="/games/new" render={props => {
-            return (<GameForm {...props}
-            addGame={this.addGame}
-            games={this.state.games}
-            categories={this.state.categories}
-            deleteGame={this.deleteGame}
+            <Route
+              exact
+              path="/"
+              render={props => {
+                return (
+                  <UserLoginForm
+                  {...props}
+                  verifyUser={this.verifyUser}
+                  />
+                );
+              }}
             />
-            )
-          }}
-          />
+            {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
+            <Route
+              exact
+              path="/games/dashboard"
+              render={props => {
+                if(this.isAuthenticated()) {
+                return<GameList
+                    {...props}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    deleteGames={this.deleteGame}/>
+                } else {
+                  return <Redirect to ="/" />;
+                }
+              }}
+            />
 
-{/* DELETE GAME */}
+            {/*  GAME */}
 
-          <Route exact path ="/games" render={props => {
-            return (
-            <GameList
-              {...props}
-              deleteGame={this.deleteGame}
-              games={this.state.games}
-              />
-            )
-          }}
-          />
+            <Route
+              exact
+              path="/games/new"
+              render={props => {
+                if(this.isAuthenticated()) {
+                return <GameForm
+                    {...props}
+                    addGame={this.addGame}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    deleteGame={this.deleteGame}
+                  />
+                } else {
+                  return <Redirect to="/"/>;
+                }
+              }}
+            />
 
-{/* Send deleteGame props to GameCards */}
-          {/* <Route exact path ="/games" render={props => {
-            return (
-            <GameCards
-              {...props}
-              deleteGame={this.deleteGame}
-              games={this.state.games}
-              />
-            )
-          }}
-          /> */}
+            {/*  USERS */}
 
+            <Route
+              exact
+              path="/users/new"
+              render={props => {
+                if(this.isAuthenticated()) {
+                return (
+                  <UserRegistrationForm
+                    {...props}
+                    users={this.state.users}
+                    addUser={this.addUser}
+                    userId={this.state.userId}
+                />)} else {
+                  return <Redirect to ="/" />;
+                }
+              }
+            }
+            />
 
-
-          {/* <Route exact path="/games" render={props => {
-            return ( <GameList {...props} deleteGame={this.deleteGame} games={this.state.games}/>
-          )}}
-          /> */}
-
-
-        </header>
-      </div>
+            <Route
+              exact
+              path="/users"
+              render={props => {
+                return <UserLoginForm {...props} />;
+              }}
+            />
+          </header>
+        </div>
       </React.Fragment>
     );
   }
