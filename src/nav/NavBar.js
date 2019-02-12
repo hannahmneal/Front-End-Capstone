@@ -10,14 +10,14 @@ class NavBar extends Component {
             <nav className="navbar navbar-light light-blue flex-md-nowrap p-0 shadow">
                 <ul className="nav nav-pills nav-fill">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/list">Dashboard</Link>
+                        <Link className="nav-link" to="/games/dashboard">Dashboard</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/games">Add A Game!</Link>
+                        <Link className="nav-link" to="/games/new">Add A Game!</Link>
                     </li>
-                    {/* <li className="nav-item">
-                        <Link className="nav-link" to="/games/new">Add New Game</Link>
-                    </li> */}
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/">Login</Link>
+                    </li>
                     {/* <li className="nav-item">
                         <Link className="nav-link" to="/filter">Filter</Link>
                     </li>
