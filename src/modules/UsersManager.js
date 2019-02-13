@@ -22,6 +22,12 @@ export default {
     getUser(nameInput, passInput){
         return fetch(`${remoteURL}?username=${nameInput}&password=${passInput}`)
         .then(r => r.json())
+    },
+
+    // http://localhost:5002/users/1?_embed=games
+    getUsersGames(id) {
+        return fetch (`${remoteURL}/${id}?_embed=games`)
+        .then(r => r.json())
     }
 //     postUser(newUserObj) {
 //         console.log(newUserObj);

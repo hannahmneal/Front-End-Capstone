@@ -1,5 +1,5 @@
 import React from "react";
-// import UsersManager from "../../modules/UsersManager"
+import UsersManager from "../../modules/UsersManager"
 import {
   Container,
   Row,
@@ -10,11 +10,15 @@ import {
   Label,
   Input
 } from "reactstrap"
+import GameData from "../../modules/GameData";
 // import UsersManager from "../../modules/UsersManager";
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
-    password: ""
+    password: "",
+    games: [{
+      userId: ""
+    }]
   };
 
   handleFieldChange = evt => {
@@ -42,11 +46,23 @@ export default class UserLoginForm extends React.Component {
 
         if(userId.length === 0) {
           alert("Please log in with valid credentials")
-        } else {
-          console.log("userId");
-
         }
-        sessionStorage.setItem("user", user[0].id)
+
+        else {
+
+          console.log("userId");
+          return UsersManager.getUsersGames(userId)
+          .then(user => {
+            console.log(user)
+            this.setState({
+              games: user.games
+            })
+            console.log(this.state);
+          })
+        }
+
+            // This works: it returns user-id-specific games. Just populate the cards with it.
+
 
         // try assigning "user" as "User" instead; getItem needs caps?
         // console.log(userId); logs the user[0].id value to the console

@@ -46,6 +46,12 @@ class AppControl extends Component {
   }
   // Get game categories for dropdown in "Add New Game" form:
 
+  // Testing user-specific fetch call:
+  getUsersGames = (id) => {
+    return GameData.getSpecificGames(id)
+  }
+
+
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
       this.setState({
