@@ -18,10 +18,10 @@ class AppControl extends Component {
     games: [],
     categories: [],
     usersGames: [],
-    userId: sessionStorage.getItem("user")
+    userId: Number(sessionStorage.getItem("user"))
   };
   // The session storage for "user" is set after the verification step in UserLoginForm.
-  
+
   //=================================================================================================
   // Methods:
 
@@ -49,13 +49,13 @@ class AppControl extends Component {
   // Get game categories for dropdown in "Add New Game" form:
 
   // Testing user-specific fetch call:
-  getUsersGames = (userId) => {
-    GameData.getUsersGames(userId).then(() => game =>
-    this.setState({
-      usersGames: game
-    })
-  );
-  }
+  // getUsersGames = (userId) => {
+  //   GameData.getUsersGames(userId).then(() => game =>
+  //   this.setState({
+  //     usersGames: game
+  //   })
+  // );
+  // }
 
 
   getCategory = () => {
@@ -118,14 +118,15 @@ class AppControl extends Component {
     });
   }
 
-  getUsersGames = (userId) => {
-    GameData.getUsersGames(userId).then(() => game =>
-    this.setState({
-      usersGames: game
-    })
-  );
-  }
-  //=======================================================================================================
+  // getUsersGames = (userId) => {
+  //   GameData.getUsersGames(userId).then(() => game =>
+  //   this.setState({
+  //     usersGames: game
+  //   })
+  // );
+  // }
+
+  // =======================================================================================================
 
   render() {
     // console.log(this.state.users);
@@ -151,6 +152,7 @@ class AppControl extends Component {
                   users={this.state.users}
                   authenticateUser={this.authenticateUser}
                   games ={this.state.games}
+                  // getUsersGames={this.getUsersGames}
                   />
                 );
               }}
@@ -167,7 +169,9 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     deleteGames={this.deleteGame}
                     authenticateUser={this.authenticateUser}
-                    usersGames= {this.state.usersGames}
+                    // usersGames= {this.state.usersGames}
+                    userId={this.state.userId}
+
 
                     />)} else {
                       return alert("Nope!");
@@ -180,13 +184,14 @@ class AppControl extends Component {
               path="/games/dashboard"
               render={props => {
                 if(this.isAuthenticated()) {
-                return(<GameCards
+                return(<GameList
                     {...props}
                     games={this.state.games}
                     categories={this.state.categories}
                     deleteGames={this.deleteGame}
                     authenticateUser={this.authenticateUser}
                     usersGames= {this.state.usersGames}
+                    userId={this.state.userId}
                     />)} else {
                       return (<Redirect to ="/" />);
                     }

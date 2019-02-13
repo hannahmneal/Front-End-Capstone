@@ -4,7 +4,10 @@ const remoteURL = "http://localhost:5002"
 // const dataSet = `${dataSet}`
 
 export default {
+    // http://localhost:5002/games?userId=1&_expand=category
 
+
+    
     get(id) {
         return fetch(`${remoteURL}/games/${id}`)
             .then(r => r.json())
