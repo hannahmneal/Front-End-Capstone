@@ -51,13 +51,6 @@ export default class GameForm extends React.Component {
   };
 
   //===========================================================================
-  // handleDeleteGame = evt => {
-  //   evt.preventDefault();
-  //   evt.target.id =()=> (
-
-  //     this.props.deleteGame(this.props.game.id)
-  //   )
-  // }
 
   //===========================================================================
 
@@ -75,7 +68,7 @@ export default class GameForm extends React.Component {
       // {console.log("this.state:", this.state)}
       // })
       .then(() => this.setState(initialState))
-      // Don't forget to add a route to push back to the dashboard!
+      // Routes the user to the game dashboard:
       .then(() => this.props.history.push("/games/dashboard"));
   };
   //===========================================================================
@@ -141,8 +134,7 @@ export default class GameForm extends React.Component {
                   name="checkbox"
                   id="isCoop"
                   onChange={this.handleBoolFieldChange}
-                  // onChange={this.handleFieldChange}
-                  // Using "handleBoolFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
+                  // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
                   checked={isCoop}
                 />
               </FormGroup>
@@ -160,8 +152,7 @@ export default class GameForm extends React.Component {
                   id="categoryId"
                   // value={categoryId}
                   onChange={this.handleIntChange}
-                  // onChange={this.handleFieldChange}
-                  // Using "handleDropdownChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
+                  // Using "handleDropdownChange" instead of "handleFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
                 >
                   {this.props.categories.map(category => (
                     <option
@@ -182,7 +173,6 @@ export default class GameForm extends React.Component {
           <Button
             type="submit"
             onClick={this.constructNewGame}
-            // {()=> this.props.history.push("/list")}
             className="new-game-submit-btn"
           >
             Submit
