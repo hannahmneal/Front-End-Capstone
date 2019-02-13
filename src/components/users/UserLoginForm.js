@@ -11,13 +11,11 @@ import {
   Input
 } from "reactstrap"
 // import UsersManager from "../../modules/UsersManager";
-
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
     password: ""
   };
-
 
   handleFieldChange = evt => {
     // evt.preventDefault();
@@ -30,8 +28,6 @@ export default class UserLoginForm extends React.Component {
     console.log(stateToChange)
   };
 
-
-
   handleLoginSubmit = evt => {
     evt.preventDefault();
 
@@ -42,13 +38,24 @@ export default class UserLoginForm extends React.Component {
           user: user
         })
         // The values for "userName" and "password" that were plugged in to the URL via verifyUser returns an array in the database, but it is an array of one item (the specific person we are looking for, if they exist). Since there is only one object in that array, the index of the object is "0".
+        let userId = sessionStorage.getItem("user")
 
+        if(userId.length === 0) {
+          alert("Please log in with valid credentials")
+        } else {
+          console.log("userId");
+
+        }
         sessionStorage.setItem("user", user[0].id)
+
+        // try assigning "user" as "User" instead; getItem needs caps?
+        // console.log(userId); logs the user[0].id value to the console
+        // use userId this way: if userId = user.id, route to the user's specific dashboard via url
+
         this.props.history.push("/games/dashboard")
+        // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
 
       })
-
-          // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
     }
 
 
@@ -68,9 +75,7 @@ export default class UserLoginForm extends React.Component {
                   id="userName"
                   placeholder="Username"
                   value={userName}
-                  // onChange={this.handleFieldChange("username").bind(this)}
                   onChange={this.handleFieldChange}
-                  // value={userName || ""}
                 />
               </FormGroup>
             </Col>
@@ -82,8 +87,6 @@ export default class UserLoginForm extends React.Component {
                   name="loginPassword"
                   id="password"
                   placeholder="Password"
-                  // onChange={this.handleFieldChange("password").bind(this)}
-                  // value={password || ""}
                   value={password}
                   onChange={this.handleFieldChange}
                 />

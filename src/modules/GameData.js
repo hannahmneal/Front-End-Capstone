@@ -16,6 +16,13 @@ export default {
         //         .then(res => res.text())          // convert to plain text
         //   .then(text => console.log(text))
     },
+
+    getSpecificGames(id) {
+        return fetch(`${remoteURL}/games/${id}?_expand=category`)
+            .then(r => r.json())
+        //         .then(res => res.text())          // convert to plain text
+        //   .then(text => console.log(text))
+    },
     // Produces T error
 
     getAllUsers() {

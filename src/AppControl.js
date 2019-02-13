@@ -73,13 +73,13 @@ class AppControl extends Component {
   //  LIFE CYCLE METHODS:
 
   // Check:
-  componentWillMount() {
+//   componentWillMount() {
 
-    GameData.getAllCategories().then(allCategories => {
-      console.log("componentWillMount: getallCategories:", allCategories);
-      // Logs the game categories to the console
-  })
-}
+//     GameData.getAllCategories().then(allCategories => {
+//       console.log("componentWillMount: getallCategories:", allCategories);
+//       // Logs the game categories to the console
+//   })
+// }
 
   componentDidMount() {
     GameData.getAllGames()
