@@ -115,7 +115,7 @@ class AppControl extends Component {
     // console.log(this.state.games);
     // console.log(this.state.categories);
     console.log(this.state.users);
-    
+
 
     return (
       <React.Fragment>
@@ -143,16 +143,12 @@ class AppControl extends Component {
               exact
               path="/games/dashboard"
               render={props => {
-                if(this.isAuthenticated()) {
                 return(<GameList
                     {...props}
                     games={this.state.games}
                     categories={this.state.categories}
                     deleteGames={this.deleteGame}/>
-                )} else {
-                  return <Redirect to ="/" />;
-                }
-              }}
+                )}}
             />
 
             {/*  GAME */}
@@ -161,7 +157,6 @@ class AppControl extends Component {
               exact
               path="/games/new"
               render={props => {
-                if(this.isAuthenticated()) {
                 return (<GameForm
                     {...props}
                     addGame={this.addGame}
@@ -169,9 +164,6 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     deleteGame={this.deleteGame}
                   />)
-                } else {
-                  return <Redirect to="/"/>;
-                }
               }}
             />
 
