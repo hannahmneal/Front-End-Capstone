@@ -17,9 +17,11 @@ class AppControl extends Component {
     users: [],
     games: [],
     categories: [],
+    usersGames: [],
     userId: sessionStorage.getItem("user")
   };
   // The session storage for "user" is set after the verification step in UserLoginForm.
+  
   //=================================================================================================
   // Methods:
 
@@ -47,8 +49,12 @@ class AppControl extends Component {
   // Get game categories for dropdown in "Add New Game" form:
 
   // Testing user-specific fetch call:
-  getUsersGames = (id) => {
-    return GameData.getSpecificGames(id)
+  getUsersGames = (userId) => {
+    GameData.getUsersGames(userId).then(() => game =>
+    this.setState({
+      usersGames: game
+    })
+  );
   }
 
 
@@ -111,6 +117,14 @@ class AppControl extends Component {
       });
     });
   }
+
+  getUsersGames = (userId) => {
+    GameData.getUsersGames(userId).then(() => game =>
+    this.setState({
+      usersGames: game
+    })
+  );
+  }
   //=======================================================================================================
 
   render() {
@@ -136,6 +150,7 @@ class AppControl extends Component {
                   getUser={this.getUser}
                   users={this.state.users}
                   authenticateUser={this.authenticateUser}
+                  games ={this.state.games}
                   />
                 );
               }}
@@ -152,6 +167,8 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     deleteGames={this.deleteGame}
                     authenticateUser={this.authenticateUser}
+                    usersGames= {this.state.usersGames}
+
                     />)} else {
                       return alert("Nope!");
                     }
@@ -169,6 +186,7 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     deleteGames={this.deleteGame}
                     authenticateUser={this.authenticateUser}
+                    usersGames= {this.state.usersGames}
                     />)} else {
                       return (<Redirect to ="/" />);
                     }

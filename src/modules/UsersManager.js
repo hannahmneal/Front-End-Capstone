@@ -25,8 +25,8 @@ export default {
     },
 
     // http://localhost:5002/users/1?_embed=games
-    getUsersGames(id) {
-        return fetch (`${remoteURL}/${id}?_embed=games`)
+    getUsersGames(userId) {
+        return fetch (`${remoteURL}/${userId}?_embed=games`)
         .then(r => r.json())
     }
 //     postUser(newUserObj) {
