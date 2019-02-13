@@ -5,6 +5,11 @@ const remoteURL = "http://localhost:5002/users"
 
 export default {
 
+    // getUser(id) {
+    //     return fetch(`${remoteURL}`)
+    //     .then()
+    // }
+
     getAllUsers() {
 
         return fetch(`${remoteURL}`)
@@ -15,7 +20,7 @@ export default {
     // http://localhost:5002/users?username=hannahmneal&password=pass
 
     getUser(nameInput, passInput){
-        return fetch(`${remoteURL}?username=${nameInput}$password=${passInput}`)
+        return fetch(`${remoteURL}?username=${nameInput}&password=${passInput}`)
         .then(r => r.json())
     }
 //     postUser(newUserObj) {

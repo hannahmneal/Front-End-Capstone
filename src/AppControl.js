@@ -41,12 +41,8 @@ class AppControl extends Component {
 
   // User Verification (called in UserLoginForm):
 
-  verifyUser(nameInput, passInput) {
-    UsersManager.getUser(nameInput, passInput)
-    .then(user =>
-      this.setState({
-      users: user
-    }))
+  verifyUser = (nameInput, passInput) => {
+    return UsersManager.getUser(nameInput, passInput)
   }
   // Get game categories for dropdown in "Add New Game" form:
 
@@ -77,17 +73,18 @@ class AppControl extends Component {
   //  LIFE CYCLE METHODS:
 
   // Check:
-  // componentWillMount() {
+  componentWillMount() {
 
-  //   GameData.getAllCategories().then(allCategories => {
-  //     console.log("componentWillMount: getallCategories:", allCategories);
-  //     // Logs the game categories to the console
-  // }
+    GameData.getAllCategories().then(allCategories => {
+      console.log("componentWillMount: getallCategories:", allCategories);
+      // Logs the game categories to the console
+  })
+}
 
   componentDidMount() {
     GameData.getAllGames()
       .then(allGames => {
-        // console.log("componentDidMount: getallGames:", allGames);
+        console.log("componentDidMount: getallGames:", allGames);
         this.setState({
           games: allGames
         });

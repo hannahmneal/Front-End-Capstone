@@ -27,28 +27,29 @@ export default class UserLoginForm extends React.Component {
     //Also, ".value" refers to the element on which the change happens, not the value of the text entered into the field, as in Vanilla JS.
     //Consider the boolean in GameForm: the "value" is checked (evt.target.checked).
     this.setState(stateToChange);
+    console.log(stateToChange)
   };
 
 
 
-  handleLoginSubmit = () => {
-    // evt.preventDefault();
+  handleLoginSubmit = evt => {
+    evt.preventDefault();
 
       this.props.verifyUser(this.state.userName, this.state.password)
       .then(user => {
-        console.log("user:", user)
+        console.log("user", user)
         this.setState({
           user: user
         })
-        sessionStorage.setItem("user", user[0].id)
         // The values for "userName" and "password" that were plugged in to the URL via verifyUser returns an array in the database, but it is an array of one item (the specific person we are looking for, if they exist). Since there is only one object in that array, the index of the object is "0".
 
-        .then(() => this.props.history.push("/games/dashboard"))
+        sessionStorage.setItem("user", user[0].id)
+        this.props.history.push("/games/dashboard")
 
       })
 
           // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
-      }
+    }
 
 
   render() {
