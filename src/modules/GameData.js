@@ -6,8 +6,6 @@ const remoteURL = "http://localhost:5002"
 export default {
     // http://localhost:5002/games?userId=1&_expand=category
 
-
-    
     get(id) {
         return fetch(`${remoteURL}/games/${id}`)
             .then(r => r.json())
@@ -16,17 +14,12 @@ export default {
     getAllGames() {
         return fetch(`${remoteURL}/games?_expand=category`)
             .then(r => r.json())
-        //         .then(res => res.text())          // convert to plain text
-        //   .then(text => console.log(text))
     },
 
     getSpecificGames(id) {
         return fetch(`${remoteURL}/games/${id}?_expand=category`)
             .then(r => r.json())
-        //         .then(res => res.text())          // convert to plain text
-        //   .then(text => console.log(text))
     },
-    // Produces T error
 
     getAllUsers() {
         return fetch(`${remoteURL}/users`)
@@ -49,3 +42,7 @@ export default {
         }).then(r => r.json());
     }
 }
+
+// T-error:
+        //   .then(res => res.text())          // convert to plain text
+        //   .then(text => console.log(text))

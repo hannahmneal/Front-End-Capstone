@@ -62,9 +62,6 @@ export default class UserLoginForm extends React.Component {
           })
         }
 
-            // This works: it returns user-id-specific games. Just populate the cards with it.
-
-
         // try assigning "user" as "User" instead; getItem needs caps?
         // console.log(userId); logs the user[0].id value to the console
         // use userId this way: if userId = user.id, route to the user's specific dashboard via url

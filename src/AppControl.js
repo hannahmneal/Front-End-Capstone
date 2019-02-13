@@ -7,7 +7,7 @@ import GameList from "./components/games/GameList";
 import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
-import GameCards from "./components/games/GameCards"
+// import GameCards from "./components/games/GameCards"
 
 import "./App.css";
 // import NavBar from "./nav/NavBar"
@@ -46,17 +46,6 @@ class AppControl extends Component {
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput)
   }
-  // Get game categories for dropdown in "Add New Game" form:
-
-  // Testing user-specific fetch call:
-  // getUsersGames = (userId) => {
-  //   GameData.getUsersGames(userId).then(() => game =>
-  //   this.setState({
-  //     usersGames: game
-  //   })
-  // );
-  // }
-
 
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
@@ -82,16 +71,7 @@ class AppControl extends Component {
       );
   };
   //==============================================================================================
-  //  LIFE CYCLE METHODS:
-
-  // Check:
-//   componentWillMount() {
-
-//     GameData.getAllCategories().then(allCategories => {
-//       console.log("componentWillMount: getallCategories:", allCategories);
-//       // Logs the game categories to the console
-//   })
-// }
+  //  LIFE CYCLE:
 
   componentDidMount() {
     GameData.getAllGames()
@@ -117,16 +97,7 @@ class AppControl extends Component {
       });
     });
   }
-
-  // getUsersGames = (userId) => {
-  //   GameData.getUsersGames(userId).then(() => game =>
-  //   this.setState({
-  //     usersGames: game
-  //   })
-  // );
-  // }
-
-  // =======================================================================================================
+//=======================================================================================================
 
   render() {
     // console.log(this.state.users);
@@ -171,8 +142,6 @@ class AppControl extends Component {
                     authenticateUser={this.authenticateUser}
                     // usersGames= {this.state.usersGames}
                     userId={this.state.userId}
-
-
                     />)} else {
                       return alert("Nope!");
                     }

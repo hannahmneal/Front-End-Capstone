@@ -5,11 +5,6 @@ const remoteURL = "http://localhost:5002"
 
 export default {
 
-    // getUser(id) {
-    //     return fetch(`${remoteURL}`)
-    //     .then()
-    // }
-
     getAllUsers() {
 
         return fetch(`${remoteURL}/users`)
@@ -24,7 +19,7 @@ export default {
         .then(r => r.json())
     },
 
-    // http://localhost:5002/users/1?_embed=games
+    // User-specific games URL with categories:
     // http://localhost:5002/games?userId=1&_expand=category
 
     getUsersGames(userId) {
