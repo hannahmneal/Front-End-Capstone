@@ -11,8 +11,11 @@ export default {
         .then(r => r.json())
     },
 
-    getUser(){
-        return fetch(`${remoteURL}`)
+    //Users URL structure:
+    // http://localhost:5002/users?username=hannahmneal&password=pass
+
+    getUser(nameInput, passInput){
+        return fetch(`${remoteURL}?username=${nameInput}$password=${passInput}`)
         .then(r => r.json())
     }
 //     postUser(newUserObj) {
@@ -26,3 +29,8 @@ export default {
 //         }).then(r => r.json());
 //     }
 }
+
+
+// Pass parameters into URL
+// Set session storage with id
+// No need for a forEach()

@@ -10,26 +10,14 @@ import {
   Label,
   Input
 } from "reactstrap"
-import UsersManager from "../../modules/UsersManager";
+// import UsersManager from "../../modules/UsersManager";
 
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
     password: ""
-    // user: []
   };
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {value: ''};
 
-  //   this.handleFieldChange = this.handleFieldChange.bind(this);
-  //   this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-  // }
-
-  // state = { ...initialLoginState };
-  // handleFieldChange(event) {
-  //   this.setState({value: event.target.value})
-  // }
 
   handleFieldChange = evt => {
     // evt.preventDefault();
@@ -46,40 +34,22 @@ export default class UserLoginForm extends React.Component {
   handleLoginSubmit = () => {
     // evt.preventDefault();
 
-    UsersManager.verifyUser(this.state.users)
+      this.props.verifyUser(this.state.userName, this.state.password)
+      .then(user => {
+        console.log("user:", user)
+        this.setState({
+          user: user
+        })
+        sessionStorage.setItem("user", user[0].id)
+        // The values for "userName" and "password" that were plugged in to the URL via verifyUser returns an array in the database, but it is an array of one item (the specific person we are looking for, if they exist). Since there is only one object in that array, the index of the object is "0".
 
-      this.props.users.forEach(user => {
-        console.log(user);
-        let loggedIn = false;
-        // The "loggedIn" variable is a castle wall. The "if" is a Frenchman. If King Arthur is not French, he cannot proceed (user = false). If the Trojan Rabbit works, King Arthur proceeds (= true).
-        if(this.state.userName === user.userName && this.state.password === user.password) {
-          loggedIn = true;
+        .then(() => this.props.history.push("/games/dashboard"))
 
-        } if(loggedIn === true) {
-          // Set session storage here, after the "verification" step (the "if"):
-          sessionStorage.setItem("user", user.id);
-          // sessionStorage.setItem("firstname", user.firstName)
-          // sessionStorage.setItem("lastname", user.lastName)
-          sessionStorage.setItem("userName", user.userName)
-          sessionStorage.setItem("password", user.password)
-          sessionStorage.setItem(
-            "credentials",
-            JSON.stringify({
-              userName: this.state.userName,
-              password: this.state.password
-            })
-            )
-          .then(() => this.setState)
-          .then(() => this.props.history.push("/games/dashboard"))
+      })
+
           // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
-          // You might want to tidy up this route later.
       }
-      else {
-        console.log("Invalid entry")
-      }
-    }
-    )
-  }
+
 
   render() {
     const { userName, password } = this.state;

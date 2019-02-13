@@ -7,6 +7,7 @@ import GameList from "./components/games/GameList";
 import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
+import GameCards from "./components/games/GameCards"
 
 import "./App.css";
 // import NavBar from "./nav/NavBar"
@@ -40,8 +41,8 @@ class AppControl extends Component {
 
   // User Verification (called in UserLoginForm):
 
-  verifyUser = () => {
-    UsersManager.getUser()
+  verifyUser(nameInput, passInput) {
+    UsersManager.getUser(nameInput, passInput)
     .then(user =>
       this.setState({
       users: user
@@ -56,7 +57,6 @@ class AppControl extends Component {
       })
     );
   };
-
 
   // Delete method:
 
@@ -116,7 +116,6 @@ class AppControl extends Component {
     // console.log(this.state.categories);
     console.log(this.state.users);
 
-
     return (
       <React.Fragment>
         <div className="App">
@@ -141,14 +140,36 @@ class AppControl extends Component {
 {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
-              path="/games/dashboard"
+              path="/games/list"
               render={props => {
+                if(this.isAuthenticated()) {
                 return(<GameList
                     {...props}
                     games={this.state.games}
                     categories={this.state.categories}
-                    deleteGames={this.deleteGame}/>
-                )}}
+                    deleteGames={this.deleteGame}
+                    authenticateUser={this.authenticateUser}
+                    />)} else {
+                      return alert("Nope!");
+                    }
+              }}
+              />
+
+              <Route
+              exact
+              path="/games/dashboard"
+              render={props => {
+                if(this.isAuthenticated()) {
+                return(<GameCards
+                    {...props}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    deleteGames={this.deleteGame}
+                    authenticateUser={this.authenticateUser}
+                    />)} else {
+                      return (<Redirect to ="/" />);
+                    }
+                }}
             />
 
             {/*  GAME */}
@@ -163,6 +184,8 @@ class AppControl extends Component {
                     games={this.state.games}
                     categories={this.state.categories}
                     deleteGame={this.deleteGame}
+                    authenticateUser={this.authenticateUser}
+
                   />)
               }}
             />
@@ -181,7 +204,7 @@ class AppControl extends Component {
                     addUser={this.addUser}
                     userId={this.state.userId}
                 />)} else {
-                  return <Redirect to ="/games/dashboard" />;
+                  return (<Redirect to ="/games/dashboard" />);
                 }
               }
             }
