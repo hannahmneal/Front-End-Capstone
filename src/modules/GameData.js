@@ -21,10 +21,6 @@ export default {
             .then(r => r.json())
     },
 
-    getAllUsers() {
-        return fetch(`${remoteURL}/users`)
-            .then(r => r.json())
-    },
     getAllCategories() {
         return fetch(`${remoteURL}/categories`)
             .then(r => r.json())

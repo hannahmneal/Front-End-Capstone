@@ -3,16 +3,15 @@ import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
-import GameList from "./components/games/GameList";
-import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import GameCards from "./components/games/GameCards";
+// import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
-// import GameCards from "./components/games/GameCards"
 
 import "./App.css";
 // import NavBar from "./nav/NavBar"
 class AppControl extends Component {
-  isAuthenticated = () => sessionStorage.getItem("user") !== null
+  isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
     users: [],
     games: [],
@@ -43,9 +42,10 @@ class AppControl extends Component {
 
   // User Verification (called in UserLoginForm):
 
-  verifyUser = (nameInput, passInput) => {
-    return UsersManager.getUser(nameInput, passInput)
-  }
+  verifyUser = (usernameInput, passInput) => {
+    return UsersManager.getUser(usernameInput, passInput);
+    // UsersManager.getUser: http://localhost:5002/users?username=hannahmneal&password=pass   // returns: users = [{matched user object}]
+  };
 
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
@@ -57,7 +57,7 @@ class AppControl extends Component {
 
   // Delete method:
 
-  deleteGame = id => {
+  deleteGameOfUser = id => {
     return fetch(`http://localhost:5002/games/${id}`, {
       method: "DELETE"
     })
@@ -67,29 +67,37 @@ class AppControl extends Component {
       .then(games =>
         this.setState({
           games: games
-        })
+        }).then(console.log(this.state.games))
       );
   };
+
   //==============================================================================================
   //  LIFE CYCLE:
 
   componentDidMount() {
+    //From: localhost:5002/games?_expand=category //games = [{ category = {...} }]
+    // NOTICE: category is singular in embedded URL
     GameData.getAllGames()
       .then(allGames => {
-        console.log("componentDidMount: getallGames:", allGames);
+        // console.log("componentDidMount: getallGames:", allGames);
         this.setState({
           games: allGames
         });
       })
       .then(() => {
-        console.log(this.state.games);
+        // console.log(this.state.games);
       });
+
+    //From: localhost:5002/categories // categories = [{...}]
+    // NOTICE: plural categories
     GameData.getAllCategories().then(allCategories => {
       // console.log("componentDidMount: getallCategories:", allCategories);
       this.setState({
         categories: allCategories
       });
     });
+
+    // From: localhost:5002/users // users = [{...}]
     UsersManager.getAllUsers().then(allUsers => {
       // console.log("componentDidMount: getallUsers:", allUsers);
       this.setState({
@@ -97,13 +105,12 @@ class AppControl extends Component {
       });
     });
   }
-//=======================================================================================================
+  //=======================================================================================================
 
   render() {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
-    console.log(this.state.users);
 
     return (
       <React.Fragment>
@@ -113,32 +120,27 @@ class AppControl extends Component {
 
             <Route
               exact
-              path="/"
+              path="/login"
               render={props => {
                 return (
                   <UserLoginForm
-                  {...props}
-                  verifyUser={this.verifyUser}
-                  getUser={this.getUser}
-                  users={this.state.users}
-                  authenticateUser={this.authenticateUser}
-                  games ={this.state.games}
-                  // getUsersGames={this.getUsersGames}
+                    {...props}
+                    verifyUser={this.verifyUser}
+                    authenticateUser={this.authenticateUser}
+                    games={this.state.games}
+                    // getUsersGames={this.getUsersGames}
                   />
                 );
               }}
             />
-{/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
-            <Route
+            {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
+            {/* <Route
               exact
-              path="/games/list"
+              path="/games"
               render={props => {
                 if(this.isAuthenticated()) {
                 return(<GameList
                     {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
                     authenticateUser={this.authenticateUser}
                     // usersGames= {this.state.usersGames}
                     userId={this.state.userId}
@@ -146,26 +148,7 @@ class AppControl extends Component {
                       return alert("Nope!");
                     }
               }}
-              />
-
-              <Route
-              exact
-              path="/games/dashboard"
-              render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    usersGames= {this.state.usersGames}
-                    userId={this.state.userId}
-                    />)} else {
-                      return (<Redirect to ="/" />);
-                    }
-                }}
-            />
+              /> */}
 
             {/*  GAME */}
 
@@ -173,21 +156,48 @@ class AppControl extends Component {
               exact
               path="/games/new"
               render={props => {
-                return (<GameForm
-                    {...props}
-                    addGame={this.addGame}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGame={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-
-                  />)
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameForm
+                      {...props}
+                      authenticateUser={this.authenticateUser}
+                      addGame={this.addGame}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGameOfUser={this.deleteGameOfUser}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
+              }}
+            />
+            <Route
+              exact
+              path="/games"
+              render={props => {
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameCards
+                      {...props}
+                      authenticateUser={this.authenticateUser}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      users={this.state.users}
+                      userId={this.state.userId}
+                      usersGames={this.state.usersGames}
+                      deleteGameOfUser={this.deleteGameOfUser}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
               }}
             />
 
             {/*  USERS */}
 
-            <Route
+            {/* <Route
               exact
               path="/users/new"
               render={props => {
@@ -203,7 +213,7 @@ class AppControl extends Component {
                 }
               }
             }
-            />
+            /> */}
           </header>
         </div>
       </React.Fragment>
