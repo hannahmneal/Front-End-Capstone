@@ -4,7 +4,9 @@ import { Route, Redirect } from "react-router-dom";
 import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
-import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import GameCards from "./components/games/GameCards";
+
+// import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
 // import GameCards from "./components/games/GameCards"
@@ -12,13 +14,13 @@ import UsersManager from "./modules/UsersManager";
 import "./App.css";
 // import NavBar from "./nav/NavBar"
 class AppControl extends Component {
-  isAuthenticated = () => sessionStorage.getItem("user") !== null
+  isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
     users: [],
     games: [],
     categories: [],
     usersGames: [],
-    userId: Number(sessionStorage.getItem("user"))
+    userId: parseInt(sessionStorage.getItem("user"))
   };
   // The session storage for "user" is set after the verification step in UserLoginForm.
 
@@ -44,8 +46,8 @@ class AppControl extends Component {
   // User Verification (called in UserLoginForm):
 
   verifyUser = (nameInput, passInput) => {
-    return UsersManager.getUser(nameInput, passInput)
-  }
+    return UsersManager.getUser(nameInput, passInput);
+  };
 
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
@@ -58,17 +60,21 @@ class AppControl extends Component {
   // Delete method:
 
   deleteGame = id => {
-    return fetch(`http://localhost:5002/games/${id}`, {
-      method: "DELETE"
-    })
-      .then(response => response.json())
-      .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-      .then(response => response.json())
-      .then(games =>
-        this.setState({
-          games: games
-        })
-      );
+    return (
+      fetch(`http://localhost:5002/games/${id}`, {
+        method: "DELETE"
+      })
+        // use game.id to delete game
+        // After deleting games, user userId to fetch user-specific games
+        .then(response => response.json())
+        .then(() => fetch(`http://localhost:5002/games?_expand=category`))
+        .then(response => response.json())
+        .then(games =>
+          this.setState({
+            games: games
+          })
+        )
+    );
   };
   //==============================================================================================
   //  LIFE CYCLE:
@@ -96,8 +102,15 @@ class AppControl extends Component {
         users: allUsers
       });
     });
+
+    UsersManager.getUsersGames(this.state.userId).then(game => {
+      console.log("componentDidMount:", game);
+      this.setState({
+        usersGames: game
+      });
+    });
   }
-//=======================================================================================================
+  //=======================================================================================================
 
   render() {
     // console.log(this.state.users);
@@ -113,81 +126,110 @@ class AppControl extends Component {
 
             <Route
               exact
-              path="/"
+              path="/login"
               render={props => {
                 return (
                   <UserLoginForm
-                  {...props}
-                  verifyUser={this.verifyUser}
-                  getUser={this.getUser}
-                  users={this.state.users}
-                  authenticateUser={this.authenticateUser}
-                  games ={this.state.games}
-                  // getUsersGames={this.getUsersGames}
+                    {...props}
+                    verifyUser={this.verifyUser}
+                    getUser={this.getUser}
+                    users={this.state.users}
+                    authenticateUser={this.authenticateUser}
+                    games={this.state.games}
+                    // getUsersGames={this.getUsersGames}
                   />
                 );
               }}
             />
-{/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
+            {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
-              path="/games/list"
+              path="/list"
               render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    // usersGames= {this.state.usersGames}
-                    userId={this.state.userId}
-                    />)} else {
-                      return alert("Nope!");
-                    }
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameList
+                      {...props}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGames={this.deleteGame}
+                      authenticateUser={this.authenticateUser}
+                      usersGames={this.state.usersGames}
+                      userId={this.state.userId}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
               }}
-              />
-
-              <Route
-              exact
-              path="/games/dashboard"
-              render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    usersGames= {this.state.usersGames}
-                    userId={this.state.userId}
-                    />)} else {
-                      return (<Redirect to ="/" />);
-                    }
-                }}
             />
 
-            {/*  GAME */}
+            <Route
+              exact
+              path="/games"
+              render={props => {
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameCards
+                      {...props}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGames={this.deleteGame}
+                      authenticateUser={this.authenticateUser}
+                      usersGames={this.state.usersGames}
+                      userId={this.state.userId}
+                    />
+                  );
+                  } else {
+                    return <Redirect to="/login" />;
+                  }
+              }}
+            />
+
+            {/* <Route
+              exact
+              path="/list"
+              render={props => {
+                if(this.isAuthenticated()) {
+                return(<GameList
+                    {...props}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    deleteGames={this.deleteGame}
+                    authenticateUser={this.authenticateUser}
+                    userId={this.state.userId}
+                    />)} else {
+                      return (<Redirect to ="/login" />);
+                    }
+                }}
+            /> */}
+
+            {/*  GAME FORM */}
 
             <Route
               exact
               path="/games/new"
               render={props => {
-                return (<GameForm
-                    {...props}
-                    addGame={this.addGame}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGame={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-
-                  />)
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameForm
+                      {...props}
+                      addGame={this.addGame}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGame={this.deleteGame}
+                      authenticateUser={this.authenticateUser}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
               }}
             />
 
             {/*  USERS */}
 
-            <Route
+            {/* <Route
               exact
               path="/users/new"
               render={props => {
@@ -203,7 +245,7 @@ class AppControl extends Component {
                 }
               }
             }
-            />
+            /> */}
           </header>
         </div>
       </React.Fragment>

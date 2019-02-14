@@ -10,14 +10,12 @@ import {
   Label,
   Input
 } from "reactstrap"
-// import GameData from "../../modules/GameData";
-// import UsersManager from "../../modules/UsersManager";
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
     password: "",
     games: [{
-      userId: ""
+      userId: null
     }]
   };
 
@@ -45,7 +43,7 @@ export default class UserLoginForm extends React.Component {
         sessionStorage.setItem("user", user[0].id)
         let userId = sessionStorage.getItem("user")
 
-        if(userId.length === 0) {
+        if(userId.length === null) {
           alert("Please log in with valid credentials")
         }
 
@@ -66,11 +64,15 @@ export default class UserLoginForm extends React.Component {
         // console.log(userId); logs the user[0].id value to the console
         // use userId this way: if userId = user.id, route to the user's specific dashboard via url
 
-        this.props.history.push("/games/dashboard")
+        this.props.history.push("/games")
         // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
 
       })
     }
+
+    // /games = cards and dashboard
+    // /login = login page
+    // /
 
   render() {
     const { userName, password } = this.state;

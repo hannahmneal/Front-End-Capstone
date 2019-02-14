@@ -16,15 +16,11 @@ export default {
             .then(r => r.json())
     },
 
-    getSpecificGames(id) {
+    getSpecificGame(id) {
         return fetch(`${remoteURL}/games/${id}?_expand=category`)
             .then(r => r.json())
     },
 
-    getAllUsers() {
-        return fetch(`${remoteURL}/users`)
-            .then(r => r.json())
-    },
     getAllCategories() {
         return fetch(`${remoteURL}/categories`)
             .then(r => r.json())
