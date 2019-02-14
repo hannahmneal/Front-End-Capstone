@@ -4,8 +4,6 @@ import { Route, Redirect } from "react-router-dom";
 import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
-import GameCards from "./components/games/GameCards";
-
 // import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
@@ -30,25 +28,40 @@ class AppControl extends Component {
   // addGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   // The addGame method creates a newGameObj whose state is set in GameForm when the submit button is clicked.
 
-  addGame = newGameObj => {
+
+  addGame = (newGameObj) => {
     // console.log(newGameObj);
     return GameData.post(newGameObj)
-      .then(() =>
-        GameData.getAllGames().then(game =>
-          this.setState({
-            games: game
-          })
-        )
+    .then(() =>
+    UsersManager.getUsersGames(this.state.userId).then(game =>
+      this.setState({
+        usersGames: game
+      })
+      )
       )
       .then(() => console.log("this.state.games:", this.state.games));
-  };
+    };
+
+// Use this to test different GET methods after a game is posted:
+      // addGame = newGameObj => {
+      //   // console.log(newGameObj);
+      //   return GameData.post(newGameObj)
+      //     .then(() =>
+      //       GameData.getAllGames().then(game =>
+      //         this.setState({
+      //           games: game
+      //         })
+      //       )
+      //     )
+      //     .then(() => console.log("this.state.games:", this.state.games));
+      // };
 
   // User Verification (called in UserLoginForm):
-
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput);
   };
 
+  // This is necessary for populating the dropdown:
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
       this.setState({
@@ -57,8 +70,7 @@ class AppControl extends Component {
     );
   };
 
-  // Delete method:
-
+  // Delete method for a specific game:
   deleteGame = id => {
     return (
       fetch(`http://localhost:5002/games/${id}`, {
@@ -82,7 +94,7 @@ class AppControl extends Component {
   componentDidMount() {
     GameData.getAllGames()
       .then(allGames => {
-        console.log("componentDidMount: getallGames:", allGames);
+        // console.log("componentDidMount: getallGames:", allGames);
         this.setState({
           games: allGames
         });
@@ -103,7 +115,7 @@ class AppControl extends Component {
       });
     });
 
-    UsersManager.getUsersGames(this.state.userId).then(game => {
+    UsersManager.getUsersGames((parseInt(sessionStorage.getItem("user")))).then(game => {
       console.log("componentDidMount:", game);
       this.setState({
         usersGames: game
@@ -116,7 +128,7 @@ class AppControl extends Component {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
-    console.log(this.state.users);
+    // console.log(this.state.users);
 
     return (
       <React.Fragment>
@@ -164,7 +176,7 @@ class AppControl extends Component {
               }}
             />
 
-            <Route
+            {/* <Route
               exact
               path="/games"
               render={props => {
@@ -184,7 +196,7 @@ class AppControl extends Component {
                     return <Redirect to="/login" />;
                   }
               }}
-            />
+            /> */}
 
             {/* <Route
               exact
@@ -219,6 +231,7 @@ class AppControl extends Component {
                       categories={this.state.categories}
                       deleteGame={this.deleteGame}
                       authenticateUser={this.authenticateUser}
+                      userId={this.state.userId}
                     />
                   );
                 } else {

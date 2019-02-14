@@ -25,6 +25,9 @@ export default class GameForm extends React.Component {
   state = { ...initialState };
 
   //=========================================================================
+
+//=========================================================================
+
   // Update initialState whenever an input field is edited:
   handleFieldChange = evt => {
     const stateToChange = {};
@@ -61,15 +64,23 @@ export default class GameForm extends React.Component {
   constructNewGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
+
+    //TESTING SESSION USER: LOGS USER'S SESSION STORAGE ID TO THE CONSOLE:
+    // const sessionUser = this.props.userId
+    // console.log(sessionUser);
+
+    // parseInt(sessionStorage.setItem("user", this.props.userId))
+    // sessionUser = this.setState(initialState)
+
     this.props
-      .addGame(this.state)
+      .addGame({userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId})
       // console.log for testing:
       // .then(() => {
       // {console.log("this.state:", this.state)}
       // })
       .then(() => this.setState(initialState))
       // Routes the user to the game dashboard:
-      .then(() => this.props.history.push("/games"));
+      .then(() => this.props.history.push("/list"));
   };
   //===========================================================================
   render() {
