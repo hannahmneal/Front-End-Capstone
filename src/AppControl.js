@@ -29,8 +29,9 @@ class AppControl extends Component {
   // The addGame method creates a newGameObj whose state is set in GameForm when the submit button is clicked.
 
   addGame = newGameObj => {
+    const newGameObjWithUserId = {...newGameObj, userId: this.state.userId}
     // console.log(newGameObj);
-    return GameData.post(newGameObj)
+    return GameData.post(newGameObjWithUserId)
       .then(() =>
         GameData.getAllGames().then(game =>
           this.setState({
@@ -38,7 +39,10 @@ class AppControl extends Component {
           })
         )
       )
-      .then(() => console.log("this.state.games:", this.state.games));
+      // .then(() => console.log("this.state.games:", this.state.games));
+      // .then(() => this.props.history.push("/games/dashboard"));
+      //moved to route
+
   };
 
   // User Verification (called in UserLoginForm):
@@ -173,9 +177,14 @@ class AppControl extends Component {
               exact
               path="/games/new"
               render={props => {
+                const addFooGame = (newGame) => {
+                  this.addGame(newGame)
+                  .then(() => props.history.push("/games/dashboard"));
+
+                }
                 return (<GameForm
                     {...props}
-                    addGame={this.addGame}
+                    addGame={addFooGame}
                     games={this.state.games}
                     categories={this.state.categories}
                     deleteGame={this.deleteGame}

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import GameCards from "./GameCards";
 // import GameData from "../../modules/GameData"
 import UsersManager from "../../modules/UsersManager"
-// import CategorySection from "./cards/Category"
+import GameForm from "../games/GameForm"
 class GameList extends Component {
 
 state = {
@@ -25,7 +25,6 @@ console.log("sessionUser", sessionUserId);
   );
   }
 
-
   // {/* {console.log("this.props.usersGames", this.props.usersGames)}
   //           {console.log("this.props.categories", this.props.categories)} */}
 
@@ -35,23 +34,27 @@ console.log("sessionUser", sessionUserId);
     return (
       <React.Fragment>
         <div>
-          {this.state.usersGames.map(game => (
-            <GameCards
-              key={game.id}
-              game={game}
-              category={game.category}
-              title={game.title}
-              minPlayers={game.minPlayers}
-              maxPlayers={game.maxPlayers}
-              isCoop={game.isCoop}
-              // isCoop={
-              //     if(game.isCoop.value !== )
-              // }
-              deleteGame={this.props.deleteGame}
-              categoryId={game.category.catName}
-              userId={game.userId}
-              {...this.props}
-            />
+          {this.state.usersGames.map(game => console.log(game) ||
+          (
+
+<GameForm game={game} categories = {this.props.categories}/>
+
+            // <GameCards
+            //   key={game.id}
+            //   game={game}
+            //   category={game.category}
+            //   title={game.title}
+            //   minPlayers={game.minPlayers}
+            //   maxPlayers={game.maxPlayers}
+            //   isCoop={game.isCoop}
+            //   // isCoop={
+            //   //     if(game.isCoop.value !== )
+            //   // }
+            //   deleteGame={this.props.deleteGame}
+            //   categoryId={game.category.catName}
+            //   userId={game.userId}
+            //   {...this.props}
+            // />
           ))}
         </div>
       </React.Fragment>

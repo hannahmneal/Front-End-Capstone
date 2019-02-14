@@ -22,7 +22,9 @@ const initialState = {
 };
 export default class GameForm extends React.Component {
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
-  state = { ...initialState };
+  // state = { ...initialState };
+  state = { ...(this.props.game || initialState) };
+  // state = { ...[this.props.game ? initialState : this.props.game] };
 
   //=========================================================================
   // Update initialState whenever an input field is edited:
@@ -51,9 +53,6 @@ export default class GameForm extends React.Component {
   };
 
   //===========================================================================
-
-  //===========================================================================
-
   // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in json.
   // addGame is declared in AppControl and the newGameObj is its parameter
   // newGameObj is the parameter passed in the post method in GameData
@@ -63,17 +62,14 @@ export default class GameForm extends React.Component {
     // console.log(this.state);
     this.props
       .addGame(this.state)
-      // console.log for testing:
-      // .then(() => {
-      // {console.log("this.state:", this.state)}
-      // })
-      .then(() => this.setState(initialState))
+      // .then(() => this.setState(initialState))
       // Routes the user to the game dashboard:
-      .then(() => this.props.history.push("/games/dashboard"));
+      // .then(() => this.props.history.push("/games/dashboard"));
   };
   //===========================================================================
   render() {
     const { title, minPlayers, maxPlayers, isCoop } = this.state;
+console.log(this.state);
 
     return (
       <Container>
