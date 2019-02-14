@@ -12,12 +12,12 @@ import {
 } from "reactstrap";
 // initial state is set OUTSIDE of the component:
 const initialState = {
-  title: this.state.title,
-  minPlayers: this.state.minPlayers,
-  maxPlayers: this.state.maxPlayers,
-  isCoop: this.state.isCoop,
-  categoryId: this.state.categoryId,
-  userId: this.state.userId
+  title: this.props.title,
+  minPlayers: this.props.minPlayers,
+  maxPlayers: this.props.maxPlayers,
+  isCoop: this.props.isCoop,
+  categoryId: this.props.categoryId,
+  userId: this.props.userId
   //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };

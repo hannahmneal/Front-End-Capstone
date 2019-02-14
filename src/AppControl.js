@@ -4,6 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
+import GameEditForm from "./components/games/GameEditForm"
 // import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
@@ -30,7 +31,7 @@ class AppControl extends Component {
 
 
   addGame = (newGameObj) => {
-    // console.log(newGameObj);
+    console.log(newGameObj);
     return GameData.post(newGameObj)
     .then(() =>
     UsersManager.getUsersGames(this.state.userId).then(game =>
@@ -140,7 +141,6 @@ class AppControl extends Component {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
-    // console.log(this.state.users);
 
     return (
       <React.Fragment>
@@ -165,7 +165,7 @@ class AppControl extends Component {
                 );
               }}
             />
-            {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
+{/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
               path="/list"
@@ -177,6 +177,7 @@ class AppControl extends Component {
                       games={this.state.games}
                       categories={this.state.categories}
                       deleteGames={this.deleteGame}
+                      editGame={this.editGame}
                       authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
@@ -190,7 +191,7 @@ class AppControl extends Component {
 
             {/* <Route
               exact
-              path="/games"
+              path="/games/edit"
               render={props => {
                 if (this.isAuthenticated()) {
                   return (
@@ -210,25 +211,7 @@ class AppControl extends Component {
               }}
             /> */}
 
-            {/* <Route
-              exact
-              path="/list"
-              render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    userId={this.state.userId}
-                    />)} else {
-                      return (<Redirect to ="/login" />);
-                    }
-                }}
-            /> */}
-
-            {/*  GAME FORM */}
+{/*  GAME FORM */}
 
             <Route
               exact
@@ -252,25 +235,27 @@ class AppControl extends Component {
               }}
             />
 
-            {/*  USERS */}
+{/*  EDIT FORM */}
 
-            {/* <Route
+            <Route
               exact
-              path="/users/new"
+              path="/games/edit"
               render={props => {
                 if(this.isAuthenticated()) {
                 return (
-                  <UserRegistrationForm
+                  <GameEditForm
                     {...props}
-                    users={this.state.users}
-                    addUser={this.addUser}
+                    editGame={this.editGame}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
                 />)} else {
-                  return (<Redirect to ="/games/dashboard" />);
+                  return (<Redirect to ="/login" />);
                 }
               }
             }
-            /> */}
+            />
           </header>
         </div>
       </React.Fragment>

@@ -11,6 +11,7 @@ import {
   Button,
   Container
 } from "reactstrap";
+import { Link } from "react-router-dom"
 
 //============================================================================================================
 // This is a reusible card; A new card automatically generates whenever a new item is added to the database
@@ -23,6 +24,7 @@ const GameCards = ({
   isCoop,
   categoryId,
   deleteGame,
+  editGame,
   game
 }) => (
   <Container>
@@ -36,13 +38,14 @@ const GameCards = ({
           <CardText>{isCoop}</CardText>
           <CardText>{categoryId}</CardText>
           <br />
-          <Button
+          <Link
             className="editGameBtn"
             color="success"
-            onClick ={()=> editGame(game.id)}
+            to="/games/edit"
+            onClick ={() => editGame(game.id)}
           >
             Edit
-          </Button>
+          </Link>
           <br />
           <Button
             className="deleteGameBtn"
