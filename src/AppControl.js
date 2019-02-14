@@ -88,6 +88,18 @@ class AppControl extends Component {
         )
     );
   };
+
+  editGame = (newGameObj) => {
+    GameData.editGame(newGameObj)
+    .then( () => {
+      UsersManager.getUsersGames(this.state.userId).then(game =>
+        this.setState({
+          usersGames: game
+        })
+        )
+      })
+        .then(() => console.log("this.state.games:", this.state.games));
+      }
   //==============================================================================================
   //  LIFE CYCLE:
 

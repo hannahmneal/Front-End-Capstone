@@ -4,29 +4,6 @@ import GameCards from "./GameCards";
 // import UsersManager from "../../modules/UsersManager"
 class GameList extends Component {
 
-// state = {
-//   usersGames: []
-// }
-
-// componentDidMount() {
-// let sessionUser = sessionStorage.getItem("user")
-// let sessionUserId= Number(sessionUser)
-// console.log("sessionUser", sessionUserId);
-
-//     UsersManager.getUsersGames(sessionUserId).then(game => {
-//       // console.log("game:", game)
-
-//       this.setState({
-//         usersGames: game
-//       })
-//     }
-//   );
-//   }
-
-
-  // {/* {console.log("this.props.usersGames", this.props.usersGames)}
-  //           {console.log("this.props.categories", this.props.categories)} */}
-
   render() {
     // console.log(this.state.usersGames);
 

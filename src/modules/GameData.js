@@ -36,7 +36,18 @@ export default {
             },
             body: JSON.stringify(newGameObj)
         }).then(r => r.json());
-    }
+    },
+
+
+editGame(newGameObj){
+    return fetch(`${remoteURL}/games/${newGameObj.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGameObj)
+    })
+}
 }
 
 // T-error:

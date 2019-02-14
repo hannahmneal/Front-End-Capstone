@@ -39,7 +39,7 @@ const GameCards = ({
           <Button
             className="editGameBtn"
             color="success"
-            // onClick ={()=> this.props.editGame(this.props.game.id)}
+            onClick ={()=> editGame(game.id)}
           >
             Edit
           </Button>
