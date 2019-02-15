@@ -9,8 +9,7 @@ import GameEditForm from "./components/games/GameEditForm"
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
 // import GameCards from "./components/games/GameCards"
-
-import "./App.css";
+// import "./App.css";
 // import NavBar from "./nav/NavBar"
 class AppControl extends Component {
   isAuthenticated = () => sessionStorage.getItem("user") !== null;
@@ -72,7 +71,7 @@ class AppControl extends Component {
   };
 
   // Delete method for a specific game:
-  deleteGame = id => {
+  deleteGame = (id) => {
     return (
       fetch(`http://localhost:5002/games/${id}`, {
         method: "DELETE"
@@ -186,8 +185,8 @@ class AppControl extends Component {
                       {...props}
                       games={this.state.games}
                       categories={this.state.categories}
-                      deleteGames={this.deleteGame}
-                      editGame={this.editGame}
+                      deleteGame={this.deleteGame}
+                      updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
@@ -235,6 +234,7 @@ class AppControl extends Component {
                       games={this.state.games}
                       categories={this.state.categories}
                       deleteGame={this.deleteGame}
+                      updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
                     />
@@ -255,7 +255,7 @@ class AppControl extends Component {
                 return (
                   <GameEditForm
                     {...props}
-                    editGame={this.editGame}
+                    updateGame={this.updateGame}
                     games={this.state.games}
                     categories={this.state.categories}
                     authenticateUser={this.authenticateUser}

@@ -1,6 +1,6 @@
 import React from "react";
 import UsersManager from "../../modules/UsersManager"
-import GameForm from "../games/GameForm"
+// import GameForm from "../games/GameForm"
 // import GameForm from "./GameForm"
 import {
   Form,
@@ -88,7 +88,7 @@ export default class GameEditForm extends React.Component {
     //     categoryId: this.state.categoryId
     //   }
     //   console.log(editedGameObj)
-      this.state.updateGame({
+      this.props.updateGame({
       userId: parseInt(sessionStorage.getItem("user")),
       title: this.state.title,
       minPlayers: this.state.minPlayers,
@@ -103,26 +103,27 @@ export default class GameEditForm extends React.Component {
     }
   //===========================================================================
 
-componentDidMount() {
-    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
-    .then(game => {
-      this.setState({
-        title: game.title,
-        minPlayers: game.minPlayers,
-        maxPlayers: game.maxPlayers,
-        isCoop: game.isCoop,
-        categoryId: game.categoryId,
-        userId: game.userId
-      })
-    })
-}
-
-
+// componentDidMount() {
+//     UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
+//     .then(game => {
+//       this.setState({
+//         title: game.title,
+//         minPlayers: game.minPlayers,
+//         maxPlayers: game.maxPlayers,
+//         isCoop: game.isCoop,
+//         categoryId: game.categoryId,
+//         userId: game.userId
+//       })
+//     })
+//   }
+  
   //===========================================================================
   render() {
     const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
 
     return (
+      <React.Fragment>
+
       <Container>
         <Form>
           <Row>
@@ -135,10 +136,10 @@ componentDidMount() {
                   id="title"
                   placeholder="Game title"
                   onChange={this.handleFieldChange}
-                //   value={this.state.title}
+                  //   value={this.state.title}
                   value={title}
-                // value={this.state.value}
-                />
+                  // value={this.state.value}
+                  />
               </FormGroup>
             </Col>
           </Row>
@@ -153,10 +154,10 @@ componentDidMount() {
                   id="minPlayers"
                   placeholder="Min Players"
                   onChange={this.handleFieldChange}
-                //   value={this.state.minPlayers}
+                  //   value={this.state.minPlayers}
                   value={minPlayers}
-                // value={this.state.value}
-                />
+                  // value={this.state.value}
+                  />
               </FormGroup>
             </Col>
 
@@ -169,11 +170,10 @@ componentDidMount() {
                   id="maxPlayers"
                   placeholder="Max Players"
                   onChange={this.handleFieldChange}
-                //   value={this.state.maxPlayers}
-                value={maxPlayers}
-                // value={this.state.value}
-
-                />
+                  //   value={this.state.maxPlayers}
+                  value={maxPlayers}
+                  // value={this.state.value}
+                  />
               </FormGroup>
             </Col>
           </Row>
@@ -181,7 +181,7 @@ componentDidMount() {
           <Row>
             <Col>
               <FormGroup>
-                <Label for="isCoop">{isCoop}</Label>
+                <Label for="isCoop">{this.props.isCoop}</Label>
                 <Input
                   addon
                   type="checkbox"
@@ -189,11 +189,10 @@ componentDidMount() {
                   id="isCoop"
                   onChange={this.handleBoolFieldChange}
                   // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
-                //   checked={this.state.isCoop}
-                checked={isCoop}
-                // value={this.state.value}
-
-                />
+                  //   checked={this.state.isCoop}
+                  checked={isCoop}
+                  // value={this.state.value}
+                  />
               </FormGroup>
             </Col>
           </Row>
@@ -207,16 +206,15 @@ componentDidMount() {
                   type="select"
                   name="categoryId"
                   id="categoryId"
-                //   value={categoryId}
+                  //   value={categoryId}
                   onChange={this.handleIntChange}
                   // Using "handleDropdownChange" instead of "handleFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
-                >
+                  >
                   {this.props.categories.map(category => (
                     <option
-                      key={category.id}
-                      value={categoryId}
+                    key={category.id}
+                    value={this.state.categoryId}
                     // value={this.state.title}
-
                     >
                       {category.catName}
                     </option>
@@ -232,12 +230,12 @@ componentDidMount() {
             className="new-game-submit-btn"
             onClick={this.editGame}
             to = {"/list"}
-            value={this.state.value}
-          >
+            >
             Save Changes
           </Link>
         </Form>
       </Container>
+    </React.Fragment>
     );
   }
 }

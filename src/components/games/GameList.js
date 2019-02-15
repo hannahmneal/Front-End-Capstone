@@ -27,6 +27,7 @@ class GameList extends Component {
               deleteGame={this.props.deleteGame}
               categoryId={game.category.catName}
               userId={game.userId}
+              updateGame={this.props}
               {...this.props}
             />
           ))}

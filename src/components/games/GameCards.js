@@ -24,7 +24,7 @@ const GameCards = ({
   isCoop,
   categoryId,
   deleteGame,
-  editGame,
+  updateGame,
   game
 }) => (
   <Container>
@@ -42,7 +42,6 @@ const GameCards = ({
             className="editGameBtn"
             color="success"
             to="/games/edit"
-            // onClick ={() => editGame(game.id)}
           >
             Edit
           </Link>
