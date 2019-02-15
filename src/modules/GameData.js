@@ -40,10 +40,10 @@ export default {
 // http://localhost:5002/games?id=1&?userId=1&_expand=category
 // `${remoteURL}/games?id=${gameId}&?userId=${userId}&_expand=category`
 
-  editThisGame(gameId, editedGameObj, userId) {
+  editThisGame(gameId, editedGameObj) {
     // return fetch(`${remoteURL}/games/${gameId}`, {
-        return fetch(`${remoteURL}/games?id=${gameId}&?userId=${userId}&_expand=category`, {
-      method: "PUT",
+        return fetch(`${remoteURL}/games?id=${gameId}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json"
       },

@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom"
 
 const initialState = {
+    games: [],
      title: "",
      minPlayers: 0,
      maxPlayers: 0,
@@ -23,7 +24,14 @@ const initialState = {
    //By setting the categoryId to 1, "Roleplay" is automatically the default choice
    // userId: null
  };
+//  console.log(this.props.state);
 export default class GameEditForm extends React.Component {
+
+  //  The initial state of the form needs to match the state of the game
+  // When the form is edited, the game is edited
+  // Update state of the game
+
+  
 
     // constructor(props) {
     //     super(props);
@@ -88,43 +96,42 @@ export default class GameEditForm extends React.Component {
     //     categoryId: this.state.categoryId
     //   }
     //   console.log(editedGameObj)
-
-    const updateThisGame = {
-      // this.props.updateGame({
+this.props.updateGame({
+    // const editedGameObj = {
       userId: parseInt(sessionStorage.getItem("user")),
       title: this.state.title,
       minPlayers: this.state.minPlayers,
       maxPlayers: this.state.maxPlayers,
       isCoop: this.state.isCoop,
       categoryId: this.state.categoryId
-    // })
-    }
+    // }
+})
 
       //alternative:
-      //   (this.props.match.params.userId, editedGameObj)
-      // .then(() => this.setState(initialState))
-      this.props.editGame(this.props.match.params.userId, updateThisGame)
+      //   (this.props.match.params.userId, updateThisGame)
+      .then(() => this.setState(initialState))
+      // this.props.updateGame(this.props.match.params.userId, editedGameObj)
       .then(() => this.props.history.push("/list"))
       // console.log(updateThisGame);
-      
+
     }
 
 
-    updateExistingEvent = evt => {
-      evt.preventDefault()
+    // updateExistingEvent = evt => {
+    //   evt.preventDefault()
 
 
-      const existingEvent = {
-        eventName: this.state.eventName,
-        eventDate: this.state.eventDate,
-        eventTime: this.state.eventTime,
-        eventLocation: this.state.eventLocation,
-        userId: this.state.userId
-      }
+    //   const existingEvent = {
+    //     eventName: this.state.eventName,
+    //     eventDate: this.state.eventDate,
+    //     eventTime: this.state.eventTime,
+    //     eventLocation: this.state.eventLocation,
+    //     userId: this.state.userId
+    //   }
 
-      this.props.updateEvent(this.props.match.params.eventId, existingEvent)
-      .then(() => this.props.history.push("/events"))
-    }
+    //   this.props.updateEvent(this.props.match.params.eventId, existingEvent)
+    //   .then(() => this.props.history.push("/events"))
+    // }
   //===========================================================================
 
 // componentDidMount() {
@@ -140,10 +147,10 @@ export default class GameEditForm extends React.Component {
 //       })
 //     })
 //   }
-  
+
   //===========================================================================
   render() {
-    const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
+    const { title, minPlayers, maxPlayers, isCoop } = this.state;
 
     return (
       <React.Fragment>
@@ -253,7 +260,7 @@ export default class GameEditForm extends React.Component {
           <Link
             type="submit"
             className="new-game-submit-btn"
-            onClick={this.editGame}
+            onClick={this.editMyGame}
             to = {"/list"}
             >
             Save Changes

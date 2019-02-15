@@ -101,8 +101,8 @@ class AppControl extends Component {
   //       .then(() => console.log("this.state.games:", this.state.games));
   //     }
 
-  updateGame = (gameId, editedGameObj, userId) => {
-    return GameData.editThisGame(gameId, editedGameObj, userId)
+  updateGame = (gameId, editedGameObj) => {
+    return GameData.editThisGame(gameId, editedGameObj)
     .then(() => UsersManager.getUsersGames(this.state.userId))
     .then(games => {
       this.setState({
