@@ -12,77 +12,81 @@ import {
 } from "reactstrap";
 // initial state is set OUTSIDE of the component:
 const initialState = {
-  title: this.props.title,
-  minPlayers: this.props.minPlayers,
-  maxPlayers: this.props.maxPlayers,
-  isCoop: this.props.isCoop,
-  categoryId: this.props.categoryId,
-  userId: this.props.userId
+    title: "",
+    minPlayers: 0,
+    maxPlayers: 0,
+    isCoop: false,
+    categoryId: "",
+    userId: ""
   //By setting the categoryId to 1, "Roleplay" is automatically the default choice
   // userId: null
 };
 export default class GameEditForm extends React.Component {
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
-  state = { ...initialState };
+
+  state = {...initialState}
 
   //=========================================================================
 
-//=========================================================================
+  handleFieldChange = evt => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
+
+
+  //=========================================================================
 
   // Update initialState whenever an input field is edited:
   handleFieldChange = evt => {
-    const stateToChange = {};
-    stateToChange[evt.target.id] = evt.target.value;
-    //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
-    this.setState(stateToChange);
-  };
-  //===========================================================================
-  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
+      const stateToChange = {};
+      stateToChange[evt.target.id] = evt.target.value;
+      //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
+      this.setState(stateToChange);
+    };
+    //===========================================================================
+    // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
 
-  handleIntChange = evt => {
-    const stateToChange = {};
-    // console.log(evt.target.id, evt.target.value, evt.target.checked);
-    stateToChange[evt.target.id] = parseInt(evt.target.value);
-    this.setState(stateToChange);
-  };
-  //===========================================================================
-  // This handler resolves the issue of the checkbox sending itself to the games object in json as a string value of "on" ("on") instead of a boolean value of true when checked, and a boolean false only when not checked:
+    handleIntChange = evt => {
+        const stateToChange = {};
+        // console.log(evt.target.id, evt.target.value, evt.target.checked);
+        stateToChange[evt.target.id] = parseInt(evt.target.value);
+        this.setState(stateToChange);
+    };
+    //===========================================================================
+    // This handler resolves the issue of the checkbox sending itself to the games object in json as a string value of "on" ("on") instead of a boolean value of true when checked, and a boolean false only when not checked:
 
-  handleBoolFieldChange = evt => {
-    const stateToChange = {};
-    stateToChange[evt.target.id] = evt.target.checked;
-    this.setState(stateToChange);
-  };
+    handleBoolFieldChange = evt => {
+        const stateToChange = {};
+        stateToChange[evt.target.id] = evt.target.checked;
+        this.setState(stateToChange);
+    };
 
-  //===========================================================================
+    //===========================================================================
 
-  //===========================================================================
-
-  // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in json.
-  // addGame is declared in AppControl and the newGameObj is its parameter
-  // newGameObj is the parameter passed in the post method in GameData
-
-  constructNewGame = evt => {
+    editMyGame = evt => {
     evt.preventDefault();
-    // console.log(this.state);
 
-    //TESTING SESSION USER: LOGS USER'S SESSION STORAGE ID TO THE CONSOLE:
-    // const sessionUser = this.props.userId
-    // console.log(sessionUser);
+      const currentGame = {
+        userId: parseInt(sessionStorage.getItem("user")),
+        title: this.state.title,
+        minPlayers: this.state.minPlayers,
+        maxPlayers: this.state.maxPlayers,
+        isCoop: this.state.isCoop,
+        categoryId: this.state.categoryId
+      }
+      console.log(currentGame)
+    }
 
-    // parseInt(sessionStorage.setItem("user", this.props.userId))
-    // sessionUser = this.setState(initialState)
+    //   this.props.updateActivity(this.props.match.params.gameId, existingActivity)
+    //   .then(() => this.props.history.push("/games"))
+    // }
+  //===========================================================================
 
-    this.props
-      .addGame({userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId})
-      // console.log for testing:
-      // .then(() => {
-      // {console.log("this.state:", this.state)}
-      // })
-      .then(() => this.setState(initialState))
-      // Routes the user to the game dashboard:
-      .then(() => this.props.history.push("/list"));
-  };
+// componentDidMount() {
+
+// }
+
   //===========================================================================
   render() {
     const { title, minPlayers, maxPlayers, isCoop } = this.state;
@@ -184,10 +188,10 @@ export default class GameEditForm extends React.Component {
 
           <Button
             type="submit"
-            onClick={this.constructNewGame}
+            onClick={this.editMyGame}
             className="new-game-submit-btn"
           >
-            Submit
+            Save
           </Button>
         </Form>
       </Container>
