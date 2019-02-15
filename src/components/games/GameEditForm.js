@@ -88,18 +88,42 @@ export default class GameEditForm extends React.Component {
     //     categoryId: this.state.categoryId
     //   }
     //   console.log(editedGameObj)
-      this.props.updateGame({
+
+    const updateThisGame = {
+      // this.props.updateGame({
       userId: parseInt(sessionStorage.getItem("user")),
       title: this.state.title,
       minPlayers: this.state.minPlayers,
       maxPlayers: this.state.maxPlayers,
       isCoop: this.state.isCoop,
       categoryId: this.state.categoryId
-    })
+    // })
+    }
+
       //alternative:
       //   (this.props.match.params.userId, editedGameObj)
-      .then(() => this.setState(initialState))
-      .then(() => this.props.history.push("/list"));
+      // .then(() => this.setState(initialState))
+      this.props.editGame(this.props.match.params.userId, updateThisGame)
+      .then(() => this.props.history.push("/list"))
+      // console.log(updateThisGame);
+      
+    }
+
+
+    updateExistingEvent = evt => {
+      evt.preventDefault()
+
+
+      const existingEvent = {
+        eventName: this.state.eventName,
+        eventDate: this.state.eventDate,
+        eventTime: this.state.eventTime,
+        eventLocation: this.state.eventLocation,
+        userId: this.state.userId
+      }
+
+      this.props.updateEvent(this.props.match.params.eventId, existingEvent)
+      .then(() => this.props.history.push("/events"))
     }
   //===========================================================================
 
@@ -213,9 +237,10 @@ export default class GameEditForm extends React.Component {
                   {this.props.categories.map(category => (
                     <option
                     key={category.id}
-                    value={this.state.categoryId}
+                    value={category.categoryId}
                     // value={this.state.title}
                     >
+                      {/* {category.catName} */}
                       {category.catName}
                     </option>
                   ))}
