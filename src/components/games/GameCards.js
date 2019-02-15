@@ -42,7 +42,7 @@ const GameCards = ({
             className="editGameBtn"
             color="success"
             to="/games/edit"
-            onClick ={() => editGame(game.id)}
+            // onClick ={() => editGame(game.id)}
           >
             Edit
           </Link>

@@ -90,8 +90,8 @@ class AppControl extends Component {
     );
   };
 
-  editGame = (newGameObj) => {
-    GameData.editGame(newGameObj)
+  editGame = (editedGameObj) => {
+    GameData.editGame(editedGameObj)
     .then( () => {
       UsersManager.getUsersGames(this.state.userId).then(game =>
         this.setState({

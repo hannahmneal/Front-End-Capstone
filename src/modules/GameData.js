@@ -36,13 +36,13 @@ export default {
     }).then(r => r.json());
   },
 
-  editGame(newGameObj) {
-    return fetch(`${remoteURL}/games/${newGameObj.id}`, {
+  editGame(editedGameObj) {
+    return fetch(`${remoteURL}/games/${editedGameObj.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(newGameObj)
+      body: JSON.stringify(editedGameObj)
     });
   }
 };

@@ -67,7 +67,7 @@ export default class GameEditForm extends React.Component {
     editMyGame = evt => {
     evt.preventDefault();
 
-      const currentGame = {
+      const editedGameObj = {
         userId: parseInt(sessionStorage.getItem("user")),
         title: this.state.title,
         minPlayers: this.state.minPlayers,
@@ -75,7 +75,7 @@ export default class GameEditForm extends React.Component {
         isCoop: this.state.isCoop,
         categoryId: this.state.categoryId
       }
-      console.log(currentGame)
+      console.log(editedGameObj)
     }
 
     //   this.props.updateActivity(this.props.match.params.gameId, existingActivity)
@@ -84,7 +84,7 @@ export default class GameEditForm extends React.Component {
   //===========================================================================
 
 // componentDidMount() {
-
+    
 // }
 
   //===========================================================================
