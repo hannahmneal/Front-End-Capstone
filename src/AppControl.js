@@ -90,17 +90,27 @@ class AppControl extends Component {
     );
   };
 
-  editGame = (editedGameObj) => {
-    GameData.editGame(editedGameObj)
-    .then( () => {
-      UsersManager.getUsersGames(this.state.userId).then(game =>
-        this.setState({
-          usersGames: game
-        })
-        )
+  // editGame = (editedGameObj) => {
+  //   GameData.editGame(editedGameObj)
+  //   .then( () => {
+  //     UsersManager.getUsersGames(this.state.userId).then(game =>
+  //       this.setState({
+  //         usersGames: game
+  //       })
+  //       )
+  //     })
+  //       .then(() => console.log("this.state.games:", this.state.games));
+  //     }
+
+  updateGame = (gameId, editedGameObj, userId) => {
+    return GameData.editThisGame(gameId, editedGameObj, userId)
+    .then(() => UsersManager.getUsersGames(this.state.userId))
+    .then(games => {
+      this.setState({
+        games: games
       })
-        .then(() => console.log("this.state.games:", this.state.games));
-      }
+    })
+  }
   //==============================================================================================
   //  LIFE CYCLE:
 

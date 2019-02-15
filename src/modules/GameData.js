@@ -36,8 +36,13 @@ export default {
     }).then(r => r.json());
   },
 
-  editGame(editedGameObj) {
-    return fetch(`${remoteURL}/games/${editedGameObj.id}`, {
+// games of a specific game id and user id:
+// http://localhost:5002/games?id=1&?userId=1&_expand=category
+// `${remoteURL}/games?id=${gameId}&?userId=${userId}&_expand=category`
+
+  editThisGame(gameId, editedGameObj, userId) {
+    // return fetch(`${remoteURL}/games/${gameId}`, {
+        return fetch(`${remoteURL}/games?id=${gameId}&?userId=${userId}&_expand=category`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
