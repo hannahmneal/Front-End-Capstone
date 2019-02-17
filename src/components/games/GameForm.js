@@ -17,8 +17,6 @@ const initialState = {
   isCoop: false,
   categoryId: "",
   userId: ""
-  //By setting the categoryId to 1, "Roleplay" is automatically the default choice
-  // userId: null
 };
 export default class GameForm extends React.Component {
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
@@ -26,7 +24,7 @@ export default class GameForm extends React.Component {
 
   //=========================================================================
 
-//=========================================================================
+  //=========================================================================
 
   // Update initialState whenever an input field is edited:
   handleFieldChange = evt => {
@@ -55,8 +53,6 @@ export default class GameForm extends React.Component {
 
   //===========================================================================
 
-  //===========================================================================
-
   // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in json.
   // addGame is declared in AppControl and the newGameObj is its parameter
   // newGameObj is the parameter passed in the post method in GameData
@@ -73,7 +69,7 @@ export default class GameForm extends React.Component {
     // sessionUser = this.setState(initialState)
 
     this.props
-      .addGame({userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId})
+      .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
       // console.log for testing:
       // .then(() => {
       // {console.log("this.state:", this.state)}
@@ -87,114 +83,115 @@ export default class GameForm extends React.Component {
     const { title, minPlayers, maxPlayers, isCoop } = this.state;
 
     return (
-      <Container>
-        <Form>
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label for="title">Game title</Label>
-                <Input
-                  type="text"
-                  name="gameTitle"
-                  id="title"
-                  placeholder="Game title"
-                  onChange={this.handleFieldChange}
-                  value={title}
-                  // {...title}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
+      <React.Fragment>
+        <Container>
+          <Form>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label for="title">Game title</Label>
+                  <Input
+                    type="text"
+                    name="gameTitle"
+                    id="title"
+                    placeholder="Game title"
+                    onChange={this.handleFieldChange}
+                    value={title}
+                    {...title}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-          <Row>
-            <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
-              <FormGroup>
-                <Label for="minPlayers">Min. Players</Label>
-                <Input
-                  type="text"
-                  name="minPlayers"
-                  id="minPlayers"
-                  placeholder="Min Players"
-                  onChange={this.handleFieldChange}
-                  value={minPlayers}
-                  // {...minPlayers}
-                />
-              </FormGroup>
-            </Col>
+            <Row>
+              <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
+                <FormGroup>
+                  <Label for="minPlayers">Min. Players</Label>
+                  <Input
+                    type="text"
+                    name="minPlayers"
+                    id="minPlayers"
+                    placeholder="Min Players"
+                    onChange={this.handleFieldChange}
+                    value={minPlayers}
+                    {...minPlayers}
+                  />
+                </FormGroup>
+              </Col>
 
-            <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
-              <FormGroup>
-                <Label for="maxPlayers">Max. Players</Label>
-                <Input
-                  type="text"
-                  name="maxPlayers"
-                  id="maxPlayers"
-                  placeholder="Max Players"
-                  onChange={this.handleFieldChange}
-                  value={maxPlayers}
-                  // {...maxPlayers}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
+              <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
+                <FormGroup>
+                  <Label for="maxPlayers">Max. Players</Label>
+                  <Input
+                    type="text"
+                    name="maxPlayers"
+                    id="maxPlayers"
+                    placeholder="Max Players"
+                    onChange={this.handleFieldChange}
+                    value={maxPlayers}
+                    {...maxPlayers}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label for="isCoop">Cooperative</Label>
-                <Input
-                  addon
-                  type="checkbox"
-                  name="checkbox"
-                  id="isCoop"
-                  onChange={this.handleBoolFieldChange}
-                  // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
-                  checked={isCoop}
-                  // {...isCoop}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label for="isCoop">Cooperative</Label>
+                  <Input
+                    addon
+                    type="checkbox"
+                    name="checkbox"
+                    id="isCoop"
+                    onChange={this.handleBoolFieldChange}
+                    // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
+                    checked={isCoop}
+                    {...isCoop}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
 
-          {/* <GameDropdown {...this.props}/> */}
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label for="categoryId">Select</Label>
-                <Input
-                  type="select"
-                  name="categoryId"
-                  id="categoryId"
-                  // value={categoryId}
-                  onChange={this.handleIntChange}
+            {/* <GameDropdown {...this.props}/> */}
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label for="categoryId">Select</Label>
+                  <Input
+                    type="select"
+                    name="categoryId"
+                    id="categoryId"
+                    // value={categoryId}
+                    onChange={this.handleIntChange}
                   // Using "handleDropdownChange" instead of "handleFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
-                >
-                  {this.props.categories.map(category => (
-                    <option
-                      key={category.id}
-                      value={category.id}
-                      // {...category.id}
-                      // defaultValue={category.catName}
-                      // {...this.props}
-                    >
-                      {category.catName}
-                    </option>
-                  ))}
-                  {/* defaultValue added as a prop */}
-                </Input>
-              </FormGroup>
-            </Col>
-          </Row>
+                  >
+                    {this.props.categories.map(category => (
+                      <option
+                        key={category.id}
+                        value={category.id}
+                        {...this.props}
+                      >
+                        {category.catName}
+                      </option>
+                    ))}
+                    {/* defaultValue added as a prop */}
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Row>
 
-          <Button
-            type="submit"
-            onClick={this.constructNewGame}
-            className="new-game-submit-btn"
-          >
-            Submit
+            <Button
+              type="submit"
+              onClick={this.constructNewGame}
+              className="new-game-submit-btn"
+            >
+              Submit
           </Button>
-        </Form>
-      </Container>
+          </Form>
+        </Container>
+      </React.Fragment>
     );
   }
 }
+  //===========================================================================

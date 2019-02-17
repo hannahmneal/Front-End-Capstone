@@ -34,23 +34,36 @@ export default {
       },
       body: JSON.stringify(newGameObj)
     }).then(r => r.json());
-  },
+  }
+}
 
 // games of a specific game id and user id:
 // http://localhost:5002/games?id=1&?userId=1&_expand=category
 // `${remoteURL}/games?id=${gameId}&?userId=${userId}&_expand=category`
 
-  editThisGame(gameId, editedGameObj) {
-    // return fetch(`${remoteURL}/games/${gameId}`, {
-        return fetch(`${remoteURL}/games?id=${gameId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(editedGameObj)
-    });
-  }
-};
+//   editThisGame(gameId, editedGameObj) {
+//     // return fetch(`${remoteURL}/games/${gameId}`, {
+//         return fetch(`${remoteURL}/games?id=${gameId}`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify(editedGameObj)
+//     });
+//   }
+// };
+
+//   editThisGame(editedGameObj) {
+//     // return fetch(`${remoteURL}/games/${gameId}`, {
+//         return fetch(`${remoteURL}/games`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify(editedGameObj)
+//     });
+//   }
+// };
 
 // T-error:
 //   .then(res => res.text())          // convert to plain text

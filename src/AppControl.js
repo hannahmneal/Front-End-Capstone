@@ -8,7 +8,6 @@ import GameEditForm from "./components/games/GameEditForm"
 // import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
-// import GameCards from "./components/games/GameCards"
 // import "./App.css";
 // import NavBar from "./nav/NavBar"
 class AppControl extends Component {
@@ -101,8 +100,8 @@ class AppControl extends Component {
   //       .then(() => console.log("this.state.games:", this.state.games));
   //     }
 
-  updateGame = (gameId, editedGameObj) => {
-    return GameData.editThisGame(gameId, editedGameObj)
+  updateGame = (editedGameObj) => {
+    return GameData.editThisGame(editedGameObj)
     .then(() => UsersManager.getUsersGames(this.state.userId))
     .then(games => {
       this.setState({
@@ -190,6 +189,7 @@ class AppControl extends Component {
                       authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
+                      {...this.props}
                     />
                   );
                 } else {
@@ -233,10 +233,11 @@ class AppControl extends Component {
                       addGame={this.addGame}
                       games={this.state.games}
                       categories={this.state.categories}
-                      deleteGame={this.deleteGame}
-                      updateGame={this.updateGame}
+                      // deleteGame={this.deleteGame}
+                      // updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
+                      {...this.props}
                     />
                   );
                 } else {
@@ -260,6 +261,7 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
+                    {...this.props}
                 />)} else {
                   return (<Redirect to ="/login" />);
                 }

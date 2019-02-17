@@ -11,7 +11,7 @@ class GameList extends Component {
       <React.Fragment>
         <div>
           {this.props.usersGames.map(game => (
-          // {this.state.usersGames.map(game => (
+            // {this.state.usersGames.map(game => (
 
             <GameCards
               key={game.id}
@@ -28,9 +28,9 @@ class GameList extends Component {
               categoryId={game.category.catName}
               userId={game.userId}
               updateGame={this.props}
-              {...this.props}
             />
-          ))}
+            )
+          )}
         </div>
       </React.Fragment>
     );
