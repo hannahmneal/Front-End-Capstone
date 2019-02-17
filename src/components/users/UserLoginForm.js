@@ -10,15 +10,16 @@ import {
   Label,
   Input
 } from "reactstrap"
-// import GameData from "../../modules/GameData";
-// import UsersManager from "../../modules/UsersManager";
+// import GameList from "../games/GameList";
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
     password: "",
-    games: [{
-      userId: ""
-    }]
+    // games: [{
+    //   userId: null
+    // }]
+    userId: "",
+    usersGames: ""
   };
 
   handleFieldChange = evt => {
@@ -29,7 +30,7 @@ export default class UserLoginForm extends React.Component {
     //Also, ".value" refers to the element on which the change happens, not the value of the text entered into the field, as in Vanilla JS.
     //Consider the boolean in GameForm: the "value" is checked (evt.target.checked).
     this.setState(stateToChange);
-    console.log(stateToChange)
+    // console.log(stateToChange)
   };
 
   handleLoginSubmit = evt => {
@@ -37,7 +38,7 @@ export default class UserLoginForm extends React.Component {
 
       this.props.verifyUser(this.state.userName, this.state.password)
       .then(user => {
-        console.log("user", user)
+        // console.log("user", user)
         // this.setState({
         //   user: user
         // })
@@ -51,29 +52,27 @@ export default class UserLoginForm extends React.Component {
 
         else {
 
-          console.log("userId");
-          return UsersManager.getUsersGames(userId)
-          .then(user => {
-            console.log(user)
+          // console.log("userId before setting state", userId);
+          return UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
+          .then(usersGame => {
+            // console.log(user)
             this.setState({
-              games: user.games
+              usersGames: usersGame,
+              userId: usersGame.userId
             })
-            console.log(this.state);
+            // console.log("this.state after setting userId", this.state);
           })
         }
 
-            // This works: it returns user-id-specific games. Just populate the cards with it.
-
-
-        // try assigning "user" as "User" instead; getItem needs caps?
-        // console.log(userId); logs the user[0].id value to the console
-        // use userId this way: if userId = user.id, route to the user's specific dashboard via url
-
-        this.props.history.push("/games/dashboard")
+        this.props.history.push("/list")
         // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
 
       })
     }
+
+    // /list = list (which renders cards), i.e., dashboard
+    // /login = login page
+    // /
 
   render() {
     const { userName, password } = this.state;

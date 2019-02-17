@@ -11,6 +11,7 @@ import {
   Button,
   Container
 } from "reactstrap";
+import { Link } from "react-router-dom"
 
 //============================================================================================================
 // This is a reusible card; A new card automatically generates whenever a new item is added to the database
@@ -23,44 +24,45 @@ const GameCards = ({
   isCoop,
   categoryId,
   deleteGame,
+  // updateGame,
   game
 }) => (
-  <Container>
-    <Row sm="1">
-      <Col sm="20">
-        <Card key={id}>
-          <CardTitle>{title}</CardTitle>
-          <CardText>Min. Players: {minPlayers}</CardText>
-          <CardText>Max. Players: {maxPlayers}</CardText>
-          {/* Don't forget to set a condition for the "isCoop" text (if isCoop === true, else) */}
-          <CardText>{isCoop}</CardText>
-          <CardText>{categoryId}</CardText>
-          <br />
-          <Button
-            className="editGameBtn"
-            color="success"
-            // onClick ={()=> this.props.editGame(this.props.game.id)}
-          >
-            Edit
+    <Container>
+      <Row sm="1">
+        <Col sm="20">
+          <Card key={id}>
+            <CardTitle>{title}</CardTitle>
+            <CardText>Min. Players: {minPlayers}</CardText>
+            <CardText>Max. Players: {maxPlayers}</CardText>
+            {/* Don't forget to set a condition for the "isCoop" text (if isCoop === true, else) */}
+            <CardText>{isCoop}</CardText>
+            <CardText>{categoryId}</CardText>
+            <br />
+            <Link
+              className="editGameBtn"
+              color="success"
+              to="/games/edit"
+            >
+              Edit
+          </Link>
+            <br />
+            <Button
+              className="deleteGameBtn"
+              color="danger"
+              type="submit"
+              id={id}
+              // onClick={this.deleteGame}
+              // onClick={() => {deleteGameButton({id})}}
+              onClick={() => deleteGame(game.id)}
+            >
+              Delete
           </Button>
+          </Card>
           <br />
-          <Button
-            className="deleteGameBtn"
-            color="danger"
-            type="submit"
-            id={id}
-            // onClick={this.deleteGame}
-            // onClick={() => {deleteGameButton({id})}}
-            onClick={() => deleteGame(game.id)}
-          >
-            Delete
-          </Button>
-        </Card>
-        <br />
-      </Col>
-    </Row>
-  </Container>
-);
+        </Col>
+      </Row>
+    </Container>
+  );
 // console.log("Game Cards: 'this'", this);
 // this is undefined
 // console.log("GameCards: 'this.props'", this.props);

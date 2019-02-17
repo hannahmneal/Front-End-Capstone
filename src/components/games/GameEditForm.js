@@ -1,32 +1,64 @@
 import React from "react";
+// import UsersManager from "../../modules/UsersManager"
+
 import {
-  Button,
   Form,
   FormGroup,
   Label,
   Input,
   Container,
   Row,
-  Col
+  Col,
+  Button
 } from "reactstrap";
-// initial state is set OUTSIDE of the component:
+
 const initialState = {
+  //  title: this.props.title,
+  //  minPlayers: this.props.minPlayers,
+  //  maxPlayers: this.props.maxPlayers,
+  //  isCoop: this.props.isCoop,
+  //  categoryId: this.props.categoryId,
+  //  userId: this.props.userId
+  userId: "",
   title: "",
   minPlayers: 0,
   maxPlayers: 0,
   isCoop: false,
-  categoryId: "",
-  userId: ""
+  categoryId: ""
 };
-export default class GameForm extends React.Component {
+// console.log(this.props);
+
+export default class GameEditForm extends React.Component {
+
+  //  The initial state of the form needs to match the state of the game
+  // When the form is edited, the game is edited
+  // Update state of the game
+
+  // constructor(props) {
+  //     super(props);
+  //     this.state = {value: ''};
+
+  //     this.handleFieldChange = this.handleFieldChange.bind(this);
+  //     this.handleIntChange = this.handleIntChange.bind(this);
+  //     this.handleBoolFieldChange = this.handleBoolFieldChange.bind(this);
+  //     // this.handleSubmit = this.handleSubmit.bind(this);
+  //   }
+
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
-  state = { ...initialState };
+
+  state = { ...initialState }
 
   //=========================================================================
 
+  handleFieldChange = evt => {
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    // console.log(this.props)
+    this.setState(stateToChange)
+  }
+
   //=========================================================================
 
-  // Update initialState whenever an input field is edited:
   handleFieldChange = evt => {
     const stateToChange = {};
     stateToChange[evt.target.id] = evt.target.value;
@@ -34,7 +66,6 @@ export default class GameForm extends React.Component {
     this.setState(stateToChange);
   };
   //===========================================================================
-  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
 
   handleIntChange = evt => {
     const stateToChange = {};
@@ -43,7 +74,6 @@ export default class GameForm extends React.Component {
     this.setState(stateToChange);
   };
   //===========================================================================
-  // This handler resolves the issue of the checkbox sending itself to the games object in json as a string value of "on" ("on") instead of a boolean value of true when checked, and a boolean false only when not checked:
 
   handleBoolFieldChange = evt => {
     const stateToChange = {};
@@ -53,34 +83,48 @@ export default class GameForm extends React.Component {
 
   //===========================================================================
 
-  // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in json.
-  // addGame is declared in AppControl and the newGameObj is its parameter
-  // newGameObj is the parameter passed in the post method in GameData
-
-  constructNewGame = evt => {
+  editMyGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
 
-    //TESTING SESSION USER: LOGS USER'S SESSION STORAGE ID TO THE CONSOLE:
-    // const sessionUser = this.props.userId
-    // console.log(sessionUser);
+    this.props.updateGame({
+      // const editedGameObj = {
+      // userId: parseInt(sessionStorage.getItem("user")),
+      title: this.props.title,
+      minPlayers: this.props.minPlayers,
+      maxPlayers: this.props.maxPlayers,
+      isCoop: this.props.isCoop,
+      categoryId: this.props.categoryId
+      // }
+    })
 
-    // parseInt(sessionStorage.setItem("user", this.props.userId))
-    // sessionUser = this.setState(initialState)
+      //alternative:
+      //   (this.props.match.params.userId, updateThisGame)
+      // .then(() => this.setState(initialState))
+      // this.props.updateGame(this.props.match.params.userId, editedGameObj)
+      // .then(() => this.props.history.push("/list"))
+      // console.log(updateThisGame);
 
-    this.props
-      .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
-      // console.log for testing:
-      // .then(() => {
-      // {console.log("this.state:", this.state)}
-      // })
-      .then(() => this.setState(initialState))
-      // Routes the user to the game dashboard:
-      .then(() => this.props.history.push("/list"));
-  };
+
+
+      // updateExistingEvent = evt => {
+      //   evt.preventDefault()
+
+
+      //   const existingEvent = {
+      //     eventName: this.state.eventName,
+      //     eventDate: this.state.eventDate,
+      //     eventTime: this.state.eventTime,
+      //     eventLocation: this.state.eventLocation,
+      //     userId: this.state.userId
+      //   }
+
+      .then(() => this.props.this.setState(initialState))
+      .then(() => this.props.history.push("/list"))
+  }
   //===========================================================================
   render() {
-    const { title, minPlayers, maxPlayers, isCoop } = this.state;
+    const { title, minPlayers, maxPlayers, isCoop } = this.props;
 
     return (
       <React.Fragment>
@@ -97,6 +141,7 @@ export default class GameForm extends React.Component {
                     placeholder="Game title"
                     onChange={this.handleFieldChange}
                     value={title}
+                    {...title}
                   />
                 </FormGroup>
               </Col>
@@ -113,6 +158,7 @@ export default class GameForm extends React.Component {
                     placeholder="Min Players"
                     onChange={this.handleFieldChange}
                     value={minPlayers}
+                    {...minPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -127,6 +173,7 @@ export default class GameForm extends React.Component {
                     placeholder="Max Players"
                     onChange={this.handleFieldChange}
                     value={maxPlayers}
+                    {...maxPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -144,6 +191,7 @@ export default class GameForm extends React.Component {
                     onChange={this.handleBoolFieldChange}
                     // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
                     checked={isCoop}
+                    {...isCoop}
                   />
                 </FormGroup>
               </Col>
@@ -166,6 +214,7 @@ export default class GameForm extends React.Component {
                       <option
                         key={category.id}
                         value={category.id}
+                        // {...this.props}
                       >
                         {category.catName}
                       </option>
@@ -175,10 +224,10 @@ export default class GameForm extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
-
+            <br />
             <Button
               type="submit"
-              onClick={this.constructNewGame}
+              onClick={this.updateGame}
               className="new-game-submit-btn"
             >
               Submit
@@ -189,4 +238,3 @@ export default class GameForm extends React.Component {
     );
   }
 }
-  //===========================================================================

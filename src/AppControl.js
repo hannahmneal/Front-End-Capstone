@@ -4,21 +4,20 @@ import { Route, Redirect } from "react-router-dom";
 import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
-import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import GameEditForm from "./components/games/GameEditForm"
+// import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
-import GameCards from "./components/games/GameCards"
-
-import "./App.css";
+// import "./App.css";
 // import NavBar from "./nav/NavBar"
 class AppControl extends Component {
-  isAuthenticated = () => sessionStorage.getItem("user") !== null
+  isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
     users: [],
     games: [],
     categories: [],
     usersGames: [],
-    userId: Number(sessionStorage.getItem("user"))
+    userId: parseInt(sessionStorage.getItem("user"))
   };
   // The session storage for "user" is set after the verification step in UserLoginForm.
 
@@ -28,36 +27,40 @@ class AppControl extends Component {
   // addGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
   // The addGame method creates a newGameObj whose state is set in GameForm when the submit button is clicked.
 
-  addGame = newGameObj => {
-    // console.log(newGameObj);
+
+  addGame = (newGameObj) => {
+    console.log(newGameObj);
     return GameData.post(newGameObj)
-      .then(() =>
-        GameData.getAllGames().then(game =>
-          this.setState({
-            games: game
-          })
-        )
+    .then(() =>
+    UsersManager.getUsersGames(this.state.userId).then(game =>
+      this.setState({
+        usersGames: game
+      })
+      )
       )
       .then(() => console.log("this.state.games:", this.state.games));
-  };
+    };
+
+// Use this to test different GET methods after a game is posted:
+      // addGame = newGameObj => {
+      //   // console.log(newGameObj);
+      //   return GameData.post(newGameObj)
+      //     .then(() =>
+      //       GameData.getAllGames().then(game =>
+      //         this.setState({
+      //           games: game
+      //         })
+      //       )
+      //     )
+      //     .then(() => console.log("this.state.games:", this.state.games));
+      // };
 
   // User Verification (called in UserLoginForm):
-
   verifyUser = (nameInput, passInput) => {
-    return UsersManager.getUser(nameInput, passInput)
-  }
-  // Get game categories for dropdown in "Add New Game" form:
+    return UsersManager.getUser(nameInput, passInput);
+  };
 
-  // Testing user-specific fetch call:
-  // getUsersGames = (userId) => {
-  //   GameData.getUsersGames(userId).then(() => game =>
-  //   this.setState({
-  //     usersGames: game
-  //   })
-  // );
-  // }
-
-
+  // This is necessary for populating the dropdown:
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
       this.setState({
@@ -66,37 +69,53 @@ class AppControl extends Component {
     );
   };
 
-  // Delete method:
-
-  deleteGame = id => {
-    return fetch(`http://localhost:5002/games/${id}`, {
-      method: "DELETE"
-    })
-      .then(response => response.json())
-      .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-      .then(response => response.json())
-      .then(games =>
-        this.setState({
-          games: games
-        })
-      );
+  // Delete method for a specific game:
+  deleteGame = (id) => {
+    return (
+      fetch(`http://localhost:5002/games/${id}`, {
+        method: "DELETE"
+      })
+        // use game.id to delete game
+        // After deleting games, user userId to fetch user-specific games
+        .then(response => response.json())
+        .then(() => fetch(`http://localhost:5002/games?_expand=category`))
+        .then(response => response.json())
+        .then(games =>
+          this.setState({
+            games: games
+          })
+        )
+    );
   };
+
+  // editGame = (editedGameObj) => {
+  //   GameData.editGame(editedGameObj)
+  //   .then( () => {
+  //     UsersManager.getUsersGames(this.state.userId).then(game =>
+  //       this.setState({
+  //         usersGames: game
+  //       })
+  //       )
+  //     })
+  //       .then(() => console.log("this.state.games:", this.state.games));
+  //     }
+
+  updateGame = (editedGameObj) => {
+    return GameData.editThisGame(editedGameObj)
+    .then(() => UsersManager.getUsersGames(this.state.userId))
+    .then(games => {
+      this.setState({
+        games: games
+      })
+    })
+  }
   //==============================================================================================
-  //  LIFE CYCLE METHODS:
-
-  // Check:
-//   componentWillMount() {
-
-//     GameData.getAllCategories().then(allCategories => {
-//       console.log("componentWillMount: getallCategories:", allCategories);
-//       // Logs the game categories to the console
-//   })
-// }
+  //  LIFE CYCLE:
 
   componentDidMount() {
     GameData.getAllGames()
       .then(allGames => {
-        console.log("componentDidMount: getallGames:", allGames);
+        // console.log("componentDidMount: getallGames:", allGames);
         this.setState({
           games: allGames
         });
@@ -116,23 +135,20 @@ class AppControl extends Component {
         users: allUsers
       });
     });
+
+    UsersManager.getUsersGames((parseInt(sessionStorage.getItem("user")))).then(game => {
+      console.log("componentDidMount:", game);
+      this.setState({
+        usersGames: game
+      });
+    });
   }
-
-  // getUsersGames = (userId) => {
-  //   GameData.getUsersGames(userId).then(() => game =>
-  //   this.setState({
-  //     usersGames: game
-  //   })
-  // );
-  // }
-
-  // =======================================================================================================
+  //=======================================================================================================
 
   render() {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
-    console.log(this.state.users);
 
     return (
       <React.Fragment>
@@ -142,17 +158,17 @@ class AppControl extends Component {
 
             <Route
               exact
-              path="/"
+              path="/login"
               render={props => {
                 return (
                   <UserLoginForm
-                  {...props}
-                  verifyUser={this.verifyUser}
-                  getUser={this.getUser}
-                  users={this.state.users}
-                  authenticateUser={this.authenticateUser}
-                  games ={this.state.games}
-                  // getUsersGames={this.getUsersGames}
+                    {...props}
+                    verifyUser={this.verifyUser}
+                    getUser={this.getUser}
+                    users={this.state.users}
+                    authenticateUser={this.authenticateUser}
+                    games={this.state.games}
+                    // getUsersGames={this.getUsersGames}
                   />
                 );
               }}
@@ -160,77 +176,94 @@ class AppControl extends Component {
 {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
-              path="/games/list"
+              path="/list"
               render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    // usersGames= {this.state.usersGames}
-                    userId={this.state.userId}
-
-
-                    />)} else {
-                      return alert("Nope!");
-                    }
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameList
+                      {...props}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGame={this.deleteGame}
+                      updateGame={this.updateGame}
+                      authenticateUser={this.authenticateUser}
+                      usersGames={this.state.usersGames}
+                      userId={this.state.userId}
+                      {...this.props}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
               }}
-              />
-
-              <Route
-              exact
-              path="/games/dashboard"
-              render={props => {
-                if(this.isAuthenticated()) {
-                return(<GameList
-                    {...props}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGames={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-                    usersGames= {this.state.usersGames}
-                    userId={this.state.userId}
-                    />)} else {
-                      return (<Redirect to ="/" />);
-                    }
-                }}
             />
 
-            {/*  GAME */}
+            {/* <Route
+              exact
+              path="/games/edit"
+              render={props => {
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameCards
+                      {...props}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      deleteGames={this.deleteGame}
+                      authenticateUser={this.authenticateUser}
+                      usersGames={this.state.usersGames}
+                      userId={this.state.userId}
+                    />
+                  );
+                  } else {
+                    return <Redirect to="/login" />;
+                  }
+              }}
+            /> */}
+
+{/*  GAME FORM */}
 
             <Route
               exact
               path="/games/new"
               render={props => {
-                return (<GameForm
-                    {...props}
-                    addGame={this.addGame}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    deleteGame={this.deleteGame}
-                    authenticateUser={this.authenticateUser}
-
-                  />)
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameForm
+                      {...props}
+                      addGame={this.addGame}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      // deleteGame={this.deleteGame}
+                      // updateGame={this.updateGame}
+                      authenticateUser={this.authenticateUser}
+                      userId={this.state.userId}
+                      {...this.props}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/login" />;
+                }
               }}
             />
 
-            {/*  USERS */}
+{/*  EDIT FORM */}
 
             <Route
               exact
-              path="/users/new"
+              path="/games/edit"
               render={props => {
                 if(this.isAuthenticated()) {
                 return (
-                  <UserRegistrationForm
+                  <GameEditForm
                     {...props}
-                    users={this.state.users}
-                    addUser={this.addUser}
+                    updateGame={this.updateGame}
+                    games={this.state.games}
+                    categories={this.state.categories}
+                    authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
+                    {...this.props}
                 />)} else {
-                  return (<Redirect to ="/games/dashboard" />);
+                  return (<Redirect to ="/login" />);
                 }
               }
             }
