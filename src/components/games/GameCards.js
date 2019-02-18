@@ -30,7 +30,7 @@ const GameCards = ({
     <Container>
       <Row sm="1">
         <Col sm="20">
-          <Card key={id}>
+          <Card key={game.id}>
             <CardTitle>{title}</CardTitle>
             <CardText>Min. Players: {minPlayers}</CardText>
             <CardText>Max. Players: {maxPlayers}</CardText>
@@ -48,7 +48,7 @@ const GameCards = ({
             <Link
               className="editGameBtn"
               color="success"
-              to="/games/edit"
+              to={`/games/edit/${game.id}`}
             >
               Edit
           </Link>
@@ -65,6 +65,9 @@ const GameCards = ({
               Delete
           </Button>
           </Card>
+      {console.log(game.id)}
+      {console.log(id)}
+
           <br />
         </Col>
       </Row>
@@ -73,6 +76,7 @@ const GameCards = ({
 // console.log("Game Cards: 'this'", this);
 // this is undefined
 // console.log("GameCards: 'this.props'", this.props);
+
 
 export default GameCards;
 
