@@ -13,12 +13,6 @@ import {
 } from "reactstrap";
 
 const initialState = {
-  //  title: this.props.title,
-  //  minPlayers: this.props.minPlayers,
-  //  maxPlayers: this.props.maxPlayers,
-  //  isCoop: this.props.isCoop,
-  //  categoryId: this.props.categoryId,
-  //  userId: this.props.userId
   userId: "",
   title: "",
   minPlayers: 0,

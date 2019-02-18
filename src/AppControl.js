@@ -24,10 +24,6 @@ class AppControl extends Component {
   //=================================================================================================
   // Methods:
 
-  // addGame is used within constructNewGameObj in NewGameForm to set the empty state to the new state that contains the form values:
-  // The addGame method creates a newGameObj whose state is set in GameForm when the submit button is clicked.
-
-
   addGame = (newGameObj) => {
     console.log(newGameObj);
     return GameData.post(newGameObj)
@@ -88,18 +84,6 @@ class AppControl extends Component {
     );
   };
 
-  // editGame = (editedGameObj) => {
-  //   GameData.editGame(editedGameObj)
-  //   .then( () => {
-  //     UsersManager.getUsersGames(this.state.userId).then(game =>
-  //       this.setState({
-  //         usersGames: game
-  //       })
-  //       )
-  //     })
-  //       .then(() => console.log("this.state.games:", this.state.games));
-  //     }
-
   updateGame = (editedGameObj) => {
     return GameData.editThisGame(editedGameObj)
     .then(() => UsersManager.getUsersGames(this.state.userId))
@@ -135,20 +119,15 @@ class AppControl extends Component {
         users: allUsers
       });
     });
-
-    UsersManager.getUsersGames((parseInt(sessionStorage.getItem("user")))).then(game => {
-      console.log("componentDidMount:", game);
-      this.setState({
-        usersGames: game
-      });
-    });
   }
-  //=======================================================================================================
+//=======================================================================================================
 
   render() {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
+    // console.log(this.state.usersGames);
+
 
     return (
       <React.Fragment>
@@ -189,7 +168,6 @@ class AppControl extends Component {
                       authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
-                      {...this.props}
                     />
                   );
                 } else {
@@ -237,7 +215,6 @@ class AppControl extends Component {
                       // updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
-                      {...this.props}
                     />
                   );
                 } else {
@@ -261,7 +238,6 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
-                    {...this.props}
                 />)} else {
                   return (<Redirect to ="/login" />);
                 }

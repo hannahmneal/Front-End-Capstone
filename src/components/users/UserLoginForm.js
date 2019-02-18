@@ -39,9 +39,9 @@ export default class UserLoginForm extends React.Component {
       this.props.verifyUser(this.state.userName, this.state.password)
       .then(user => {
         // console.log("user", user)
-        // this.setState({
-        //   user: user
-        // })
+        this.setState({
+          user: user
+        })
         // The values for "userName" and "password" that were plugged in to the URL via verifyUser returns an array in the database, but it is an array of one item (the specific person we are looking for, if they exist). Since there is only one object in that array, the index of the object is "0".
         sessionStorage.setItem("user", user[0].id)
         let userId = sessionStorage.getItem("user")
