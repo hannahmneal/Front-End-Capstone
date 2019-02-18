@@ -10,7 +10,7 @@ class GameList extends Component {
     return (
       <React.Fragment>
         <div>
-          {this.props.usersGames.map(game => (
+          {this.props.games.map(game => (
             // {this.state.usersGames.map(game => (
 
             <GameCards
