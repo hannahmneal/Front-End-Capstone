@@ -135,7 +135,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Game title"
                     onChange={this.handleFieldChange}
                     value={title}
-                    {...title}
                   />
                 </FormGroup>
               </Col>
@@ -152,7 +151,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Min Players"
                     onChange={this.handleFieldChange}
                     value={minPlayers}
-                    {...minPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -167,7 +165,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Max Players"
                     onChange={this.handleFieldChange}
                     value={maxPlayers}
-                    {...maxPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -185,7 +182,6 @@ export default class GameEditForm extends React.Component {
                     onChange={this.handleBoolFieldChange}
                     // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
                     checked={isCoop}
-                    {...isCoop}
                   />
                 </FormGroup>
               </Col>

@@ -34,8 +34,15 @@ const GameCards = ({
             <CardTitle>{title}</CardTitle>
             <CardText>Min. Players: {minPlayers}</CardText>
             <CardText>Max. Players: {maxPlayers}</CardText>
-            {/* Don't forget to set a condition for the "isCoop" text (if isCoop === true, else) */}
-            <CardText>{isCoop}</CardText>
+            {
+              (isCoop === true) ?
+            <CardText>
+            Cooperative
+            </CardText>
+            : <CardText>
+            Cooperative
+            </CardText>
+          }
             <CardText>{categoryId}</CardText>
             <br />
             <Link
