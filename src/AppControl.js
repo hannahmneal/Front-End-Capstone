@@ -37,20 +37,6 @@ class AppControl extends Component {
       .then(() => console.log("this.state.games:", this.state.games));
     };
 
-// Use this to test different GET methods after a game is posted:
-      // addGame = newGameObj => {
-      //   // console.log(newGameObj);
-      //   return GameData.post(newGameObj)
-      //     .then(() =>
-      //       GameData.getAllGames().then(game =>
-      //         this.setState({
-      //           games: game
-      //         })
-      //       )
-      //     )
-      //     .then(() => console.log("this.state.games:", this.state.games));
-      // };
-
   // User Verification (called in UserLoginForm):
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput);
@@ -84,8 +70,8 @@ class AppControl extends Component {
     );
   };
 
-  updateGame = (editedGameObj) => {
-    return GameData.editThisGame(editedGameObj)
+  updateGame = (id, editedGameObj) => {
+    return GameData.editThisGame(id, editedGameObj)
     .then(() => UsersManager.getUsersGames(this.state.userId))
     .then(games => {
       this.setState({
@@ -176,28 +162,6 @@ class AppControl extends Component {
               }}
             />
 
-            {/* <Route
-              exact
-              path="/games/edit"
-              render={props => {
-                if (this.isAuthenticated()) {
-                  return (
-                    <GameCards
-                      {...props}
-                      games={this.state.games}
-                      categories={this.state.categories}
-                      deleteGames={this.deleteGame}
-                      authenticateUser={this.authenticateUser}
-                      usersGames={this.state.usersGames}
-                      userId={this.state.userId}
-                    />
-                  );
-                  } else {
-                    return <Redirect to="/login" />;
-                  }
-              }}
-            /> */}
-
 {/*  GAME FORM */}
 
             <Route
@@ -227,7 +191,8 @@ class AppControl extends Component {
 
             <Route
               exact
-              path="/games/edit"
+              path="/games/edit/:gameId(\d+)"
+              // MDN Regular Expressions: \d matches a digit character; + matches the preceding expression 1 or more times (all a's in caaaandy but nothing in cndy)
               render={props => {
                 if(this.isAuthenticated()) {
                 return (

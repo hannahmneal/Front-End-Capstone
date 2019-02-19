@@ -65,8 +65,8 @@ const GameCards = ({
               Delete
           </Button>
           </Card>
-      {console.log(game.id)}
-      {console.log(id)}
+      {/* {console.log(game.id)} */}
+      {/* {console.log(id)} */}
 
           <br />
         </Col>
