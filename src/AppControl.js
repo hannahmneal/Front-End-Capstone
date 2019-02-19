@@ -28,9 +28,10 @@ class AppControl extends Component {
     console.log(newGameObj);
     return GameData.post(newGameObj)
     .then(() =>
-    UsersManager.getUsersGames(this.state.userId).then(game =>
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
       this.setState({
-        usersGames: game
+        // usersGames: game // User dash does not auto-refresh
+        games: game // This auto-refreshes user's dash.
       })
       ))
       .then(() => console.log("this.state.games:", this.state.games));
@@ -77,12 +78,6 @@ class AppControl extends Component {
         games: game
       })
     })
-    // .then(() => UsersManager.getUsersGames(this.state.userId))
-    // .then(usersGames => {
-    //   this.setState({
-    //     usersGames: usersGames
-    //   })
-    // })
   }
   //==============================================================================================
   //  LIFE CYCLE:
