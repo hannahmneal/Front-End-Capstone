@@ -60,13 +60,19 @@ class AppControl extends Component {
         // use game.id to delete game
         // After deleting games, use user userId to fetch user-specific games
         .then(response => response.json())
-        .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-        .then(response => response.json())
-        .then(games =>
+        // .then(() => fetch(`http://localhost:5002/games?_expand=category`))
+        // .then(response => response.json())
+        // .then(games =>
+        //   this.setState({
+        //     games: games
+        //   })
+        // )
+        .then(() => UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
           this.setState({
-            games: games
+            // usersGames: game // User dash does not auto-refresh
+            games: game // This auto-refreshes user's dash.
           })
-        )
+          ))
     );
   };
 
@@ -83,13 +89,21 @@ class AppControl extends Component {
   //  LIFE CYCLE:
 
   componentDidMount() {
-    GameData.getAllGames()
-      .then(allGames => {
-        // console.log("componentDidMount: getallGames:", allGames);
-        this.setState({
-          games: allGames
-        });
+    // This replaced "getAllGames" below after login was implemented. Games are user-specific on dash but only if the user manually refreshes the page if coming from login:
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+      this.setState({
+        // usersGames: game // User dash does not auto-refresh
+        games: game // This auto-refreshes user's dash.
       })
+      )
+    // Prior to UsersManager.getUsersGames above, this is the code that pulled all games but this was set up before user login/credentials:
+    // GameData.getAllGames()
+    //   .then(allGames => {
+    //     // console.log("componentDidMount: getallGames:", allGames);
+    //     this.setState({
+    //       games: allGames
+    //     });
+    //   })
       .then(() => {
         console.log(this.state.games);
       });
