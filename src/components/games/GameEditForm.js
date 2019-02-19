@@ -1,6 +1,6 @@
 import React from "react";
 // import UsersManager from "../../modules/UsersManager"
-
+import GameData from "../../modules/GameData"
 import {
   Form,
   FormGroup,
@@ -12,62 +12,32 @@ import {
   Button
 } from "reactstrap";
 
-const initialState = {
-  userId: "",
-  title: "",
-  minPlayers: 0,
-  maxPlayers: 0,
-  isCoop: false,
-  categoryId: ""
-};
 // console.log(this.props);
 
 export default class GameEditForm extends React.Component {
 
-  //  The initial state of the form needs to match the state of the game
-  // When the form is edited, the game is edited
-  // Update state of the game
-
-  // constructor(props) {
-  //     super(props);
-  //     this.state = {value: ''};
-
-  //     this.handleFieldChange = this.handleFieldChange.bind(this);
-  //     this.handleIntChange = this.handleIntChange.bind(this);
-  //     this.handleBoolFieldChange = this.handleBoolFieldChange.bind(this);
-  //     // this.handleSubmit = this.handleSubmit.bind(this);
-  //   }
-
-  // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
-
-  state = { ...initialState }
+  state = {
+    userId: parseInt(sessionStorage.getItem("user")),
+    title: "",
+    minPlayers: 0,
+    maxPlayers: 0,
+    isCoop: "",
+    categoryId: "",
+  }
 
   //=========================================================================
 
   handleFieldChange = evt => {
     const stateToChange = {}
     stateToChange[evt.target.id] = evt.target.value
-    // console.log(this.props)
     this.setState(stateToChange)
-  }
-
-  //=========================================================================
-
-  handleFieldChange = evt => {
-    const stateToChange = {};
-    stateToChange[evt.target.id] = evt.target.value;
-    //The "id" here is referring to the HTML element ids in our render() below, not the database ids.
-    this.setState(stateToChange);
   };
-  //===========================================================================
 
   handleIntChange = evt => {
     const stateToChange = {};
-    // console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = parseInt(evt.target.value);
     this.setState(stateToChange);
   };
-  //===========================================================================
 
   handleBoolFieldChange = evt => {
     const stateToChange = {};
@@ -75,50 +45,52 @@ export default class GameEditForm extends React.Component {
     this.setState(stateToChange);
   };
 
-  //===========================================================================
+  //===================================================================
 
   editMyGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
 
-    this.props.updateGame({
-      // const editedGameObj = {
-      // userId: parseInt(sessionStorage.getItem("user")),
-      title: this.props.title,
-      minPlayers: this.props.minPlayers,
-      maxPlayers: this.props.maxPlayers,
-      isCoop: this.props.isCoop,
-      categoryId: this.props.categoryId
-      // }
-    })
+    const editedGameObj = {
+      title: this.state.title,
+      minPlayers: this.state.minPlayers,
+      maxPlayers: this.state.maxPlayers,
+      isCoop: this.state.isCoop,
+      categoryId: this.state.categoryId,
+      userId: parseInt(sessionStorage.getItem("user"))
+    }
 
-      //alternative:
-      //   (this.props.match.params.userId, updateThisGame)
-      // .then(() => this.setState(initialState))
-      // this.props.updateGame(this.props.match.params.userId, editedGameObj)
-      // .then(() => this.props.history.push("/list"))
-      // console.log(updateThisGame);
-
-
-
-      // updateExistingEvent = evt => {
-      //   evt.preventDefault()
-
-
-      //   const existingEvent = {
-      //     eventName: this.state.eventName,
-      //     eventDate: this.state.eventDate,
-      //     eventTime: this.state.eventTime,
-      //     eventLocation: this.state.eventLocation,
-      //     userId: this.state.userId
-      //   }
-
-      .then(() => this.props.this.setState(initialState))
+      this.props.updateGame(this.props.match.params.gameId, editedGameObj)
       .then(() => this.props.history.push("/list"))
   }
-  //===========================================================================
+  //===================================================================
+
+  componentDidMount() {
+    GameData.get(this.props.match.params.gameId)
+    .then(game => {
+      this.setState({
+        title: game.title,
+        minPlayers: game.minPlayers,
+        maxPlayers: game.maxPlayers,
+        isCoop: game.isCoop,
+        categoryId: game.categoryId
+      });
+      console.log(game);
+
+    });
+  }
+
+  //====================================================================
   render() {
-    const { title, minPlayers, maxPlayers, isCoop } = this.props;
+
+    const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
+
+    const game =
+      this.props.games.find(
+        game => game.id === parseInt(this.props.match.params.gameId)
+      ) || {};
+    console.log(game); // Logs entire game object to console
+    console.log(game.id); // logs the id of the game object to the console
 
     return (
       <React.Fragment>
@@ -135,7 +107,7 @@ export default class GameEditForm extends React.Component {
                     placeholder="Game title"
                     onChange={this.handleFieldChange}
                     value={title}
-                    {...title}
+
                   />
                 </FormGroup>
               </Col>
@@ -152,7 +124,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Min Players"
                     onChange={this.handleFieldChange}
                     value={minPlayers}
-                    {...minPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -167,7 +138,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Max Players"
                     onChange={this.handleFieldChange}
                     value={maxPlayers}
-                    {...maxPlayers}
                   />
                 </FormGroup>
               </Col>
@@ -183,9 +153,7 @@ export default class GameEditForm extends React.Component {
                     name="checkbox"
                     id="isCoop"
                     onChange={this.handleBoolFieldChange}
-                    // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
                     checked={isCoop}
-                    {...isCoop}
                   />
                 </FormGroup>
               </Col>
@@ -200,20 +168,17 @@ export default class GameEditForm extends React.Component {
                     type="select"
                     name="categoryId"
                     id="categoryId"
-                    // value={categoryId}
+                    value={categoryId}
                     onChange={this.handleIntChange}
-                  // Using "handleDropdownChange" instead of "handleFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
                   >
                     {this.props.categories.map(category => (
                       <option
                         key={category.id}
                         value={category.id}
-                        // {...this.props}
                       >
                         {category.catName}
                       </option>
                     ))}
-                    {/* defaultValue added as a prop */}
                   </Input>
                 </FormGroup>
               </Col>
@@ -221,7 +186,7 @@ export default class GameEditForm extends React.Component {
             <br />
             <Button
               type="submit"
-              onClick={this.updateGame}
+              onClick={this.editMyGame}
               className="new-game-submit-btn"
             >
               Submit
