@@ -17,13 +17,12 @@ import {
 export default class GameEditForm extends React.Component {
 
   state = {
-    userId: parseInt(sessionStorage.getItem("User")),
+    userId: parseInt(sessionStorage.getItem("user")),
     title: "",
     minPlayers: 0,
     maxPlayers: 0,
     isCoop: "",
     categoryId: "",
-    // gameId: this.props.games.game.id
   }
 
   //=========================================================================
@@ -31,13 +30,11 @@ export default class GameEditForm extends React.Component {
   handleFieldChange = evt => {
     const stateToChange = {}
     stateToChange[evt.target.id] = evt.target.value
-    // console.log(this.props)
     this.setState(stateToChange)
   };
 
   handleIntChange = evt => {
     const stateToChange = {};
-    // console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = parseInt(evt.target.value);
     this.setState(stateToChange);
   };
@@ -54,17 +51,14 @@ export default class GameEditForm extends React.Component {
     evt.preventDefault();
     // console.log(this.state);
 
-    // this.props.updateGame({
     const editedGameObj = {
-      // userId: parseInt(sessionStorage.getItem("user")),
       title: this.state.title,
       minPlayers: this.state.minPlayers,
       maxPlayers: this.state.maxPlayers,
       isCoop: this.state.isCoop,
       categoryId: this.state.categoryId,
-      userId: parseInt(sessionStorage.getItem("User"))
+      userId: parseInt(sessionStorage.getItem("user"))
     }
-      // })
 
       this.props.updateGame(this.props.match.params.gameId, editedGameObj)
       .then(() => this.props.history.push("/list"))
@@ -73,21 +67,23 @@ export default class GameEditForm extends React.Component {
 
   componentDidMount() {
     GameData.get(this.props.match.params.gameId)
-      .then(game => {
-        this.setState({
-          title: game.title,
-          minPlayers: game.minPlayers,
-          maxPlayers: game.maxPlayers,
-          isCoop: game.isCoop,
-          categoryId: game.categoryId
-        });
-        console.log(game);
-
+    .then(game => {
+      this.setState({
+        title: game.title,
+        minPlayers: game.minPlayers,
+        maxPlayers: game.maxPlayers,
+        isCoop: game.isCoop,
+        categoryId: game.categoryId
       });
+      console.log(game);
+
+    });
   }
 
   //====================================================================
   render() {
+
+    const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
 
     const game =
       this.props.games.find(
@@ -95,8 +91,6 @@ export default class GameEditForm extends React.Component {
       ) || {};
     console.log(game); // Logs entire game object to console
     console.log(game.id); // logs the id of the game object to the console
-
-    const { title, minPlayers, maxPlayers, isCoop, categoryId } = this.state;
 
     return (
       <React.Fragment>
@@ -113,7 +107,6 @@ export default class GameEditForm extends React.Component {
                     placeholder="Game title"
                     onChange={this.handleFieldChange}
                     value={title}
-                  // value={this.state.title}
 
                   />
                 </FormGroup>
@@ -186,7 +179,6 @@ export default class GameEditForm extends React.Component {
                         {category.catName}
                       </option>
                     ))}
-                    {/* defaultValue added as a prop */}
                   </Input>
                 </FormGroup>
               </Col>

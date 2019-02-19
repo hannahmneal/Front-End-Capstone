@@ -32,8 +32,7 @@ class AppControl extends Component {
       this.setState({
         usersGames: game
       })
-      )
-      )
+      ))
       .then(() => console.log("this.state.games:", this.state.games));
     };
 
@@ -58,7 +57,7 @@ class AppControl extends Component {
         method: "DELETE"
       })
         // use game.id to delete game
-        // After deleting games, user userId to fetch user-specific games
+        // After deleting games, use user userId to fetch user-specific games
         .then(response => response.json())
         .then(() => fetch(`http://localhost:5002/games?_expand=category`))
         .then(response => response.json())
@@ -73,11 +72,17 @@ class AppControl extends Component {
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
     .then(() => UsersManager.getUsersGames(this.state.userId))
-    .then(games => {
+    .then(game => {
       this.setState({
-        games: games
+        games: game
       })
     })
+    // .then(() => UsersManager.getUsersGames(this.state.userId))
+    // .then(usersGames => {
+    //   this.setState({
+    //     usersGames: usersGames
+    //   })
+    // })
   }
   //==============================================================================================
   //  LIFE CYCLE:

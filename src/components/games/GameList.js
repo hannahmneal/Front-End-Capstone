@@ -29,8 +29,8 @@ class GameList extends Component {
               categoryId={game.category.catName}
               userId={game.userId}
               updateGame={this.props}
-            />
-            )
+              />
+              )
           )}
         </div>
       </React.Fragment>
