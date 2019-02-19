@@ -25,7 +25,7 @@ export default class GameEditForm extends React.Component {
     categoryId: "",
   }
 
-  //=========================================================================
+  //=======================================================================
 
   handleFieldChange = evt => {
     const stateToChange = {}
@@ -50,6 +50,7 @@ export default class GameEditForm extends React.Component {
   editMyGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
+    this.props.checkUser()
 
     const editedGameObj = {
       title: this.state.title,
@@ -60,7 +61,7 @@ export default class GameEditForm extends React.Component {
       userId: parseInt(sessionStorage.getItem("user"))
     }
 
-      this.props.updateGame(this.props.match.params.gameId, editedGameObj)
+    this.props.updateGame(this.props.match.params.gameId, editedGameObj)
       .then(() => this.props.history.push("/list"))
   }
   //===================================================================

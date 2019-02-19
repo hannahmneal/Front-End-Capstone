@@ -43,6 +43,7 @@ export default class UserLoginForm extends React.Component {
           user: user[0],
           userId: sessionStorage.getItem("user", user[0].id)
         })
+
         // .then( => {
           // console.log(this.state.user); //logs:  0: {id: 1, firstname: "Hannah", lastname: "Neal", username: "hannahmneal", password: "pass"}
           // console.log(this.state.userId); //logs: the correct userId of the user object in this.state.user

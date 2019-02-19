@@ -19,7 +19,8 @@ class AppControl extends Component {
     usersGames: [],
     userId: parseInt(sessionStorage.getItem("user"))
   };
-  // The session storage for "user" is set after the verification step in UserLoginForm.
+
+// The session storage for "user" is set after the verification step in UserLoginForm.
 
 // "Check-in" function to determine whether login button has been clicked.
 // Call this function in UserLoginForm
@@ -28,9 +29,10 @@ class AppControl extends Component {
   checkUser = () => {
     // When handleLoginSubmit
     // if handleLoginSubmit = true, handleLoginSubmit has been clicked;
-    //
-      console.log(sessionStorage.getItem("user"));
-      UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+
+    // console.log(sessionStorage.getItem("user"));
+      UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
+      .then(game =>
         this.setState({
           // usersGames: game // User dash does not auto-refresh
           games: game // This auto-refreshes user's dash.
@@ -38,8 +40,7 @@ class AppControl extends Component {
         )
     }
 
-
-  //====================================================================================
+  //==============================================================================
 
   // Methods:
 
@@ -60,8 +61,6 @@ class AppControl extends Component {
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput);
   };
-
-
 
   // This is necessary for populating the dropdown:
   getCategory = () => {
@@ -99,14 +98,9 @@ class AppControl extends Component {
 
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
-    .then(() => UsersManager.getUsersGames(this.state.userId))
-    .then(game => {
-      this.setState({
-        games: game
-      })
-    })
+    .then(() => this.checkUser())
   }
-  //==============================================================================================
+  //==============================================================================
   //  LIFE CYCLE:
 
   componentDidMount() {
@@ -137,12 +131,12 @@ class AppControl extends Component {
         categories: allCategories
       });
     });
-    UsersManager.getAllUsers().then(allUsers => {
-      console.log("componentDidMount: getallUsers:", allUsers);
-      this.setState({
-        users: allUsers
-      });
-    });
+    // UsersManager.getAllUsers().then(allUsers => {
+    //   console.log("componentDidMount: getallUsers:", allUsers);
+    //   this.setState({
+    //     users: allUsers
+    //   });
+    // });
   }
 //=======================================================================================================
 
@@ -218,6 +212,7 @@ class AppControl extends Component {
                       // updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
+                      checkUser={this.checkUser}
                     />
                   );
                 } else {
@@ -242,6 +237,7 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
+                    checkUser={this.checkUser}
                 />)} else {
                   return (<Redirect to ="/login" />);
                 }

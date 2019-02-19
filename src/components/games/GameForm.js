@@ -22,9 +22,7 @@ export default class GameForm extends React.Component {
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
   state = { ...initialState };
 
-  //=========================================================================
-
-  //=========================================================================
+  //=======================================================================
 
   // Update initialState whenever an input field is edited:
   handleFieldChange = evt => {
@@ -34,7 +32,7 @@ export default class GameForm extends React.Component {
     this.setState(stateToChange);
   };
   //===========================================================================
-  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer (hard-coded) converting itself to a string in categoryId in the games object in json.
+  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer converting itself to a string.
 
   handleIntChange = evt => {
     const stateToChange = {};
@@ -51,27 +49,21 @@ export default class GameForm extends React.Component {
     this.setState(stateToChange);
   };
 
-  //===========================================================================
+  //=======================================================================
 
-  // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in json.
+  // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in the equivalent json object.
   // addGame is declared in AppControl and the newGameObj is its parameter
   // newGameObj is the parameter passed in the post method in GameData
 
   constructNewGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
-
-    //TESTING SESSION USER: LOGS USER'S SESSION STORAGE ID TO THE CONSOLE:
-    // const sessionUser = this.props.userId
-    // console.log(sessionUser);
-
-    // parseInt(sessionStorage.setItem("user", this.props.userId))
-    // sessionUser = this.setState(initialState)
+    this.props.checkUser()  // checkUser is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
 
     this.props
-      .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
-      // console.log for testing:
-      // .then(() => {
+    .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
+    // console.log for testing:
+    // .then(() => {
       // {console.log("this.state:", this.state)}
       // })
       .then(() => this.setState(initialState))
@@ -142,7 +134,6 @@ export default class GameForm extends React.Component {
                     name="checkbox"
                     id="isCoop"
                     onChange={this.handleBoolFieldChange}
-                    // Using "handleBoolFieldChange" instead of "handleFieldChange" will force the checkbox into a "true" value when checked, however, it does not display in the card as "Cooperative". Using handleFieldChange will display "on" as a string value and the word "on" displays on the cards
                     checked={isCoop}
                   />
                 </FormGroup>
@@ -160,7 +151,6 @@ export default class GameForm extends React.Component {
                     id="categoryId"
                     // value={categoryId}
                     onChange={this.handleIntChange}
-                  // Using "handleDropdownChange" instead of "handleFieldChange" will force the categoryId in the json games object into an integer, however, it also displays on the cards as an integer, not as a string value matching catName (which is equal to category.id).
                   >
                     {this.props.categories.map(category => (
                       <option
