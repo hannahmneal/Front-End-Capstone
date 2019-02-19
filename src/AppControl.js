@@ -21,7 +21,26 @@ class AppControl extends Component {
   };
   // The session storage for "user" is set after the verification step in UserLoginForm.
 
-  //=================================================================================================
+// "Check-in" function to determine whether login button has been clicked.
+// Call this function in UserLoginForm
+// The function should console.log the userId
+
+  checkUser = () => {
+    // When handleLoginSubmit
+    // if handleLoginSubmit = true, handleLoginSubmit has been clicked;
+    //
+      console.log(sessionStorage.getItem("user"));
+      UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+        this.setState({
+          // usersGames: game // User dash does not auto-refresh
+          games: game // This auto-refreshes user's dash.
+        })
+        )
+    }
+
+
+  //====================================================================================
+
   // Methods:
 
   addGame = (newGameObj) => {
@@ -41,6 +60,8 @@ class AppControl extends Component {
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput);
   };
+
+
 
   // This is necessary for populating the dropdown:
   getCategory = () => {
@@ -89,6 +110,9 @@ class AppControl extends Component {
   //  LIFE CYCLE:
 
   componentDidMount() {
+
+    console.log(this.state.userId);
+
     // This replaced "getAllGames" below after login was implemented. Games are user-specific on dash but only if the user manually refreshes the page if coming from login:
     UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
       this.setState({
@@ -114,7 +138,7 @@ class AppControl extends Component {
       });
     });
     UsersManager.getAllUsers().then(allUsers => {
-      // console.log("componentDidMount: getallUsers:", allUsers);
+      console.log("componentDidMount: getallUsers:", allUsers);
       this.setState({
         users: allUsers
       });
@@ -127,7 +151,6 @@ class AppControl extends Component {
     // console.log(this.state.games);
     // console.log(this.state.categories);
     // console.log(this.state.usersGames);
-
 
     return (
       <React.Fragment>
@@ -147,7 +170,9 @@ class AppControl extends Component {
                     users={this.state.users}
                     authenticateUser={this.authenticateUser}
                     games={this.state.games}
+                    // handleLoginSubmit={this.handleLoginSubmit}
                     // getUsersGames={this.getUsersGames}
+                    checkUser={this.checkUser}
                   />
                 );
               }}
@@ -165,7 +190,7 @@ class AppControl extends Component {
                       categories={this.state.categories}
                       deleteGame={this.deleteGame}
                       updateGame={this.updateGame}
-                      authenticateUser={this.authenticateUser}
+                      // authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
                     />
