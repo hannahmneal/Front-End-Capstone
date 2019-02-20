@@ -1,6 +1,4 @@
 import React from "react";
-import UsersManager from "../../modules/UsersManager"
-// import AppControl from "../../AppControl"
 import {
   Container,
   Row,
@@ -11,68 +9,69 @@ import {
   Label,
   Input
 } from "reactstrap"
-// import GameList from "../games/GameList";
 export default class UserLoginForm extends React.Component {
   state = {
     userName: "",
     password: "",
-    // userId: "",
-    userId: parseInt(sessionStorage.getItem("user")),
-    usersGames: "",
-    user: ""
+    userId: "",
+    // usersGames: "",
+    user: "",
+    loggedIn: false
   };
+//==================== LOGIN FUNCTIONS ==========================
 
   handleFieldChange = evt => {
     const stateToChange = {};
     stateToChange[evt.target.id] = evt.target.value;
     this.setState(stateToChange);
-    // console.log(stateToChange)
+    // console.log(stateToChange) // // TEST
   };
+//==================== LOGIN FUNCTIONS ==========================
 
   handleLoginSubmit = evt => {
     evt.preventDefault();
 
+// Accesses the verifyUser method declared in AppControl passed down as props to this Login component to set the state of the userName and password to whatever the user types into the form fields.
+
+//Since verifyUser() also calls getUser() from the UsersManager component, the data from that fetch request can be accessed with a promise. I called the data from that promise "user"(line 41). By passing in the state of userName and password as parameters in verifyUser(), the "user" data returned will be a single "user object", if that user of the specified parameters exists in json.
+
+// Properties in the "user" object returned from json are accessed and used to set session storage (where the id of the user is established as the user's unique identifier) and identify the specific, logged-in-user's game collection.
 
       this.props.verifyUser(this.state.userName, this.state.password)
       .then(user => {
-        // console.log("user", user)
+        // console.log("user", user) // // TEST
         sessionStorage.setItem("user", user[0].id)
         let userId = sessionStorage.getItem("user")
-        this.props.checkUser()
-        this.setState({
-          user: user[0],
-          userId: sessionStorage.getItem("user", user[0].id)
-        })
-
-        // .then( => {
-          // console.log(this.state.user); //logs:  0: {id: 1, firstname: "Hannah", lastname: "Neal", username: "hannahmneal", password: "pass"}
-          // console.log(this.state.userId); //logs: the correct userId of the user object in this.state.user
-        // })
-
-        // sessionStorage.setItem("user", user[0].id)
-        // let userId = sessionStorage.getItem("user")
-
-
         if(userId.length === 0) {
           alert("Please log in with valid credentials")
         } else {
+          this.setState({
+            user: user[0],
+            userId: parseInt(sessionStorage.getItem("user", user[0].id)),
+            loggedIn: true
+          });
+          console.log(this.state.loggedIn);
 
-          // console.log("userId before setting state", userId);
-          return UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
-          .then(usersGame => {
-            // console.log(user)
-            this.setState({
-              usersGames: usersGame,
-              userId: usersGame.userId
-            })
-            // console.log("this.state after setting userId", this.state);
-          })
         }
-        this.props.history.push("/list")
-        // Routes user to the /games/dashboard; In AppControl, this route calls GameList; GameCards are rendered separately but called within GameList.
-      })
+        if(this.state.loggedIn !== false) {
+          console.log(this.state.loggedIn);
+  
+          this.props.setUser()
+          this.props.checkUser()
+          // the checkUser method is declared in AppControl.
+          this.props.history.push("/list")
+        } else {
+          console.log("User not logged in; something's screwy");
+          console.log(this.state.loggedIn);
+  
+        }
+      }
+      );
     }
 
+// componentWillUnmount() {
+//   this.props.checkUser()
+// }
 
     render() {
       const { userName, password } = this.state;
