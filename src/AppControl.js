@@ -19,9 +19,29 @@ class AppControl extends Component {
     usersGames: [],
     userId: parseInt(sessionStorage.getItem("user"))
   };
-  // The session storage for "user" is set after the verification step in UserLoginForm.
 
-  //=================================================================================================
+// The session storage for "user" is set after the verification step in UserLoginForm.
+
+// "Check-in" function to determine whether login button has been clicked.
+// Call this function in UserLoginForm
+// The function should console.log the userId
+
+  checkUser = () => {
+    // When handleLoginSubmit
+    // if handleLoginSubmit = true, handleLoginSubmit has been clicked;
+
+    // console.log(sessionStorage.getItem("user"));
+      UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
+      .then(game =>
+        this.setState({
+          // usersGames: game // User dash does not auto-refresh
+          games: game // This auto-refreshes user's dash.
+        })
+        )
+    }
+
+  //==============================================================================
+
   // Methods:
 
   addGame = (newGameObj) => {
@@ -60,36 +80,48 @@ class AppControl extends Component {
         // use game.id to delete game
         // After deleting games, use user userId to fetch user-specific games
         .then(response => response.json())
-        .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-        .then(response => response.json())
-        .then(games =>
+        // .then(() => fetch(`http://localhost:5002/games?_expand=category`))
+        // .then(response => response.json())
+        // .then(games =>
+        //   this.setState({
+        //     games: games
+        //   })
+        // )
+        .then(() => UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
           this.setState({
-            games: games
+            // usersGames: game // User dash does not auto-refresh
+            games: game // This auto-refreshes user's dash.
           })
-        )
+          ))
     );
   };
 
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
-    .then(() => UsersManager.getUsersGames(this.state.userId))
-    .then(game => {
-      this.setState({
-        games: game
-      })
-    })
+    .then(() => this.checkUser())
   }
-  //==============================================================================================
+  //==============================================================================
   //  LIFE CYCLE:
 
   componentDidMount() {
-    GameData.getAllGames()
-      .then(allGames => {
-        // console.log("componentDidMount: getallGames:", allGames);
-        this.setState({
-          games: allGames
-        });
+
+    console.log(this.state.userId);
+
+    // This replaced "getAllGames" below after login was implemented. Games are user-specific on dash but only if the user manually refreshes the page if coming from login:
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+      this.setState({
+        // usersGames: game // User dash does not auto-refresh
+        games: game // This auto-refreshes user's dash.
       })
+      )
+    // Prior to UsersManager.getUsersGames above, this is the code that pulled all games but this was set up before user login/credentials:
+    // GameData.getAllGames()
+    //   .then(allGames => {
+    //     // console.log("componentDidMount: getallGames:", allGames);
+    //     this.setState({
+    //       games: allGames
+    //     });
+    //   })
       .then(() => {
         console.log(this.state.games);
       });
@@ -99,12 +131,12 @@ class AppControl extends Component {
         categories: allCategories
       });
     });
-    UsersManager.getAllUsers().then(allUsers => {
-      // console.log("componentDidMount: getallUsers:", allUsers);
-      this.setState({
-        users: allUsers
-      });
-    });
+    // UsersManager.getAllUsers().then(allUsers => {
+    //   console.log("componentDidMount: getallUsers:", allUsers);
+    //   this.setState({
+    //     users: allUsers
+    //   });
+    // });
   }
 //=======================================================================================================
 
@@ -113,7 +145,6 @@ class AppControl extends Component {
     // console.log(this.state.games);
     // console.log(this.state.categories);
     // console.log(this.state.usersGames);
-
 
     return (
       <React.Fragment>
@@ -133,7 +164,9 @@ class AppControl extends Component {
                     users={this.state.users}
                     authenticateUser={this.authenticateUser}
                     games={this.state.games}
+                    // handleLoginSubmit={this.handleLoginSubmit}
                     // getUsersGames={this.getUsersGames}
+                    checkUser={this.checkUser}
                   />
                 );
               }}
@@ -151,7 +184,7 @@ class AppControl extends Component {
                       categories={this.state.categories}
                       deleteGame={this.deleteGame}
                       updateGame={this.updateGame}
-                      authenticateUser={this.authenticateUser}
+                      // authenticateUser={this.authenticateUser}
                       usersGames={this.state.usersGames}
                       userId={this.state.userId}
                     />
@@ -179,6 +212,7 @@ class AppControl extends Component {
                       // updateGame={this.updateGame}
                       authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
+                      checkUser={this.checkUser}
                     />
                   );
                 } else {
@@ -203,6 +237,7 @@ class AppControl extends Component {
                     categories={this.state.categories}
                     authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
+                    checkUser={this.checkUser}
                 />)} else {
                   return (<Redirect to ="/login" />);
                 }
