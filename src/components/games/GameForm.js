@@ -58,7 +58,9 @@ export default class GameForm extends React.Component {
   constructNewGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
-    this.props.checkUser()  // checkUser is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
+
+    // The checkUser function was not commented-out when updateGame in AppControl had been refactored to include checkUser. So, checkUser was running in both places, here and in AppControl. There were no apparent issues, however.
+    // this.props.checkUser()  // checkUser is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
 
     this.props
     .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })

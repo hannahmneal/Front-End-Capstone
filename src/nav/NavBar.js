@@ -19,10 +19,12 @@ class NavBar extends Component {
                         <Link className="nav-link" to="/login">Login</Link>
                     </li>
                     {/* <li className="nav-item">
-                        <Link className="nav-link" to="/filter">Filter</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/logout">Logout</Link>
+                        <Link className="nav-link" to="/login" onClick={sessionStorage.clear()}>
+                        Logout
+                        </Link>
+                    </li> */}
+                    {/* <li className="nav-item">
+                        <Link className="nav-link" to="/filter">Filter Games</Link>
                     </li> */}
                 </ul>
             </nav>

@@ -50,7 +50,7 @@ export default class GameEditForm extends React.Component {
   editMyGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
-    this.props.checkUser()
+    // this.props.checkUser()
 
     const editedGameObj = {
       title: this.state.title,
