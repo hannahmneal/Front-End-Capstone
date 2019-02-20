@@ -5,7 +5,7 @@ import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
 import GameEditForm from "./components/games/GameEditForm"
-// import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
 // import "./App.css";
@@ -26,6 +26,11 @@ class AppControl extends Component {
 
 // Updates the state of games with those games associated with the user currently in session storage.
 // This function is called at the end of addGame(), deleteGame() and updateGame() in AppControl, and at the end of handleLoginSubmit() in UserLoginForm.
+
+// registerNewUser = () => {
+//   return < Redirect to="/register"/>
+// }
+
 
 setUser = () => {
   // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user
@@ -151,10 +156,27 @@ setUser = () => {
                     verifyUser={this.verifyUser}
                     checkUser={this.checkUser}
                     setUser={this.setUser}
+                    // registerNewUser={this.registerNewUser}
                   />
                 );
               }}
             />
+
+            <Route
+              exact
+              path="/register"
+              render={props => {
+                return (
+                  <UserRegistrationForm
+                    {...props}
+                    verifyUser={this.verifyUser}
+                    checkUser={this.checkUser}
+                    setUser={this.setUser}
+                  />
+                );
+              }}
+            />
+
 {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
