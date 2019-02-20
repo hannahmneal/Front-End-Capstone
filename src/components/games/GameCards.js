@@ -1,5 +1,4 @@
 // Uses props from GameForm to populate cards with json game object
-// This needs to be routed to the user's dashboard
 
 import React from "react";
 import {
@@ -65,18 +64,11 @@ const GameCards = ({
               Delete
           </Button>
           </Card>
-      {/* {console.log(game.id)} */}
-      {/* {console.log(id)} */}
-
           <br />
         </Col>
       </Row>
     </Container>
   );
-// console.log("Game Cards: 'this'", this);
-// this is undefined
-// console.log("GameCards: 'this.props'", this.props);
-
 
 export default GameCards;
 

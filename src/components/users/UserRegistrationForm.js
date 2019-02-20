@@ -10,20 +10,16 @@ import {
   Input
 } from "reactstrap";
 
-const initialUserState = {
-  firstname: "",
-  lastname: "",
-  username: "",
-  password: ""
-
-}
-
-
 
 class UserRegistrationForm extends React.Component {
 
-state = [...initialUserState]
+  state = {
+    firstname: "",
+    lastname: "",
+    username: "",
+    password: ""
 
+  }
 //=========================================================================
 // Form handlers:
 
@@ -46,7 +42,7 @@ constructNewUser = evt => {
     // .then(() => {
     // {console.log("this.state:", this.state)}
     // })
-    .then(() => this.setState(initialUserState))
+    .then(() => this.setState())
     // Don't forget to add a route to push back to the dashboard!
     .then(() => this.props.history.push("/games/dashboard"));
 };

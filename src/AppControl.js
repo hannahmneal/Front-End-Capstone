@@ -5,7 +5,7 @@ import GameData from "./modules/GameData";
 import GameForm from "./components/games/GameForm";
 import GameList from "./components/games/GameList";
 import GameEditForm from "./components/games/GameEditForm"
-// import UserRegistrationForm from "./components/users/UserRegistrationForm";
+import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
 // import "./App.css";
@@ -13,56 +13,74 @@ import UsersManager from "./modules/UsersManager";
 class AppControl extends Component {
   isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
-    users: [],
+    // users: [],
+    user: {},
     games: [],
     categories: [],
     usersGames: [],
-    userId: parseInt(sessionStorage.getItem("user"))
+    // userId: parseInt(sessionStorage.getItem("user"))
+    userId: ""
   };
 
-// The session storage for "user" is set after the verification step in UserLoginForm.
+//============================= "U" FUNCTION FOR GAMES ============================
 
-// "Check-in" function to determine whether login button has been clicked.
-// Call this function in UserLoginForm
-// The function should console.log the userId
+// Updates the state of games with those games associated with the user currently in session storage.
+// This function is called at the end of addGame(), deleteGame() and updateGame() in AppControl, and at the end of handleLoginSubmit() in UserLoginForm.
+
+// registerNewUser = () => {
+//   return < Redirect to="/register"/>
+// }
+
+
+setUser = () => {
+  // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user
+
+  UsersManager.getUserById(parseInt(sessionStorage.getItem("user")))
+  .then(user => {
+    this.setState({
+      user: user,
+      userId: user.id
+    })
+  })
+}
 
   checkUser = () => {
-    // When handleLoginSubmit
-    // if handleLoginSubmit = true, handleLoginSubmit has been clicked;
 
-    // console.log(sessionStorage.getItem("user"));
       UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
-      .then(game =>
+      .then(games =>   // "games" are the games associated with the user that is currently logged in.
         this.setState({
-          // usersGames: game // User dash does not auto-refresh
-          games: game // This auto-refreshes user's dash.
+          games: games // This auto-refreshes user's dash.
         })
         )
     }
 
-  //==============================================================================
+//============================== LOGIN FUNCTIONS ================================
 
-  // Methods:
+  // User Verification (called in UserLoginForm). Plugs the user-entered username and password from the login form into the local json database URL (via "getUser" in UsersManager). If there is a user in the database with the given username and password, an "user object" is made available.
 
-  addGame = (newGameObj) => {
-    console.log(newGameObj);
-    return GameData.post(newGameObj)
-    .then(() =>
-    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
-      this.setState({
-        // usersGames: game // User dash does not auto-refresh
-        games: game // This auto-refreshes user's dash.
-      })
-      ))
-      .then(() => console.log("this.state.games:", this.state.games));
-    };
-
-  // User Verification (called in UserLoginForm):
   verifyUser = (nameInput, passInput) => {
     return UsersManager.getUser(nameInput, passInput);
   };
 
-  // This is necessary for populating the dropdown:
+//========================== "C, R, D" FUNCTIONS FOR GAMES ======================
+
+// Adds a game to the database and then refreshes the state of games to show the games of the currently-logged-in user.
+// The newGameObj object is created and addGame is called in GameForm.
+
+  addGame = (newGameObj) => {
+    // console.log(newGameObj); // // TEST
+    return GameData.post(newGameObj)
+    .then(() =>
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
+      this.setState({
+        games: games
+      })
+      ))
+      // .then(() => console.log("this.state.games:", this.state.games)); // // TEST
+    };
+
+// In order to populate the dropdown in the "Add Game" form, the categories in the database must be set in state:
+
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
       this.setState({
@@ -71,30 +89,25 @@ class AppControl extends Component {
     );
   };
 
-  // Delete method for a specific game:
+
+// Deletes a specific game based on its id:
+
   deleteGame = (id) => {
     return (
       fetch(`http://localhost:5002/games/${id}`, {
         method: "DELETE"
       })
-        // use game.id to delete game
-        // After deleting games, use user userId to fetch user-specific games
+        // After deleting games, use user userId to fetch user-specific games:
         .then(response => response.json())
-        // .then(() => fetch(`http://localhost:5002/games?_expand=category`))
-        // .then(response => response.json())
-        // .then(games =>
-        //   this.setState({
-        //     games: games
-        //   })
-        // )
-        .then(() => UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+        .then(() => UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
           this.setState({
-            // usersGames: game // User dash does not auto-refresh
-            games: game // This auto-refreshes user's dash.
+            games: games
           })
-          ))
+        ))
     );
   };
+
+// Identifies the specific game to be edited by its id and uses a "PUT" (via editThisGame() in GameData.js) to replace the old game object with the new, edited game object. After this is accomplished, checkUser() refreshes the user-specific state of games.
 
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
@@ -103,40 +116,22 @@ class AppControl extends Component {
   //==============================================================================
   //  LIFE CYCLE:
 
-  componentDidMount() {
+  componentDidMount() {   // Triggers a re-rendering of the DOM; I'm using this method to load data into AppControl and set state for my components.
 
-    console.log(this.state.userId);
+    // console.log(this.state.userId); // // TEST
 
-    // This replaced "getAllGames" below after login was implemented. Games are user-specific on dash but only if the user manually refreshes the page if coming from login:
-    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(game =>
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
       this.setState({
-        // usersGames: game // User dash does not auto-refresh
-        games: game // This auto-refreshes user's dash.
+        games: games
       })
       )
-    // Prior to UsersManager.getUsersGames above, this is the code that pulled all games but this was set up before user login/credentials:
-    // GameData.getAllGames()
-    //   .then(allGames => {
-    //     // console.log("componentDidMount: getallGames:", allGames);
-    //     this.setState({
-    //       games: allGames
-    //     });
-    //   })
-      .then(() => {
-        console.log(this.state.games);
-      });
+
     GameData.getAllCategories().then(allCategories => {
       // console.log("componentDidMount: getallCategories:", allCategories);
       this.setState({
         categories: allCategories
       });
     });
-    // UsersManager.getAllUsers().then(allUsers => {
-    //   console.log("componentDidMount: getallUsers:", allUsers);
-    //   this.setState({
-    //     users: allUsers
-    //   });
-    // });
   }
 //=======================================================================================================
 
@@ -144,7 +139,6 @@ class AppControl extends Component {
     // console.log(this.state.users);
     // console.log(this.state.games);
     // console.log(this.state.categories);
-    // console.log(this.state.usersGames);
 
     return (
       <React.Fragment>
@@ -160,17 +154,29 @@ class AppControl extends Component {
                   <UserLoginForm
                     {...props}
                     verifyUser={this.verifyUser}
-                    getUser={this.getUser}
-                    users={this.state.users}
-                    authenticateUser={this.authenticateUser}
-                    games={this.state.games}
-                    // handleLoginSubmit={this.handleLoginSubmit}
-                    // getUsersGames={this.getUsersGames}
                     checkUser={this.checkUser}
+                    setUser={this.setUser}
+                    // registerNewUser={this.registerNewUser}
                   />
                 );
               }}
             />
+
+            <Route
+              exact
+              path="/register"
+              render={props => {
+                return (
+                  <UserRegistrationForm
+                    {...props}
+                    verifyUser={this.verifyUser}
+                    checkUser={this.checkUser}
+                    setUser={this.setUser}
+                  />
+                );
+              }}
+            />
+
 {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
@@ -185,7 +191,7 @@ class AppControl extends Component {
                       deleteGame={this.deleteGame}
                       updateGame={this.updateGame}
                       // authenticateUser={this.authenticateUser}
-                      usersGames={this.state.usersGames}
+                      // usersGames={this.state.usersGames}
                       userId={this.state.userId}
                     />
                   );
@@ -210,7 +216,7 @@ class AppControl extends Component {
                       categories={this.state.categories}
                       // deleteGame={this.deleteGame}
                       // updateGame={this.updateGame}
-                      authenticateUser={this.authenticateUser}
+                      // authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
                       checkUser={this.checkUser}
                     />
@@ -235,7 +241,7 @@ class AppControl extends Component {
                     updateGame={this.updateGame}
                     games={this.state.games}
                     categories={this.state.categories}
-                    authenticateUser={this.authenticateUser}
+                    // authenticateUser={this.authenticateUser}
                     userId={this.state.userId}
                     checkUser={this.checkUser}
                 />)} else {
