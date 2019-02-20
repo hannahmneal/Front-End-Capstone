@@ -18,10 +18,9 @@ class UserRegistrationForm extends React.Component {
     lastname: "",
     username: "",
     password: ""
-
   }
 //=========================================================================
-// Form handlers:
+// Form handler:
 
 handleFieldChange = evt => {
   const stateToChange = {};
@@ -37,14 +36,25 @@ constructNewUser = evt => {
   evt.preventDefault();
   // console.log(this.state);
   this.props
-    .addUser(this.state)
+    .addUser({
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      username: this.state.username,
+      password: this.state.password
+    })
     // console.log for testing:
     // .then(() => {
     // {console.log("this.state:", this.state)}
     // })
-    .then(() => this.setState())
-    // Don't forget to add a route to push back to the dashboard!
-    .then(() => this.props.history.push("/games/dashboard"));
+    // .then(() => this.setState({
+    //   firstname: this.state.firstname,
+    //   lastname: this.state.lastname,
+    //   username: this.state.username,
+    //   password: this.state.password
+    // }))
+    this.props.updateAllUsers()
+    // Add a route to push back to the login page:
+    .then(() => this.props.history.push("/login"));
 };
 
 //=========================================================================
@@ -53,6 +63,7 @@ constructNewUser = evt => {
 
 //=========================================================================
 
+
   render() {
     return (
       <Container>
@@ -60,24 +71,26 @@ constructNewUser = evt => {
           <Row>
             <Col>
               <FormGroup>
-                <Label for="firstName">First Name</Label>
+                <Label for="firstname">First Name</Label>
                 <Input
-                  type="firstName"
-                  name="firstName"
-                  id="firstName"
+                  type="firstname"
+                  name="firstname"
+                  id="firstname"
                   placeholder="First Name"
+                  // value={this.state.firstname}
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
             </Col>
             <Col>
               <FormGroup>
-                <Label for="lastName">Last Name</Label>
+                <Label for="lastname">Last Name</Label>
                 <Input
-                  type="lastName"
-                  name="lastName"
-                  id="lastName"
+                  type="lastname"
+                  name="lastname"
+                  id="lastname"
                   placeholder="Last Name"
+                  // value={this.state.lastname}
                   onChange={this.handleFieldChange}
 
                 />
@@ -88,12 +101,13 @@ constructNewUser = evt => {
           <Row>
             <Col>
               <FormGroup>
-                <Label for="email">Email</Label>
+                <Label for="username">Username</Label>
                 <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
+                  type="username"
+                  name="username"
+                  id="username"
+                  placeholder="Username"
+                  // value={this.state.username}
                   onChange={this.handleFieldChange}
 
                 />
@@ -107,8 +121,8 @@ constructNewUser = evt => {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  // value={this.state.password}
                   onChange={this.handleFieldChange}
-
                 />
               </FormGroup>
             </Col>
@@ -119,7 +133,7 @@ constructNewUser = evt => {
               <FormGroup>
                 <Button
                   type="submit"
-                  onClick={(console.log("Registration button clicked!"))}
+                  onClick={this.constructNewUser}
                 >Submit New User</Button>
               </FormGroup>
             </Col>

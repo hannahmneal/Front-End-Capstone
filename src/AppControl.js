@@ -62,6 +62,28 @@ setUser = () => {
     return UsersManager.getUser(nameInput, passInput);
   };
 
+//========================== "C" FUNCTIONS FOR USERS ======================
+
+ addUser = (newUserObj) => {
+  return UsersManager.postUser(newUserObj)
+  .then(() => UsersManager.getAllUsers()
+  .then(users =>
+    this.setState({
+      users: users
+    })))
+ }
+
+
+ updateAllUsers = () => {
+   return UsersManager.getAllUsers()
+   .then(allUsers => {
+     this.setState({
+       users: allUsers
+     })
+   })
+ }
+
+
 //========================== "C, R, D" FUNCTIONS FOR GAMES ======================
 
 // Adds a game to the database and then refreshes the state of games to show the games of the currently-logged-in user.
@@ -88,7 +110,6 @@ setUser = () => {
       })
     );
   };
-
 
 // Deletes a specific game based on its id:
 
@@ -172,6 +193,8 @@ setUser = () => {
                     verifyUser={this.verifyUser}
                     checkUser={this.checkUser}
                     setUser={this.setUser}
+                    addUser={this.addUser}
+                    updateAllUsers={this.updateAllUsers}
                   />
                 );
               }}

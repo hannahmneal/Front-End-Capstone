@@ -14,7 +14,7 @@ import {
 
 export default class UserLoginForm extends React.Component {
   state = {
-    userName: "",
+    username: "",
     password: "",
     userId: "",
     // usersGames: "",
@@ -44,7 +44,7 @@ export default class UserLoginForm extends React.Component {
 
     // Properties in the "user" object returned from json are accessed and used to set session storage (where the id of the user is established as the user's unique identifier) and identify the specific, logged-in-user's game collection.
 
-    this.props.verifyUser(this.state.userName, this.state.password)
+    this.props.verifyUser(this.state.username, this.state.password)
       .then(guest => {  // "guest" refers to the individual trying to log in but since they aren't verified yet, they aren't an official "user" of the app.
         // console.log(guest) // // TEST. returns: []
         // // let userId = user[0].id
@@ -55,17 +55,8 @@ export default class UserLoginForm extends React.Component {
           alert("Hmmm...There doesn't seem to be an account for you yet.")
           // this.props.registerNewUser();
           this.props.history.push("/register")
-          // componentWillUnmount() {
-          //   this.handleLoginSubmit()
-          // }
-
-          // <Redirect to="/register"/>
-          // render={
-          //   <UserRegistrationForm/>
-          // }
-
-          // When the user doesn't exist, this happens but there is no breakpoint to redirect user to a register page, so the "else" continues to run and the following code produces an error.
-          //Also, the "guest" user in session storage is not cleared when proceeding to the following code; if a user logs in and is registered, there are two items in session storage: key: guest, value: nothing and key: user, value: user.id.
+          // When the user doesn't exist in json, they are redirected to the register page.
+          //The "guest" user in session storage is not cleared when proceeding to the following code; if a user logs in and is registered, there are two items in session storage: key: guest, value: nothing and key: user, value: user.id.
         } else if (guest.length !== 0) {
           sessionStorage.setItem("user", guest[0].id)
           // The guest has been verified and is now a user
@@ -94,13 +85,8 @@ export default class UserLoginForm extends React.Component {
     }
   }
 
-
-// componentWillUnmount() {
-//   this.props.checkUser()
-// }
-
 render() {
-  const { userName, password } = this.state;
+  const { username, password } = this.state;
 
   return (
     <Container>
@@ -108,13 +94,13 @@ render() {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="userName">Enter Email</Label>
+              <Label for="username">Enter Email</Label>
               <Input
                 type="text"
                 name="loginUsername"
-                id="userName"
+                id="username"
                 placeholder="Username"
-                value={userName}
+                value={username}
                 onChange={this.handleFieldChange}
               />
             </FormGroup>
