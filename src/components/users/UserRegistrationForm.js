@@ -11,14 +11,15 @@ import {
 } from "reactstrap";
 
 
+const initialState = {
+  firstname: "",
+  lastname: "",
+  username: "",
+  password: ""
+}
 class UserRegistrationForm extends React.Component {
 
-  state = {
-    firstname: "",
-    lastname: "",
-    username: "",
-    password: ""
-  }
+  state= {...initialState}
 //=========================================================================
 // Form handler:
 
@@ -33,28 +34,31 @@ handleFieldChange = evt => {
 
 //=========================================================================
 constructNewUser = evt => {
+
   evt.preventDefault();
   // console.log(this.state);
+  console.log("register 1");
+
   this.props
     .addUser({
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       username: this.state.username,
       password: this.state.password
-    })
+    }
+    )
+
     // console.log for testing:
     // .then(() => {
     // {console.log("this.state:", this.state)}
     // })
-    // .then(() => this.setState({
-    //   firstname: this.state.firstname,
-    //   lastname: this.state.lastname,
-    //   username: this.state.username,
-    //   password: this.state.password
-    // }))
-    this.props.updateAllUsers()
+    // this.props.updateAllUsers()
+    // this.props.setUser()
+    // this.props.checkUser()
     // Add a route to push back to the login page:
-    .then(() => this.props.history.push("/login"));
+    .then(() => this.setState(initialState, () => this.props.history.push("/login")))
+
+
 };
 
 //=========================================================================
@@ -65,6 +69,9 @@ constructNewUser = evt => {
 
 
   render() {
+
+    const { firstname, lastname, username, password } = this.state;
+
     return (
       <Container>
         <Form>
@@ -77,7 +84,7 @@ constructNewUser = evt => {
                   name="firstname"
                   id="firstname"
                   placeholder="First Name"
-                  // value={this.state.firstname}
+                  value={firstname}
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
@@ -90,7 +97,7 @@ constructNewUser = evt => {
                   name="lastname"
                   id="lastname"
                   placeholder="Last Name"
-                  // value={this.state.lastname}
+                  value={lastname}
                   onChange={this.handleFieldChange}
 
                 />
@@ -107,7 +114,7 @@ constructNewUser = evt => {
                   name="username"
                   id="username"
                   placeholder="Username"
-                  // value={this.state.username}
+                  value={username}
                   onChange={this.handleFieldChange}
 
                 />
@@ -121,7 +128,7 @@ constructNewUser = evt => {
                   name="password"
                   id="password"
                   placeholder="Password"
-                  // value={this.state.password}
+                  value={password}
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
