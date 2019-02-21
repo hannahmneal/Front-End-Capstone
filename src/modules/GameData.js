@@ -10,7 +10,7 @@ export default {
     return fetch(`${remoteURL}/games/${id}`).then(r => r.json());
   },
 
-  getAllGames() {
+  getAllGamesAndCategories() {
     return fetch(`${remoteURL}/games?_expand=category`).then(r => r.json());
   },
 

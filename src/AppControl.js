@@ -87,7 +87,7 @@ class AppControl extends Component {
             games: games
           })
         ))
-    // .then(() => console.log("this.state.games:", this.state.games)); // // TEST
+    .then(() => console.log("this.state.games:", this.state.games)); // // TEST
   };
 
   // In order to populate the dropdown in the "Add Game" form, the categories in the database must be set in state:
@@ -141,7 +141,9 @@ class AppControl extends Component {
       this.setState({
         games: games
       })
-    )
+
+      )
+      // console.log(this.state.games);
 
     GameData.getAllCategories().then(allCategories => {
       // console.log("componentDidMount: getallCategories:", allCategories);
@@ -215,8 +217,6 @@ class AppControl extends Component {
                       categories={this.state.categories}
                       deleteGame={this.deleteGame}
                       updateGame={this.updateGame}
-                      // authenticateUser={this.authenticateUser}
-                      // usersGames={this.state.usersGames}
                       userId={this.state.userId}
                     />
                   );

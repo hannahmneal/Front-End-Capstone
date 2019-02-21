@@ -39,7 +39,7 @@ const GameCards = ({
             Cooperative
             </CardText>
             : <CardText>
-            Cooperative
+            Competitive
             </CardText>
           }
             <CardText>{categoryId}</CardText>

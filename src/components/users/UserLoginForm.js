@@ -17,7 +17,6 @@ export default class UserLoginForm extends React.Component {
     username: "",
     password: "",
     userId: "",
-    // usersGames: "",
     user: "",
     loggedIn: false
   };
@@ -46,28 +45,23 @@ export default class UserLoginForm extends React.Component {
         // // let userId = user[0].id
         // console.log(user.id); // TEST. returns: undefined.
         // console.log(user.length); // TEST. returns: 0
-console.log("1");
 
         if (user.length === 0) {
           alert("Hmmm...There doesn't seem to be an account for you yet.")
           // this.props.registerNewUser();
-          console.log("2");
-          
+
           this.props.history.push("/register")
-          
+
           // When the user doesn't exist in json, they are redirected to the register page.
-          //The "user" user in session storage is not cleared when proceeding to the following code; if a user logs in and is registered, there are two items in session storage: key: user, value: nothing and key: user, value: user.id.
+          //The "user" in session storage is not cleared when proceeding to the following code; if a user logs in and is registered, there are two items in session storage: key: user, value: nothing and key: user, value: user.id.
 
         } else if (user.length !== 0) {
-console.log("3");
 
           sessionStorage.setItem("user", user[0].id)
-console.log("4");
 
           // The user has been verified and is now a user
           let userId = parseInt(sessionStorage.getItem("user"))
-          console.log("5");
-          
+
           console.log("userId is:", userId);
           this.setState({
             user: user[0],
@@ -75,81 +69,76 @@ console.log("4");
             loggedIn: true
           })
           // console.log(this.state.loggedIn);  // // TEST: checking timing
-console.log("6");
 
           if (this.state.loggedIn !== false) {
             // console.log(this.state.loggedIn); // // TEST: checking timing
-      console.log("7");
-      
+
             this.props.setUser()
-      console.log("8");
-      
             this.props.checkUser()
-            // the checkUser method is declared in AppControl.
-      console.log("9");
-      
+            // the checkUser() and setUser() methods are declared in AppControl. They trigger AppControl to update its state based on the changes that occur in this component.
+
             this.props.history.push("/list")
-      
+
           } else {
             console.log("User not logged in; something's screwy");
             console.log(this.state.loggedIn);
           }
         }
       });
-
-    
+      // The verifyUser() function (lines ~42-89) was checked from start to finish with a series of console.logs numbered 1 - 9 to verify the sequence of events was happening in the correct sequence: the events happen linearly, as written.
   }
 
-render() {
-  const { username, password } = this.state;
+  render() {
+    const { username, password } = this.state;
 
-  return (
-    <Container>
-      <Form>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for="username">Enter Email</Label>
-              <Input
-                type="text"
-                name="loginUsername"
-                id="username"
-                placeholder="Username"
-                value={username}
-                onChange={this.handleFieldChange}
-              />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="password">Enter Password</Label>
-              <Input
-                type="text"
-                name="loginPassword"
-                id="password"
-                placeholder="Password"
-                value={password}
-                onChange={this.handleFieldChange}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
+    return (
+      <Container>
+        <Form>
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label for="username">Enter Username</Label>
+                <Input
+                  type="text"
+                  name="loginUsername"
+                  id="username"
+                  placeholder="Username"
+                  value={username}
+                  onChange={this.handleFieldChange}
+                />
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <Label for="password">Enter Password</Label>
+                <Input
+                  type="text"
+                  name="loginPassword"
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={this.handleFieldChange}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            <FormGroup>
-              <Button
-                type="submit"
-                className="loginBtn"
-                onClick={this.handleLoginSubmit}
-              >Submit</Button>
-            </FormGroup>
-          </Col>
-        </Row>
-      </Form>
-    </Container>
-  );
-}}
+          <Row>
+            <Col>
+              <FormGroup>
+                <Button
+                  type="submit"
+                  className="loginBtn"
+                  onClick={this.handleLoginSubmit}
+                >Submit</Button>
+              </FormGroup>
+            </Col>
+          </Row>
+        </Form>
+      </Container>
+    );
+  }
+}
 
 
 
