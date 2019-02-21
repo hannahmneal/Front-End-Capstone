@@ -28,18 +28,18 @@ export default {
     getUsersGames(userId) {
         return fetch (`${remoteURL}/games?userId=${userId}&_expand=category`)
         .then(r=> r.json())
-    }
+    },
 
-    //     postUser(newUserObj) {
-    //         console.log(newUserObj);
-    //         return fetch(`${remoteURL}`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(newUserObj)
-    //         }).then(r => r.json());
-    //     }
+        postUser(newUserObj) {
+            console.log(newUserObj);
+            return fetch(`${remoteURL}/users`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newUserObj)
+            }).then(r => r.json());
+        }
 
 }
 // Other URL combinations (for reference):

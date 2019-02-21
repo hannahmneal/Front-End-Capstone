@@ -66,9 +66,9 @@ export default class GameForm extends React.Component {
     // .then(() => {
       // {console.log("this.state:", this.state)}
       // })
-      .then(() => this.setState(initialState))
+      .then(() => this.setState(initialState, () => this.props.history.push("/list")))
       // Routes the user to the game dashboard:
-      .then(() => this.props.history.push("/list"));
+      // .then(() => this.props.history.push("/list"));
   };
   //===========================================================================
   render() {

@@ -13,7 +13,7 @@ import UsersManager from "./modules/UsersManager";
 class AppControl extends Component {
   isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
-    // users: [],
+    users: [],
     user: {},
     games: [],
     categories: [],
@@ -22,64 +22,75 @@ class AppControl extends Component {
     userId: ""
   };
 
-//============================= "U" FUNCTION FOR GAMES ============================
+  //============================= "U" FUNCTION FOR GAMES ============================
 
-// Updates the state of games with those games associated with the user currently in session storage.
-// This function is called at the end of addGame(), deleteGame() and updateGame() in AppControl, and at the end of handleLoginSubmit() in UserLoginForm.
-
-// registerNewUser = () => {
-//   return < Redirect to="/register"/>
-// }
+  // Updates the state of games with those games associated with the user currently in session storage.
+  // This function is called at the end of addGame(), deleteGame() and updateGame() in AppControl, and at the end of handleLoginSubmit() in UserLoginForm.
 
 
-setUser = () => {
-  // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user
+  setUser = () => {
+    // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user
 
-  UsersManager.getUserById(parseInt(sessionStorage.getItem("user")))
-  .then(user => {
-    this.setState({
-      user: user,
-      userId: user.id
-    })
-  })
-}
+    UsersManager.getUserById(parseInt(sessionStorage.getItem("user")))
+      .then(user => {
+        this.setState({
+          user: user,
+          userId: user.id
+        })
+
+      })
+  }
 
   checkUser = () => {
 
-      UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
+    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
       .then(games =>   // "games" are the games associated with the user that is currently logged in.
         this.setState({
           games: games // This auto-refreshes user's dash.
         })
-        )
-    }
+      )
 
-//============================== LOGIN FUNCTIONS ================================
+  }
+
+  //============================== LOGIN FUNCTIONS ================================
 
   // User Verification (called in UserLoginForm). Plugs the user-entered username and password from the login form into the local json database URL (via "getUser" in UsersManager). If there is a user in the database with the given username and password, an "user object" is made available.
 
   verifyUser = (nameInput, passInput) => {
+
     return UsersManager.getUser(nameInput, passInput);
   };
 
-//========================== "C, R, D" FUNCTIONS FOR GAMES ======================
+  //========================== "C" FUNCTIONS FOR USERS ======================
 
-// Adds a game to the database and then refreshes the state of games to show the games of the currently-logged-in user.
-// The newGameObj object is created and addGame is called in GameForm.
+  addUser = (newUserObj) => {
+
+    return UsersManager.postUser(newUserObj)
+      .then(() => UsersManager.getAllUsers()
+        .then(users =>
+          this.setState({
+            users: users
+          })))
+  }
+
+  //========================== "C, R, D" FUNCTIONS FOR GAMES ======================
+
+  // Adds a game to the database and then refreshes the state of games to show the games of the currently-logged-in user.
+  // The newGameObj object is created and addGame is called in GameForm.
 
   addGame = (newGameObj) => {
     // console.log(newGameObj); // // TEST
     return GameData.post(newGameObj)
-    .then(() =>
-    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
-      this.setState({
-        games: games
-      })
-      ))
-      // .then(() => console.log("this.state.games:", this.state.games)); // // TEST
-    };
+      .then(() =>
+        UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
+          this.setState({
+            games: games
+          })
+        ))
+    // .then(() => console.log("this.state.games:", this.state.games)); // // TEST
+  };
 
-// In order to populate the dropdown in the "Add Game" form, the categories in the database must be set in state:
+  // In order to populate the dropdown in the "Add Game" form, the categories in the database must be set in state:
 
   getCategory = () => {
     GameData.getAllCategories().then(() => category =>
@@ -89,8 +100,7 @@ setUser = () => {
     );
   };
 
-
-// Deletes a specific game based on its id:
+  // Deletes a specific game based on its id:
 
   deleteGame = (id) => {
     return (
@@ -107,11 +117,11 @@ setUser = () => {
     );
   };
 
-// Identifies the specific game to be edited by its id and uses a "PUT" (via editThisGame() in GameData.js) to replace the old game object with the new, edited game object. After this is accomplished, checkUser() refreshes the user-specific state of games.
+  // Identifies the specific game to be edited by its id and uses a "PUT" (via editThisGame() in GameData.js) to replace the old game object with the new, edited game object. After this is accomplished, checkUser() refreshes the user-specific state of games.
 
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
-    .then(() => this.checkUser())
+      .then(() => this.checkUser())
   }
   //==============================================================================
   //  LIFE CYCLE:
@@ -120,11 +130,18 @@ setUser = () => {
 
     // console.log(this.state.userId); // // TEST
 
-    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
+   UsersManager.getAllUsers().then(allUsers => {
+      this.setState({
+        users: allUsers
+      });
+
+    })
+
+   UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
       this.setState({
         games: games
       })
-      )
+    )
 
     GameData.getAllCategories().then(allCategories => {
       // console.log("componentDidMount: getallCategories:", allCategories);
@@ -133,7 +150,7 @@ setUser = () => {
       });
     });
   }
-//=======================================================================================================
+  //=======================================================================================================
 
   render() {
     // console.log(this.state.users);
@@ -150,13 +167,15 @@ setUser = () => {
               exact
               path="/login"
               render={props => {
+                console.log("login is authenticated");
+
                 return (
                   <UserLoginForm
                     {...props}
                     verifyUser={this.verifyUser}
                     checkUser={this.checkUser}
                     setUser={this.setUser}
-                    // registerNewUser={this.registerNewUser}
+                  // registerNewUser={this.registerNewUser}
                   />
                 );
               }}
@@ -166,23 +185,29 @@ setUser = () => {
               exact
               path="/register"
               render={props => {
+                console.log("registration is authenticated");
+
                 return (
                   <UserRegistrationForm
                     {...props}
                     verifyUser={this.verifyUser}
                     checkUser={this.checkUser}
                     setUser={this.setUser}
+                    addUser={this.addUser}
+                    updateAllUsers={this.updateAllUsers}
                   />
                 );
               }}
             />
 
-{/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
+            {/* DASHBOARD (LIST); GameList renders Cards, which will show the user dashboard */}
             <Route
               exact
               path="/list"
               render={props => {
                 if (this.isAuthenticated()) {
+
+                  console.log("gamelist is authenticated");
                   return (
                     <GameList
                       {...props}
@@ -201,7 +226,7 @@ setUser = () => {
               }}
             />
 
-{/*  GAME FORM */}
+            {/*  GAME FORM */}
 
             <Route
               exact
@@ -214,9 +239,6 @@ setUser = () => {
                       addGame={this.addGame}
                       games={this.state.games}
                       categories={this.state.categories}
-                      // deleteGame={this.deleteGame}
-                      // updateGame={this.updateGame}
-                      // authenticateUser={this.authenticateUser}
                       userId={this.state.userId}
                       checkUser={this.checkUser}
                     />
@@ -227,28 +249,28 @@ setUser = () => {
               }}
             />
 
-{/*  EDIT FORM */}
+            {/*  EDIT FORM */}
 
             <Route
               exact
               path="/games/edit/:gameId(\d+)"
               // MDN Regular Expressions: \d matches a digit character; + matches the preceding expression 1 or more times (all a's in caaaandy but nothing in cndy)
               render={props => {
-                if(this.isAuthenticated()) {
-                return (
-                  <GameEditForm
-                    {...props}
-                    updateGame={this.updateGame}
-                    games={this.state.games}
-                    categories={this.state.categories}
-                    // authenticateUser={this.authenticateUser}
-                    userId={this.state.userId}
-                    checkUser={this.checkUser}
-                />)} else {
-                  return (<Redirect to ="/login" />);
+                if (this.isAuthenticated()) {
+                  return (
+                    <GameEditForm
+                      {...props}
+                      updateGame={this.updateGame}
+                      games={this.state.games}
+                      categories={this.state.categories}
+                      userId={this.state.userId}
+                      checkUser={this.checkUser}
+                    />)
+                } else {
+                  return (<Redirect to="/login" />);
                 }
               }
-            }
+              }
             />
           </header>
         </div>
