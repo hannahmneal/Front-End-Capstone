@@ -1,37 +1,32 @@
-// This component is responsible for the logic behind the GameCards
 import React, { Component } from "react";
 import GameCards from "./GameCards";
-// import UsersManager from "../../modules/UsersManager"
+
 class GameList extends Component {
-// Because GameCards and GameList are siblings and GameList is top-level for games, this is where you want to put "toggleEdit" to pass game=game.id;
-// Set the state in this component and render the edit form from here
-// Currently, the state needs to be the parent of these siblings
-// Rachel's Friends.js = my Game.js, and her FriendList is my GameCards
+  // This component is responsible for the logic behind the GameCards; Although it is a Component here, it does not have its own state and is not required to be a Component.
 
   render() {
-    // console.log(this.state.usersGames);
 
     return (
       <React.Fragment>
         <div>
           {this.props.games.map(game => (
-            // {this.state.usersGames.map(game => (
+// Before map, the data returned from Json looks like this:
+// specific user's games = [ 0: {... category {...} }, 1: {... category {...}, etc. } ]
 
             <GameCards
-              key={game.id}
-              game={game}
-              category={game.category}
-              title={game.title}
-              minPlayers={game.minPlayers}
-              maxPlayers={game.maxPlayers}
-              isCoop={game.isCoop}
-              deleteGame={this.props.deleteGame}
-              categoryId={game.category.catName}
-              userId={game.userId}
-              updateGame={this.props}
-              />
-              )
-          )}
+            key={game.id}
+            game={game} // a single game object with category object nested inside
+            category={game.category} // category: { id: "" , catName: ""}
+            title={game.title}
+            minPlayers={game.minPlayers}
+            maxPlayers={game.maxPlayers}
+            isCoop={game.isCoop}
+            categoryId={game.category.catName}
+            deleteGame={this.props.deleteGame}
+            updateGame={this.props}
+            />
+            )
+            )}
         </div>
       </React.Fragment>
     );

@@ -50,7 +50,7 @@ export default class GameEditForm extends React.Component {
   editMyGame = evt => {
     evt.preventDefault();
     // console.log(this.state);
-    // this.props.checkUser()
+    // this.props.updateGameState()
 
     const editedGameObj = {
       title: this.state.title,
@@ -90,6 +90,7 @@ export default class GameEditForm extends React.Component {
       this.props.games.find(
         game => game.id === parseInt(this.props.match.params.gameId)
       ) || {};
+
     console.log(game); // Logs entire game object to console
     console.log(game.id); // logs the id of the game object to the console
 

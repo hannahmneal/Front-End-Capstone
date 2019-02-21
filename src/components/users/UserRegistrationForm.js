@@ -47,26 +47,11 @@ constructNewUser = evt => {
       password: this.state.password
     }
     )
-
-    // console.log for testing:
-    // .then(() => {
-    // {console.log("this.state:", this.state)}
-    // })
-    // this.props.updateAllUsers()
-    // this.props.setUser()
-    // this.props.checkUser()
-    // Add a route to push back to the login page:
     .then(() => this.setState(initialState, () => this.props.history.push("/login")))
+    // When state is set, 
 
 
 };
-
-//=========================================================================
-
-
-
-//=========================================================================
-
 
   render() {
 

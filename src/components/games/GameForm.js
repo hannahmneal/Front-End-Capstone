@@ -9,7 +9,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-// initial state is set OUTSIDE of the component:
+
 const initialState = {
   title: "",
   minPlayers: 0,
@@ -19,9 +19,10 @@ const initialState = {
   userId: ""
 };
 export default class GameForm extends React.Component {
-  // This replaced the "state" object that was originally written to initialize an "empty" state for the form:
+
   state = { ...initialState };
 
+  // This replaced the "state" object that was originally written to initialize an "empty" state for the form. It was originally intended to be used with a ternary operator in order to toggle state between this form and an edit game form. The ternary operator was removed.
   //=======================================================================
 
   // Update initialState whenever an input field is edited:
@@ -32,11 +33,10 @@ export default class GameForm extends React.Component {
     this.setState(stateToChange);
   };
   //===========================================================================
-  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer converting itself to a string.
+  // This handler takes the value of category.id and forces it to become an integer; this resolves the problem with the category.id integer converting itself to a string in json.
 
   handleIntChange = evt => {
     const stateToChange = {};
-    // console.log(evt.target.id, evt.target.value, evt.target.checked);
     stateToChange[evt.target.id] = parseInt(evt.target.value);
     this.setState(stateToChange);
   };
@@ -53,22 +53,19 @@ export default class GameForm extends React.Component {
 
   // The constructNewGame object is triggered by the form submit button: a new game object is created and it's keys will match those in the equivalent json object.
   // addGame is declared in AppControl and the newGameObj is its parameter
-  // newGameObj is the parameter passed in the post method in GameData
+  // newGameObj is also the name of the the parameter passed in the post method in GameData
 
   constructNewGame = evt => {
     evt.preventDefault();
-    // console.log(this.state);
-    this.props.checkUser()  // checkUser is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
+    // console.log(this.state); // // TEST
+    this.props.updateGameState()  // updateGameState is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
 
     this.props
     .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
-    // console.log for testing:
-    // .then(() => {
-      // {console.log("this.state:", this.state)}
-      // })
-      .then(() => this.setState(initialState, () => this.props.history.push("/list")))
-      // Routes the user to the game dashboard:
-      // .then(() => this.props.history.push("/list"));
+
+    .then(() => this.setState(initialState, () => this.props.history.push("/list")))
+
+    // Since setState() can take a callback, I set state and redirected together. This also ensures that the timing is correct for these two events. However, state is set and the callback will fire regardless of what shouldComponentUpdate() returns, even if state has not changed.
   };
   //===========================================================================
   render() {
@@ -129,7 +126,6 @@ export default class GameForm extends React.Component {
                 <FormGroup>
                   <Label for="isCoop">Cooperative</Label>
                   <Input
-                    addon
                     type="checkbox"
                     name="checkbox"
                     id="isCoop"
@@ -140,7 +136,7 @@ export default class GameForm extends React.Component {
               </Col>
             </Row>
 
-            {/* <GameDropdown {...this.props}/> */}
+            {/* <Categories Dropdown begins here */}
             <Row>
               <Col>
                 <FormGroup>
@@ -149,10 +145,10 @@ export default class GameForm extends React.Component {
                     type="select"
                     name="categoryId"
                     id="categoryId"
-                    // value={categoryId}
                     onChange={this.handleIntChange}
                   >
-                    {this.props.categories.map(category => (
+                    {this.props.categories.map(
+                      category => (
                       <option
                         key={category.id}
                         value={category.id}
@@ -160,7 +156,6 @@ export default class GameForm extends React.Component {
                         {category.catName}
                       </option>
                     ))}
-                    {/* defaultValue added as a prop */}
                   </Input>
                 </FormGroup>
               </Col>

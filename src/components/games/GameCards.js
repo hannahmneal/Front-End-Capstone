@@ -23,7 +23,6 @@ const GameCards = ({
   isCoop,
   categoryId,
   deleteGame,
-  // updateGame,
   game
 }) => (
     <Container>
@@ -39,7 +38,7 @@ const GameCards = ({
             Cooperative
             </CardText>
             : <CardText>
-            Cooperative
+            Competitive
             </CardText>
           }
             <CardText>{categoryId}</CardText>
@@ -57,8 +56,6 @@ const GameCards = ({
               color="danger"
               type="submit"
               id={id}
-              // onClick={this.deleteGame}
-              // onClick={() => {deleteGameButton({id})}}
               onClick={() => deleteGame(game.id)}
             >
               Delete
