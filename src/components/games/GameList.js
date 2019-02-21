@@ -20,7 +20,7 @@ class GameList extends Component {
             maxPlayers={game.maxPlayers}
             isCoop={game.isCoop}
             deleteGame={this.props.deleteGame}
-            categoryId={game.catName}
+            categoryId={game.category.catName}
             userId={game.userId}
             updateGame={this.props}
             />

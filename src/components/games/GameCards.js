@@ -23,7 +23,6 @@ const GameCards = ({
   isCoop,
   categoryId,
   deleteGame,
-  // updateGame,
   game
 }) => (
     <Container>
