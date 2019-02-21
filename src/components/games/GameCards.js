@@ -56,8 +56,6 @@ const GameCards = ({
               color="danger"
               type="submit"
               id={id}
-              // onClick={this.deleteGame}
-              // onClick={() => {deleteGameButton({id})}}
               onClick={() => deleteGame(game.id)}
             >
               Delete

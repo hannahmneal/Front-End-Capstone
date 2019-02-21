@@ -8,8 +8,6 @@ import GameEditForm from "./components/games/GameEditForm"
 import UserRegistrationForm from "./components/users/UserRegistrationForm";
 import UserLoginForm from "./components/users/UserLoginForm";
 import UsersManager from "./modules/UsersManager";
-// import "./App.css";
-// import NavBar from "./nav/NavBar"
 class AppControl extends Component {
   isAuthenticated = () => sessionStorage.getItem("user") !== null;
   state = {
@@ -18,18 +16,17 @@ class AppControl extends Component {
     games: [],
     categories: [],
     usersGames: [],
-    // userId: parseInt(sessionStorage.getItem("user"))
     userId: ""
   };
 
-  //============================= "U" FUNCTION FOR GAMES ============================
+  //============================= GAMES ============================
 
   // Updates the state of games with those games associated with the user currently in session storage.
   // This function is called at the end of addGame(), deleteGame() and updateGame() in AppControl, and at the end of handleLoginSubmit() in UserLoginForm.
 
 
   setUser = () => {
-    // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user
+    // This function is called in UserLoginForm component and sets the userId state in AppControl to that of the logged-in user.
 
     UsersManager.getUserById(parseInt(sessionStorage.getItem("user")))
       .then(user => {
@@ -41,7 +38,8 @@ class AppControl extends Component {
       })
   }
 
-  checkUser = () => {
+  // Used by other components to reset global state:
+  updateGameState = () => {
 
     UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user")))
       .then(games =>   // "games" are the games associated with the user that is currently logged in.
@@ -61,7 +59,7 @@ class AppControl extends Component {
     return UsersManager.getUser(nameInput, passInput);
   };
 
-  //========================== "C" FUNCTIONS FOR USERS ======================
+  //========================== USERS ======================
 
   addUser = (newUserObj) => {
 
@@ -73,7 +71,7 @@ class AppControl extends Component {
           })))
   }
 
-  //========================== "C, R, D" FUNCTIONS FOR GAMES ======================
+  //========================== GAMES ======================
 
   // Adds a game to the database and then refreshes the state of games to show the games of the currently-logged-in user.
   // The newGameObj object is created and addGame is called in GameForm.
@@ -81,24 +79,10 @@ class AppControl extends Component {
   addGame = (newGameObj) => {
     // console.log(newGameObj); // // TEST
     return GameData.post(newGameObj)
-      .then(() =>
-        UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
-          this.setState({
-            games: games
-          })
-        ))
+      .then(() => this.updateGameState())
     .then(() => console.log("this.state.games:", this.state.games)); // // TEST
   };
 
-  // In order to populate the dropdown in the "Add Game" form, the categories in the database must be set in state:
-
-  getCategory = () => {
-    GameData.getAllCategories().then(() => category =>
-      this.setState({
-        categories: category
-      })
-    );
-  };
 
   // Deletes a specific game based on its id:
 
@@ -117,11 +101,11 @@ class AppControl extends Component {
     );
   };
 
-  // Identifies the specific game to be edited by its id and uses a "PUT" (via editThisGame() in GameData.js) to replace the old game object with the new, edited game object. After this is accomplished, checkUser() refreshes the user-specific state of games.
+  // Identifies the specific game to be edited by its id and uses a "PUT" (via editThisGame() in GameData.js) to replace the old game object with the new, edited game object. After this is accomplished, updateGameState() refreshes the user-specific state of games.
 
   updateGame = (id, editedGameObj) => {
     return GameData.editThisGame(id, editedGameObj)
-      .then(() => this.checkUser())
+      .then(() => this.updateGameState())
   }
   //==============================================================================
   //  LIFE CYCLE:
@@ -134,14 +118,12 @@ class AppControl extends Component {
       this.setState({
         users: allUsers
       });
-
     })
 
    UsersManager.getUsersGames(parseInt(sessionStorage.getItem("user"))).then(games =>
       this.setState({
         games: games
       })
-
       )
       // console.log(this.state.games);
 
@@ -152,7 +134,7 @@ class AppControl extends Component {
       });
     });
   }
-  //=======================================================================================================
+  //===========================================================================
 
   render() {
     // console.log(this.state.users);
@@ -175,7 +157,7 @@ class AppControl extends Component {
                   <UserLoginForm
                     {...props}
                     verifyUser={this.verifyUser}
-                    checkUser={this.checkUser}
+                    updateGameState={this.updateGameState}
                     setUser={this.setUser}
                   // registerNewUser={this.registerNewUser}
                   />
@@ -192,11 +174,8 @@ class AppControl extends Component {
                 return (
                   <UserRegistrationForm
                     {...props}
-                    verifyUser={this.verifyUser}
-                    checkUser={this.checkUser}
-                    setUser={this.setUser}
+                    updateGameState={this.updateGameState}
                     addUser={this.addUser}
-                    updateAllUsers={this.updateAllUsers}
                   />
                 );
               }}
@@ -240,7 +219,7 @@ class AppControl extends Component {
                       games={this.state.games}
                       categories={this.state.categories}
                       userId={this.state.userId}
-                      checkUser={this.checkUser}
+                      updateGameState={this.updateGameState}
                     />
                   );
                 } else {
@@ -264,7 +243,7 @@ class AppControl extends Component {
                       games={this.state.games}
                       categories={this.state.categories}
                       userId={this.state.userId}
-                      checkUser={this.checkUser}
+                      updateGameState={this.updateGameState}
                     />)
                 } else {
                   return (<Redirect to="/login" />);

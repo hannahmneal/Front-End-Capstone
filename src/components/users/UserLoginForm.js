@@ -9,8 +9,6 @@ import {
   Label,
   Input
 } from "reactstrap"
-// import { Redirect } from "react-router-dom";
-// import UserRegistrationForm from "./UserRegistrationForm";
 
 export default class UserLoginForm extends React.Component {
   state = {
@@ -45,6 +43,8 @@ export default class UserLoginForm extends React.Component {
         // // let userId = user[0].id
         // console.log(user.id); // TEST. returns: undefined.
         // console.log(user.length); // TEST. returns: 0
+        // user = [ ]
+        // If more than one user has the same username and password, they could potentially log in to someone else's account; need to check more parameters to prevent this from happening.
 
         if (user.length === 0) {
           alert("Hmmm...There doesn't seem to be an account for you yet.")
@@ -63,25 +63,27 @@ export default class UserLoginForm extends React.Component {
           let userId = parseInt(sessionStorage.getItem("user"))
 
           console.log("userId is:", userId);
+          console.log("before the setState", this.state.loggedIn);  // // TEST: checking timing
+
           this.setState({
             user: user[0],
             userId: parseInt(sessionStorage.getItem("user", user[0].id)),
             loggedIn: true
           })
-          // console.log(this.state.loggedIn);  // // TEST: checking timing
+          console.log("before the if", this.state.loggedIn);  // // TEST: checking timing
 
           if (this.state.loggedIn !== false) {
-            // console.log(this.state.loggedIn); // // TEST: checking timing
+            console.log("inside the if", this.state.loggedIn); // // TEST: checking timing
 
             this.props.setUser()
-            this.props.checkUser()
-            // the checkUser() and setUser() methods are declared in AppControl. They trigger AppControl to update its state based on the changes that occur in this component.
+            this.props.updateGameState()
+            // the updateGameState() and setUser() methods are declared in AppControl. They trigger AppControl to update its state based on the changes that occur in this component.
 
             this.props.history.push("/list")
 
           } else {
             console.log("User not logged in; something's screwy");
-            console.log(this.state.loggedIn);
+            // console.log(this.state.loggedIn);
           }
         }
       });

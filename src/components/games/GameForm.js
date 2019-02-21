@@ -9,7 +9,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-// initial state is set OUTSIDE of the component:
+
 const initialState = {
   title: "",
   minPlayers: 0,
@@ -19,9 +19,9 @@ const initialState = {
   userId: ""
 };
 export default class GameForm extends React.Component {
-  
+
   state = { ...initialState };
-  
+
   // This replaced the "state" object that was originally written to initialize an "empty" state for the form. It was originally intended to be used with a ternary operator in order to toggle state between this form and an edit game form. The ternary operator was removed.
   //=======================================================================
 
@@ -58,7 +58,7 @@ export default class GameForm extends React.Component {
   constructNewGame = evt => {
     evt.preventDefault();
     // console.log(this.state); // // TEST
-    this.props.checkUser()  // checkUser is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
+    this.props.updateGameState()  // updateGameState is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
 
     this.props
     .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })

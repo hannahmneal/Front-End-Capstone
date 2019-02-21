@@ -10,18 +10,19 @@ class GameList extends Component {
       <React.Fragment>
         <div>
           {this.props.games.map(game => (
+// Before map, the data returned from Json looks like this:
+// specific user's games = [ 0: {... category {...} }, 1: {... category {...}, etc. } ]
 
             <GameCards
             key={game.id}
-            game={game}
-            category={game.category}
+            game={game} // a single game object with category object nested inside
+            category={game.category} // category: { id: "" , catName: ""}
             title={game.title}
             minPlayers={game.minPlayers}
             maxPlayers={game.maxPlayers}
             isCoop={game.isCoop}
-            deleteGame={this.props.deleteGame}
             categoryId={game.category.catName}
-            userId={game.userId}
+            deleteGame={this.props.deleteGame}
             updateGame={this.props}
             />
             )
