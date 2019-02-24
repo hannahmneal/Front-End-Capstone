@@ -124,7 +124,7 @@ export default class GameEditForm extends React.Component {
                     name="minPlayers"
                     id="minPlayers"
                     placeholder="Min Players"
-                    onChange={this.handleFieldChange}
+                    onChange={this.handleIntChange}
                     value={minPlayers}
                   />
                 </FormGroup>
@@ -138,7 +138,7 @@ export default class GameEditForm extends React.Component {
                     name="maxPlayers"
                     id="maxPlayers"
                     placeholder="Max Players"
-                    onChange={this.handleFieldChange}
+                    onChange={this.handleIntChange}
                     value={maxPlayers}
                   />
                 </FormGroup>

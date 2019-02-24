@@ -7,8 +7,10 @@ import {
   FormGroup,
   Button,
   Label,
-  Input
+  Input,
+  Card
 } from "reactstrap"
+import { Layer } from "grommet";
 
 export default class UserLoginForm extends React.Component {
   state = {
@@ -95,13 +97,16 @@ export default class UserLoginForm extends React.Component {
     const { username, password } = this.state;
 
     return (
+      <Layer className="login-layer" modal={true} position="center" margin="small" animate={true}>
       <Container>
-        <Form>
+        <Card className="login-form-card">
+        <Form className="login-form">
           {/* <Row>
             <Col> */}
               <FormGroup>
                 <Label for="username">Enter Username</Label>
                 <Input
+                className="login-input"
                   type="text"
                   name="loginUsername"
                   id="username"
@@ -115,6 +120,7 @@ export default class UserLoginForm extends React.Component {
               <FormGroup>
                 <Label for="password">Enter Password</Label>
                 <Input
+                  className="login-input"
                   type="text"
                   name="loginPassword"
                   id="password"
@@ -138,7 +144,9 @@ export default class UserLoginForm extends React.Component {
             {/* </Col>
           </Row> */}
         </Form>
+        </Card>
       </Container>
+      </Layer>
     );
   }
 }

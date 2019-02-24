@@ -23,7 +23,7 @@ const GameCards = ({
   deleteGame,
   game
 }) => (
-        <div>
+        <div className="card-div">
           <Card key={game.id} className="card">
             <CardTitle className="card-title">{title}</CardTitle>
             <CardBody className="card-body">
