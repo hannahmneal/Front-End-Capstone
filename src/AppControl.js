@@ -142,10 +142,11 @@ class AppControl extends Component {
     // console.log(this.state.categories);
 
     return (
-      <React.Fragment>
-        <div className="App">
-          <header className="App-header">
-            <h5>Game Closet</h5>
+        <React.Fragment>
+      <div className="App">
+          {/* <header className="App-header">
+            <h5>Game Closet</h5> */}
+            {/* </header> */}
 
             <Route
               exact
@@ -159,7 +160,6 @@ class AppControl extends Component {
                     verifyUser={this.verifyUser}
                     updateGameState={this.updateGameState}
                     setUser={this.setUser}
-                  // registerNewUser={this.registerNewUser}
                   />
                 );
               }}
@@ -251,7 +251,7 @@ class AppControl extends Component {
               }
               }
             />
-          </header>
+        {/* </header> */}
         </div>
       </React.Fragment>
     );
