@@ -5,10 +5,8 @@ import {
   Card,
   CardTitle,
   CardText,
-  Row,
-  Col,
-  Button,
-  Container
+  CardBody,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom"
 
@@ -25,23 +23,22 @@ const GameCards = ({
   deleteGame,
   game
 }) => (
-    <Container>
-      <Row sm="1">
-        <Col sm="20">
-          <Card key={game.id}>
-            <CardTitle>{title}</CardTitle>
-            <CardText>Min. Players: {minPlayers}</CardText>
-            <CardText>Max. Players: {maxPlayers}</CardText>
+        <div>
+          <Card key={game.id} className="card">
+            <CardTitle className="card-title">{title}</CardTitle>
+            <CardBody className="card-body">
+            <CardText className="card-text">Min. Players: {minPlayers}</CardText>
+            <CardText className="card-text">Max. Players: {maxPlayers}</CardText>
             {
               (isCoop === true) ?
-            <CardText>
+              <CardText className="card-text">
             Cooperative
             </CardText>
-            : <CardText>
+            : <CardText className="card-text">
             Competitive
             </CardText>
           }
-            <CardText>{categoryId}</CardText>
+            <CardText className="card-text">{categoryId}</CardText>
             <br />
             <Link
               className="editGameBtn"
@@ -50,6 +47,7 @@ const GameCards = ({
             >
               Edit
           </Link>
+            </CardBody>
             <br />
             <Button
               className="deleteGameBtn"
@@ -62,9 +60,7 @@ const GameCards = ({
           </Button>
           </Card>
           <br />
-        </Col>
-      </Row>
-    </Container>
+    </div>
   );
 
 export default GameCards;

@@ -1,8 +1,8 @@
 import React from "react";
 import {
   Container,
-  Row,
-  Col,
+  // Row,
+  // Col,
   Form,
   FormGroup,
   Button,
@@ -65,6 +65,7 @@ export default class UserLoginForm extends React.Component {
           console.log("userId is:", userId);
           console.log("before the setState", this.state.loggedIn);  // // TEST: checking timing
 
+// Setting state at this time should be an asynchronous event but it currently works. If your state goes wonky, look at this first!
           this.setState({
             user: user[0],
             userId: parseInt(sessionStorage.getItem("user", user[0].id)),
@@ -96,8 +97,8 @@ export default class UserLoginForm extends React.Component {
     return (
       <Container>
         <Form>
-          <Row>
-            <Col>
+          {/* <Row>
+            <Col> */}
               <FormGroup>
                 <Label for="username">Enter Username</Label>
                 <Input
@@ -109,8 +110,8 @@ export default class UserLoginForm extends React.Component {
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
-            </Col>
-            <Col>
+            {/* </Col>
+            <Col> */}
               <FormGroup>
                 <Label for="password">Enter Password</Label>
                 <Input
@@ -122,11 +123,11 @@ export default class UserLoginForm extends React.Component {
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
-            </Col>
-          </Row>
+            {/* </Col>
+          </Row> */}
 
-          <Row>
-            <Col>
+          {/* <Row>
+            <Col> */}
               <FormGroup>
                 <Button
                   type="submit"
@@ -134,8 +135,8 @@ export default class UserLoginForm extends React.Component {
                   onClick={this.handleLoginSubmit}
                 >Submit</Button>
               </FormGroup>
-            </Col>
-          </Row>
+            {/* </Col>
+          </Row> */}
         </Form>
       </Container>
     );
