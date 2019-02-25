@@ -1,5 +1,4 @@
 import React from "react";
-// import UsersManager from "../../modules/UsersManager"
 import GameData from "../../modules/GameData"
 import {
   Form,
@@ -22,7 +21,12 @@ export default class GameEditForm extends React.Component {
     minPlayers: 0,
     maxPlayers: 0,
     isCoop: "",
-    categoryId: "",
+    categoryId: ""
+      // Other categories to add in future versions:
+    // Playing time (e.g., 15 minutes)
+    // Age Range
+    // A rating that the user can use to gauge his/her favorites
+
   }
 
   //=======================================================================

@@ -1,14 +1,11 @@
 import React from "react";
 import {
-  Container,
   // Row,
   // Col,
   Form,
   FormGroup,
   Button,
-  Label,
   Input,
-  Card
 } from "reactstrap"
 import { Layer } from "grommet";
 
@@ -97,20 +94,20 @@ export default class UserLoginForm extends React.Component {
     const { username, password } = this.state;
 
     return (
-      <Layer className="login-layer" modal={true} position="center" margin="small" animate={true}>
-      <Container>
-        <Card className="login-form-card">
+      <Layer className="login-layer" modal={true} position="center" animate={true} margin={"large"}>
+      {/* <Container>
+        <Card className="login-form-card"> */}
         <Form className="login-form">
           {/* <Row>
             <Col> */}
               <FormGroup>
-                <Label for="username">Enter Username</Label>
                 <Input
                 className="login-input"
+                bsSize="small"
                   type="text"
                   name="loginUsername"
                   id="username"
-                  placeholder="Username"
+                  placeholder="Enter Username"
                   value={username}
                   onChange={this.handleFieldChange}
                 />
@@ -118,13 +115,12 @@ export default class UserLoginForm extends React.Component {
             {/* </Col>
             <Col> */}
               <FormGroup>
-                <Label for="password">Enter Password</Label>
                 <Input
                   className="login-input"
-                  type="text"
+                  type="password"
                   name="loginPassword"
                   id="password"
-                  placeholder="Password"
+                  placeholder="Enter Password"
                   value={password}
                   onChange={this.handleFieldChange}
                 />
@@ -144,8 +140,8 @@ export default class UserLoginForm extends React.Component {
             {/* </Col>
           </Row> */}
         </Form>
-        </Card>
-      </Container>
+        {/* </Card>
+      </Container> */}
       </Layer>
     );
   }

@@ -17,6 +17,10 @@ const initialState = {
   isCoop: false,
   categoryId: "",
   userId: ""
+  // Other categories to add in future versions:
+    // Playing time (e.g., 15 minutes)
+    // Age Range
+    // A rating that the user can use to gauge his/her favorites
 };
 export default class GameForm extends React.Component {
 

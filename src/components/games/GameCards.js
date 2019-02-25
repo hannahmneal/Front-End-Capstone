@@ -3,12 +3,13 @@
 import React from "react";
 import {
   Card,
-  CardTitle,
+  CardHeader,
   CardText,
   CardBody,
-  Button
+  // Button,
 } from "reactstrap";
 import { Link } from "react-router-dom"
+import { Button } from "grommet";
 
 //============================================================================================================
 // This is a reusible card; A new card automatically generates whenever a new item is added to the database
@@ -23,43 +24,56 @@ const GameCards = ({
   deleteGame,
   game
 }) => (
-        <div className="card-div">
-          <Card key={game.id} className="card">
-            <CardTitle className="card-title">{title}</CardTitle>
-            <CardBody className="card-body">
-            <CardText className="card-text">Min. Players: {minPlayers}</CardText>
-            <CardText className="card-text">Max. Players: {maxPlayers}</CardText>
+    <div className="card-div">
+      <Card key={game.id} className="card">
+        <CardHeader className="card-title">{title}</CardHeader>
+        <CardBody className="card-body">
+          <div>
+            <span>
+
+              <CardText className="card-text">Min. Players: {minPlayers}</CardText>
+            </span>
+            <span>
+
+              <CardText className="card-text">Max. Players: {maxPlayers}</CardText>
+            </span>
+          </div>
+          <div>
+
             {
               (isCoop === true) ?
-              <CardText className="card-text">
-            Cooperative
+                <CardText className="card-text">
+                  Cooperative
             </CardText>
-            : <CardText className="card-text">
-            Competitive
+                : <CardText className="card-text">
+                  Competitive
             </CardText>
-          }
-            <CardText className="card-text">{categoryId}</CardText>
-            <br />
-            <Link
-              className="editGameBtn"
-              color="success"
-              to={`/games/edit/${game.id}`}
-            >
-              Edit
+            }
+          </div>
+          <div className="card-category-div">
+              <CardText className="card-text">{categoryId}</CardText>
+          </div>
+          <br/>
+          <Link
+            className="editGameBtn"
+            color="success"
+            to={`/games/edit/${game.id}`}
+          >
+            Edit
           </Link>
-            </CardBody>
-            <br />
-            <Button
-              className="deleteGameBtn"
-              color="danger"
-              type="submit"
-              id={id}
-              onClick={() => deleteGame(game.id)}
-            >
-              Delete
+          <br/>
+        </CardBody>
+        <Button
+          className="deleteGameBtn"
+          color="red"
+          type="submit"
+          margin="small"
+          id={id}
+          onClick={() => deleteGame(game.id)}
+        >
+          Delete
           </Button>
-          </Card>
-          <br />
+      </Card>
     </div>
   );
 
