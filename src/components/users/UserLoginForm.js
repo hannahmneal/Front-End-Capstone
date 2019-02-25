@@ -1,13 +1,11 @@
 import React from "react";
 import {
-  // Row,
-  // Col,
+  Container,
   Form,
   FormGroup,
   Button,
   Input,
 } from "reactstrap"
-import { Layer } from "grommet";
 
 export default class UserLoginForm extends React.Component {
   state = {
@@ -94,12 +92,8 @@ export default class UserLoginForm extends React.Component {
     const { username, password } = this.state;
 
     return (
-      <Layer className="login-layer" modal={true} position="center" animate={true} margin={"large"}>
-      {/* <Container>
-        <Card className="login-form-card"> */}
+      <Container>
         <Form className="login-form">
-          {/* <Row>
-            <Col> */}
               <FormGroup>
                 <Input
                 className="login-input"
@@ -125,11 +119,6 @@ export default class UserLoginForm extends React.Component {
                   onChange={this.handleFieldChange}
                 />
               </FormGroup>
-            {/* </Col>
-          </Row> */}
-
-          {/* <Row>
-            <Col> */}
               <FormGroup>
                 <Button
                   type="submit"
@@ -137,12 +126,8 @@ export default class UserLoginForm extends React.Component {
                   onClick={this.handleLoginSubmit}
                 >Submit</Button>
               </FormGroup>
-            {/* </Col>
-          </Row> */}
         </Form>
-        {/* </Card>
-      </Container> */}
-      </Layer>
+      </Container>
     );
   }
 }

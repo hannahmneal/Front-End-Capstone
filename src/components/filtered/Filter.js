@@ -1,5 +1,4 @@
 import React from "react";
-import { Layer } from "grommet";
 import {
     Form,
     Label,
@@ -14,7 +13,6 @@ class GameFilter extends React.Component {
     render() {
 
         return(
-            <Layer className="filter-layer" modal={true} position="center" margin={"large"} size={"small"} animate={true}>
                     <Form>
                         <div>
 
@@ -46,7 +44,6 @@ class GameFilter extends React.Component {
                         </Input>
                         </div>
                     </Form>
-            </Layer>
         )
 
     }

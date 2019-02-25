@@ -7,6 +7,7 @@ import "./App.css";
 //Reactstrap import:
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 ReactDOM.render(
     <Router>
         <Game />
