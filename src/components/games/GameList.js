@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import GameCards from "./GameCards";
-import { Col } from "reactstrap";
 
 class GameList extends Component {
   // This component is responsible for the logic behind the GameCards; Although it is a Component here, it does not have its own state and is not required to be a Component.
@@ -10,8 +9,6 @@ class GameList extends Component {
     return (
       <React.Fragment>
         <div>
-          {/* <Row > */}
-            <Col md={5}>
           {this.props.games.map(game => (
 // Before map, the data returned from Json looks like this:
 // specific user's games = [ 0: {... category {...} }, 1: {... category {...}, etc. } ]
@@ -30,8 +27,6 @@ class GameList extends Component {
             />
             )
             )}
-            </Col>
-          {/* </Row> */}
         </div>
       </React.Fragment>
     );

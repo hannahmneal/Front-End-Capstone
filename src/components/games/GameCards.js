@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardText,
   CardBody,
-  Button,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom"
 
@@ -26,7 +26,7 @@ const GameCards = ({
     <div className="card-div">
       <Card key={game.id} className="card">
         <CardHeader className="card-title">{title}</CardHeader>
-        <CardBody className="card-body">
+        <CardBody className="card-body" id="card-body">
           <div>
             <span>
 
@@ -61,7 +61,6 @@ const GameCards = ({
             Edit
           </Link>
           <br/>
-        </CardBody>
         <Button
           className="deleteGameBtn"
           color="red"
@@ -72,6 +71,7 @@ const GameCards = ({
         >
           Delete
           </Button>
+        </CardBody>
       </Card>
     </div>
   );

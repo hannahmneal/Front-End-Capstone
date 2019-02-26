@@ -1,11 +1,20 @@
 import React from "react";
-import {
-  Container,
-  Form,
-  FormGroup,
-  Button,
-  Input,
-} from "reactstrap"
+// import {
+//   Form,
+//   FormGroup,
+//   // Button,
+//   Input,
+// } from "reactstrap"
+import { MDBBtn,
+  // MDBIcon 
+MDBContainer, 
+MDBRow, 
+MDBCol, 
+MDBInput, 
+MDBCard,
+MDBCardBody 
+} 
+from "mdbreact";
 
 export default class UserLoginForm extends React.Component {
   state = {
@@ -92,42 +101,93 @@ export default class UserLoginForm extends React.Component {
     const { username, password } = this.state;
 
     return (
-      <Container>
-        <Form className="login-form">
-              <FormGroup>
-                <Input
-                className="login-input"
-                bsSize="small"
-                  type="text"
-                  name="loginUsername"
-                  id="username"
-                  placeholder="Enter Username"
-                  value={username}
-                  onChange={this.handleFieldChange}
-                />
-              </FormGroup>
-            {/* </Col>
-            <Col> */}
-              <FormGroup>
-                <Input
-                  className="login-input"
-                  type="password"
-                  name="loginPassword"
-                  id="password"
-                  placeholder="Enter Password"
-                  value={password}
-                  onChange={this.handleFieldChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Button
-                  type="submit"
-                  className="loginBtn"
-                  onClick={this.handleLoginSubmit}
-                >Submit</Button>
-              </FormGroup>
-        </Form>
-      </Container>
+
+
+      <MDBContainer>
+      <MDBRow>
+        <MDBCol md="6">
+          <MDBCard>
+            <MDBCardBody>
+              <form>
+                <p className="mdb-log-in">Log In</p>
+                <div className="grey-text">
+                  <MDBInput
+                    label="Username"
+                    icon="user"
+                    group
+                    type="text"
+                    validate
+                    id="username"
+                    value={username}
+                    onChange={this.handleFieldChange}
+
+                  />
+                  <MDBInput
+                    label="Password"
+                    icon="lock"
+                    group
+                    type="password"
+                    validate
+                    id="password"
+                    value={password}
+                    onChange={this.handleFieldChange}
+
+                  />
+                </div>
+                <div className="text-center py-4 mt-3">
+                  <MDBBtn color="blue-grey" type="submit" onClick={this.handleLoginSubmit}>
+                    Submit
+                  </MDBBtn>
+                </div>
+              </form>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+
+//=====================================================================================
+
+      // <div className="form-div">
+
+      //   <Form className="login-form">
+      //         <FormGroup>
+      //           <Input
+      //           className="login-input"
+      //           bsSize="md"
+      //             type="text"
+      //             name="loginUsername"
+      //             id="username"
+      //             placeholder="Enter Username"
+      //             value={username}
+      //             onChange={this.handleFieldChange}
+      //           />
+      //         </FormGroup>
+      //         <FormGroup>
+      //           <Input
+      //             bsSize="md"
+      //             className="login-input"
+      //             type="password"
+      //             name="loginPassword"
+      //             id="password"
+      //             placeholder="Enter Password"
+      //             value={password}
+      //             onChange={this.handleFieldChange}
+      //           />
+      //         </FormGroup>
+      //         <FormGroup>
+      //           <MDBBtn rounded outline color="blue-grey"
+      //           size="lg"
+      //             type="submit"
+      //             className="loginBtn"
+      //             onClick={this.handleLoginSubmit}
+      //           >
+      //           {/* <MDBIcon icon="check-circle"/> */}
+      //           Submit
+      //           </MDBBtn>
+      //         </FormGroup>
+      //   </Form>
+      // </div>
     );
   }
 }
