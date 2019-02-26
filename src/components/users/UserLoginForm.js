@@ -11,8 +11,10 @@ MDBContainer,
 MDBRow, 
 MDBCol, 
 MDBInput, 
+MDBCardHeader,
 MDBCard,
-MDBCardBody 
+MDBCardBody,
+MDBIcon
 } 
 from "mdbreact";
 
@@ -106,10 +108,15 @@ export default class UserLoginForm extends React.Component {
       <MDBContainer>
       <MDBRow>
         <MDBCol md="6">
-          <MDBCard>
+          <MDBCard className="login-form-card">
             <MDBCardBody>
+            <MDBCardHeader className="form-header deep-blue-gradient rounded">
+                <h3 className="my-3">
+                  <MDBIcon icon="lock" /> Login:
+                </h3>
+              </MDBCardHeader>
               <form>
-                <p className="mdb-log-in">Log In</p>
+                {/* <p className="mdb-log-in h3 text-center py-4">Log In</p> */}
                 <div className="grey-text">
                   <MDBInput
                     label="Username"
@@ -117,6 +124,8 @@ export default class UserLoginForm extends React.Component {
                     group
                     type="text"
                     validate
+                    error="wrong"
+                    success="right"
                     id="username"
                     value={username}
                     onChange={this.handleFieldChange}
@@ -128,6 +137,8 @@ export default class UserLoginForm extends React.Component {
                     group
                     type="password"
                     validate
+                    error="wrong"
+                    success="right"
                     id="password"
                     value={password}
                     onChange={this.handleFieldChange}
@@ -135,7 +146,7 @@ export default class UserLoginForm extends React.Component {
                   />
                 </div>
                 <div className="text-center py-4 mt-3">
-                  <MDBBtn color="blue-grey" type="submit" onClick={this.handleLoginSubmit}>
+                  <MDBBtn color="light-blue" type="submit" onClick={this.handleLoginSubmit}>
                     Submit
                   </MDBBtn>
                 </div>

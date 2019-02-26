@@ -18,8 +18,8 @@ export default class GameEditForm extends React.Component {
   state = {
     userId: parseInt(sessionStorage.getItem("user")),
     title: "",
-    minPlayers: 0,
-    maxPlayers: 0,
+    minPlayers: "",
+    maxPlayers: "",
     isCoop: "",
     categoryId: ""
       // Other categories to add in future versions:
@@ -128,7 +128,7 @@ export default class GameEditForm extends React.Component {
                     name="minPlayers"
                     id="minPlayers"
                     placeholder="Min Players"
-                    onChange={this.handleIntChange}
+                    onChange={this.handleFieldChange}
                     value={minPlayers}
                   />
                 </FormGroup>
@@ -142,7 +142,7 @@ export default class GameEditForm extends React.Component {
                     name="maxPlayers"
                     id="maxPlayers"
                     placeholder="Max Players"
-                    onChange={this.handleIntChange}
+                    onChange={this.handleFieldChange}
                     value={maxPlayers}
                   />
                 </FormGroup>

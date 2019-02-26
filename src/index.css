@@ -1,3 +1,8 @@
+.navbar {
+  padding: 50px;
+  margin-bottom: 50px;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -31,6 +36,7 @@ code {
   padding: 1rem;
   box-shadow: 0 0 1rem #000;
   overflow-x: hidden;
+  margin: 20px 20px 20px 20px;
 }
 
 /* #card-body {
@@ -43,8 +49,17 @@ code {
   flex-direction:
 } */
 
-.form-div {
+/* .form-div {
+  border-top: 50px;
+  padding: 100px;
+  border-radius: 1rem;
+  width: 700px;
+  height: 1000px;
+} */
+
+.login-form-card {
+  margin-top: 50px;
   padding: 50px;
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  height: 500px;
 }

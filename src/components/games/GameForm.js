@@ -12,8 +12,8 @@ import {
 
 const initialState = {
   title: "",
-  minPlayers: 0,
-  maxPlayers: 0,
+  minPlayers: "",
+  maxPlayers: "",
   isCoop: false,
   categoryId: "",
   userId: ""

@@ -1,14 +1,19 @@
 // Uses props from GameForm to populate cards with json game object
 
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardText,
-  CardBody,
-  Button
-} from "reactstrap";
+// import {
+//   Card,
+//   CardHeader,
+//   CardText,
+//   CardBody,
+//   Button
+// } from "reactstrap";
 import { Link } from "react-router-dom"
+
+import { MDBContainer, MDBCard, MDBCardGroup, MDBCardTitle, MDBCardText, MDBCardBody, MDBBtn, 
+  // MDBAvatar, 
+  MDBIcon 
+} from "mdbreact";
 
 //============================================================================================================
 // This is a reusible card; A new card automatically generates whenever a new item is added to the database
@@ -23,59 +28,64 @@ const GameCards = ({
   deleteGame,
   game
 }) => (
-    <div className="card-div">
-      <Card key={game.id} className="card">
-        <CardHeader className="card-title">{title}</CardHeader>
-        <CardBody className="card-body" id="card-body">
+    <MDBContainer className="card-div">
+    <MDBCardGroup deck>
+      <MDBCard key={game.id} className="card">
+        <MDBCardTitle className="card-title">{title}</MDBCardTitle>
+        <MDBCardBody className="card-body" id="card-body">
           <div>
             <span>
 
-              <CardText className="card-text">Min. Players: {minPlayers}</CardText>
+              <MDBCardText className="card-text">Min. Players: {minPlayers}</MDBCardText>
             </span>
             <span>
 
-              <CardText className="card-text">Max. Players: {maxPlayers}</CardText>
+              <MDBCardText className="card-text">Max. Players: {maxPlayers}</MDBCardText>
             </span>
           </div>
           <div>
 
             {
               (isCoop === true) ?
-                <CardText className="card-text">
+                <MDBCardText className="card-text">
                   Cooperative
-            </CardText>
-                : <CardText className="card-text">
+            </MDBCardText>
+                : <MDBCardText className="card-text">
                   Competitive
-            </CardText>
+            </MDBCardText>
             }
           </div>
           <div className="card-category-div">
-              <CardText className="card-text">{categoryId}</CardText>
+              <MDBCardText className="card-text">{categoryId}</MDBCardText>
           </div>
           <br/>
-          <Link
+          <MDBBtn href={`/games/edit/${game.id}`}
             className="editGameBtn"
             color="success"
-            to={`/games/edit/${game.id}`}
+            // to={`/games/edit/${game.id}`}
           >
             Edit
-          </Link>
+          </MDBBtn>
           <br/>
-        <Button
+        <MDBBtn
           className="deleteGameBtn"
-          color="red"
+          // icon="trash-alt"
+          color="danger"
           type="submit"
           margin="small"
           id={id}
           onClick={() => deleteGame(game.id)}
         >
-          Delete
-          </Button>
-        </CardBody>
-      </Card>
-    </div>
+          <MDBIcon className="delete-icon" icon="trash-alt"/>
+          </MDBBtn>
+        </MDBCardBody>
+      </MDBCard>
+      </MDBCardGroup>
+    </MDBContainer>
   );
 
-export default GameCards;
+  //=============================================================================================
 
-//=============================================================================================
+
+
+  export default GameCards;
