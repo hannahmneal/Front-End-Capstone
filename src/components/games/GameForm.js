@@ -5,6 +5,7 @@ import {
   FormGroup,
   Label,
   Input,
+  CustomInput,
   Container,
   Row,
   Col
@@ -18,9 +19,9 @@ const initialState = {
   categoryId: "",
   userId: ""
   // Other categories to add in future versions:
-    // Playing time (e.g., 15 minutes)
-    // Age Range
-    // A rating that the user can use to gauge his/her favorites
+  // Playing time (e.g., 15 minutes)
+  // Age Range
+  // A rating that the user can use to gauge his/her favorites
 };
 export default class GameForm extends React.Component {
 
@@ -65,9 +66,9 @@ export default class GameForm extends React.Component {
     this.props.updateGameState()  // updateGameState is declared in AppControl; it accesses UsersManager.getUsersGames() and passes "user" from session storage in as a parameter and sets the state of games to the games of the user in session storage.
 
     this.props
-    .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
+      .addGame({ userId: parseInt(sessionStorage.getItem("user")), title: this.state.title, minPlayers: this.state.minPlayers, maxPlayers: this.state.maxPlayers, isCoop: this.state.isCoop, categoryId: this.state.categoryId })
 
-    .then(() => this.setState(initialState, () => this.props.history.push("/list")))
+      .then(() => this.setState(initialState, () => this.props.history.push("/list")))
 
     // Since setState() can take a callback, I set state and redirected together. This also ensures that the timing is correct for these two events. However, state is set and the callback will fire regardless of what shouldComponentUpdate() returns, even if state has not changed.
   };
@@ -104,7 +105,7 @@ export default class GameForm extends React.Component {
                     name="minPlayers"
                     id="minPlayers"
                     placeholder="Min Players"
-                    onChange={this.handleIntChange}
+                    onChange={this.handleFieldChange}
                     value={minPlayers}
                   />
                 </FormGroup>
@@ -118,7 +119,7 @@ export default class GameForm extends React.Component {
                     name="maxPlayers"
                     id="maxPlayers"
                     placeholder="Max Players"
-                    onChange={this.handleIntChange}
+                    onChange={this.handleFieldChange}
                     value={maxPlayers}
                   />
                 </FormGroup>
@@ -128,31 +129,44 @@ export default class GameForm extends React.Component {
             <Row>
               <Col>
                 <FormGroup>
-                  <Label for="isCoop">Cooperative</Label>
-                  <Input
-                    type="checkbox"
-                    name="checkbox"
-                    id="isCoop"
-                    onChange={this.handleBoolFieldChange}
-                    checked={isCoop}
-                  />
-                </FormGroup>
-              </Col>
+                  <Row>
+                    <Col>
+                      <Label>Competitive (default)</Label>
+                    </Col>
+                    <Col>
+                      <Label className="bs-switch">
+                        <CustomInput
+                          type="switch"
+                          // name="checkbox"
+                          id="isCoop"
+                          onChange={this.handleBoolFieldChange}
+                          checked={isCoop}
+                        />
+                      </Label>
+                    </Col>
+                    <Col>
+                      <Label>Cooperative</Label>
+                    </Col>
             </Row>
 
-            {/* <Categories Dropdown begins here */}
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="categoryId">Select</Label>
-                  <Input
-                    type="select"
-                    name="categoryId"
-                    id="categoryId"
-                    onChange={this.handleIntChange}
-                  >
-                    {this.props.categories.map(
-                      category => (
+                </FormGroup>
+</Col>
+</Row>
+
+
+          {/* <Categories Dropdown begins here */}
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label for="categoryId">Select</Label>
+                <Input
+                  type="select"
+                  name="categoryId"
+                  id="categoryId"
+                  onChange={this.handleIntChange}
+                >
+                  {this.props.categories.map(
+                    category => (
                       <option
                         key={category.id}
                         value={category.id}
@@ -160,21 +174,21 @@ export default class GameForm extends React.Component {
                         {category.catName}
                       </option>
                     ))}
-                  </Input>
-                </FormGroup>
-              </Col>
-            </Row>
+                </Input>
+              </FormGroup>
+            </Col>
+          </Row>
 
-            <Button
-              type="submit"
-              onClick={this.constructNewGame}
-              className="new-game-submit-btn"
-            >
-              Submit
+          <Button
+            type="submit"
+            onClick={this.constructNewGame}
+            className="new-game-submit-btn"
+          >
+            Submit
           </Button>
           </Form>
         </Container>
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }
