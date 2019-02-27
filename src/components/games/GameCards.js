@@ -1,18 +1,10 @@
 // Uses props from GameForm to populate cards with json game object
 
 import React from "react";
-// import {
-//   Card,
-//   CardHeader,
-//   CardText,
-//   CardBody,
-//   Button
-// } from "reactstrap";
-import { Link } from "react-router-dom"
 
-import { MDBContainer, MDBCard, MDBCardGroup, MDBCardTitle, MDBCardText, MDBCardBody, MDBBtn, 
-  // MDBAvatar, 
-  MDBIcon 
+import { MDBContainer, MDBCard, MDBCardGroup, MDBCardTitle, MDBCardText, MDBCardBody, MDBBtn, MDBCardFooter, MDBCol,MDBRow,
+  // MDBAvatar,
+  MDBIcon
 } from "mdbreact";
 
 //============================================================================================================
@@ -28,22 +20,15 @@ const GameCards = ({
   deleteGame,
   game
 }) => (
-    <MDBContainer className="card-div">
+  <MDBContainer className="card-div" size="12">
     <MDBCardGroup deck>
       <MDBCard key={game.id} className="card">
         <MDBCardTitle className="card-title">{title}</MDBCardTitle>
         <MDBCardBody className="card-body" id="card-body">
-          <div>
-            <span>
 
               <MDBCardText className="card-text">Min. Players: {minPlayers}</MDBCardText>
-            </span>
-            <span>
 
               <MDBCardText className="card-text">Max. Players: {maxPlayers}</MDBCardText>
-            </span>
-          </div>
-          <div>
 
             {
               (isCoop === true) ?
@@ -54,30 +39,28 @@ const GameCards = ({
                   Competitive
             </MDBCardText>
             }
-          </div>
-          <div className="card-category-div">
               <MDBCardText className="card-text">{categoryId}</MDBCardText>
-          </div>
-          <br/>
+          <MDBCardFooter>
+
           <MDBBtn href={`/games/edit/${game.id}`}
             className="editGameBtn"
             color="success"
-            // to={`/games/edit/${game.id}`}
+            size="sm"
           >
-            Edit
+            <MDBIcon icon="edit" />
           </MDBBtn>
-          <br/>
         <MDBBtn
           className="deleteGameBtn"
-          // icon="trash-alt"
           color="danger"
           type="submit"
           margin="small"
+          size="sm"
           id={id}
           onClick={() => deleteGame(game.id)}
         >
           <MDBIcon className="delete-icon" icon="trash-alt"/>
           </MDBBtn>
+          </MDBCardFooter>
         </MDBCardBody>
       </MDBCard>
       </MDBCardGroup>
@@ -89,3 +72,4 @@ const GameCards = ({
 
 
   export default GameCards;
+//

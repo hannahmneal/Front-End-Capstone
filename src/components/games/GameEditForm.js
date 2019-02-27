@@ -1,16 +1,14 @@
 import React from "react";
 import GameData from "../../modules/GameData"
 import {
-  Form,
-  FormGroup,
   Label,
   Input,
-  Container,
+  CustomInput,
   Row,
   Col,
-  Button
 } from "reactstrap";
 
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBCardHeader, MDBBtn } from "mdbreact";
 // console.log(this.props);
 
 export default class GameEditForm extends React.Component {
@@ -22,7 +20,7 @@ export default class GameEditForm extends React.Component {
     maxPlayers: "",
     isCoop: "",
     categoryId: ""
-      // Other categories to add in future versions:
+    // Other categories to add in future versions:
     // Playing time (e.g., 15 minutes)
     // Age Range
     // A rating that the user can use to gauge his/her favorites
@@ -72,17 +70,17 @@ export default class GameEditForm extends React.Component {
 
   componentDidMount() {
     GameData.get(this.props.match.params.gameId)
-    .then(game => {
-      this.setState({
-        title: game.title,
-        minPlayers: game.minPlayers,
-        maxPlayers: game.maxPlayers,
-        isCoop: game.isCoop,
-        categoryId: game.categoryId
-      });
-      console.log(game);
+      .then(game => {
+        this.setState({
+          title: game.title,
+          minPlayers: game.minPlayers,
+          maxPlayers: game.maxPlayers,
+          isCoop: game.isCoop,
+          categoryId: game.categoryId
+        });
+        console.log(game);
 
-    });
+      });
   }
 
   //====================================================================
@@ -99,31 +97,31 @@ export default class GameEditForm extends React.Component {
     console.log(game.id); // logs the id of the game object to the console
 
     return (
-      <React.Fragment>
-        <Container>
-          <Form>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="title">Game title</Label>
-                  <Input
+      <MDBContainer className="game-orm-container">
+        <MDBRow>
+          <MDBCol md="10">
+            <MDBCard className="game-form-card">
+              <MDBCardBody>
+                <MDBCardHeader
+                  className="game-form-header">
+                  Edit Your Game
+            </MDBCardHeader>
+
+                <form>
+                  <MDBInput
+                    label="Game Title"
+                    group
                     type="text"
                     name="gameTitle"
                     id="title"
                     placeholder="Game title"
                     onChange={this.handleFieldChange}
                     value={title}
-
                   />
-                </FormGroup>
-              </Col>
-            </Row>
 
-            <Row>
-              <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
-                <FormGroup>
-                  <Label for="minPlayers">Min. Players</Label>
-                  <Input
+                  <MDBInput
+                    label="Players (min.)"
+                    group
                     type="text"
                     name="minPlayers"
                     id="minPlayers"
@@ -131,13 +129,10 @@ export default class GameEditForm extends React.Component {
                     onChange={this.handleFieldChange}
                     value={minPlayers}
                   />
-                </FormGroup>
-              </Col>
 
-              <Col sm={{ size: "auto", sm: "4", offset: 2 }}>
-                <FormGroup>
-                  <Label for="maxPlayers">Max. Players</Label>
-                  <Input
+                  <MDBInput
+                    label="Players (max.)"
+                    group
                     type="text"
                     name="maxPlayers"
                     id="maxPlayers"
@@ -145,61 +140,64 @@ export default class GameEditForm extends React.Component {
                     onChange={this.handleFieldChange}
                     value={maxPlayers}
                   />
-                </FormGroup>
-              </Col>
-            </Row>
+                  <br />
 
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="isCoop">Cooperative</Label>
-                  <Input
-                    addon
-                    type="checkbox"
-                    name="checkbox"
-                    id="isCoop"
-                    onChange={this.handleBoolFieldChange}
-                    checked={isCoop}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
+                  <Row>
+                    <Col>
+                      <Label>Competitive (default)</Label>
+                    </Col>
+                    <Col>
+                      <Label
+                        className="bs-switch">
+                        <CustomInput
+                          type="switch"
+                          id="isCoop"
+                          onChange={this.handleBoolFieldChange}
+                          checked={isCoop}
+                        />
+                      </Label>
+                    </Col>
+                    <Col>
+                      <Label>Cooperative</Label>
+                    </Col>
+                  </Row>
+                  <br />
 
-            {/* <GameDropdown {...this.props}/> */}
-            <Row>
-              <Col>
-                <FormGroup>
-                  <Label for="categoryId">Select</Label>
                   <Input
                     type="select"
                     name="categoryId"
                     id="categoryId"
-                    value={categoryId}
                     onChange={this.handleIntChange}
+                    value={categoryId}
                   >
-                    {this.props.categories.map(category => (
-                      <option
-                        key={category.id}
-                        value={category.id}
-                      >
-                        {category.catName}
-                      </option>
-                    ))}
+                    {this.props.categories.map(
+                      category => (
+                        <option
+                          key={category.id}
+                          value={category.id}
+                        >
+                          {category.catName}
+                        </option>
+                      ))}
                   </Input>
-                </FormGroup>
-              </Col>
-            </Row>
-            <br />
-            <Button
-              type="submit"
-              onClick={this.editMyGame}
-              className="new-game-submit-btn"
-            >
-              Submit
-          </Button>
-          </Form>
-        </Container>
-      </React.Fragment>
+                  <br />
+
+                  {/* <GameDropdown {...this.props}/> */}
+
+                  <MDBBtn
+                    type="submit"
+                    onClick={this.editMyGame}
+                    className="new-game-submit-btn"
+                    color="blue-grey"
+                  >
+                    Submit
+          </MDBBtn>
+                </form>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer >
     );
   }
 }
