@@ -48,8 +48,6 @@ constructNewUser = evt => {
     }
     )
     .then(() => this.setState(initialState, () => this.props.history.push("/login")))
-    // When state is set, 
-
 
 };
 

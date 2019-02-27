@@ -1,14 +1,22 @@
 import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Button,
-  Label,
-  Input
-} from "reactstrap"
+// import {
+//   Form,
+//   FormGroup,
+//   // Button,
+//   Input,
+// } from "reactstrap"
+import { MDBBtn,
+  // MDBIcon 
+MDBContainer, 
+MDBRow, 
+MDBCol, 
+MDBInput, 
+MDBCardHeader,
+MDBCard,
+MDBCardBody,
+MDBIcon
+} 
+from "mdbreact";
 
 export default class UserLoginForm extends React.Component {
   state = {
@@ -65,6 +73,7 @@ export default class UserLoginForm extends React.Component {
           console.log("userId is:", userId);
           console.log("before the setState", this.state.loggedIn);  // // TEST: checking timing
 
+// Setting state at this time should be an asynchronous event but it currently works. If your state goes wonky, look at this first!
           this.setState({
             user: user[0],
             userId: parseInt(sessionStorage.getItem("user", user[0].id)),
@@ -94,50 +103,102 @@ export default class UserLoginForm extends React.Component {
     const { username, password } = this.state;
 
     return (
-      <Container>
-        <Form>
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label for="username">Enter Username</Label>
-                <Input
-                  type="text"
-                  name="loginUsername"
-                  id="username"
-                  placeholder="Username"
-                  value={username}
-                  onChange={this.handleFieldChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label for="password">Enter Password</Label>
-                <Input
-                  type="text"
-                  name="loginPassword"
-                  id="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={this.handleFieldChange}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
 
-          <Row>
-            <Col>
-              <FormGroup>
-                <Button
-                  type="submit"
-                  className="loginBtn"
-                  onClick={this.handleLoginSubmit}
-                >Submit</Button>
-              </FormGroup>
-            </Col>
-          </Row>
-        </Form>
-      </Container>
+
+      <MDBContainer>
+      <MDBRow>
+        <MDBCol md="6">
+          <MDBCard className="login-form-card">
+            <MDBCardBody>
+            <MDBCardHeader className="form-header deep-blue-gradient rounded">
+                <h3 className="my-3">
+                  <MDBIcon icon="lock" /> Login:
+                </h3>
+              </MDBCardHeader>
+              <form>
+                {/* <p className="mdb-log-in h3 text-center py-4">Log In</p> */}
+                <div className="grey-text">
+                  <MDBInput
+                    label="Username"
+                    icon="user"
+                    group
+                    type="text"
+                    validate
+                    error="wrong"
+                    success="right"
+                    id="username"
+                    value={username}
+                    onChange={this.handleFieldChange}
+
+                  />
+                  <MDBInput
+                    label="Password"
+                    icon="lock"
+                    group
+                    type="password"
+                    validate
+                    error="wrong"
+                    success="right"
+                    id="password"
+                    value={password}
+                    onChange={this.handleFieldChange}
+
+                  />
+                </div>
+                <div className="text-center py-4 mt-3">
+                  <MDBBtn color="light-blue" type="submit" onClick={this.handleLoginSubmit}>
+                    Submit
+                  </MDBBtn>
+                </div>
+              </form>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+
+//=====================================================================================
+
+      // <div className="form-div">
+
+      //   <Form className="login-form">
+      //         <FormGroup>
+      //           <Input
+      //           className="login-input"
+      //           bsSize="md"
+      //             type="text"
+      //             name="loginUsername"
+      //             id="username"
+      //             placeholder="Enter Username"
+      //             value={username}
+      //             onChange={this.handleFieldChange}
+      //           />
+      //         </FormGroup>
+      //         <FormGroup>
+      //           <Input
+      //             bsSize="md"
+      //             className="login-input"
+      //             type="password"
+      //             name="loginPassword"
+      //             id="password"
+      //             placeholder="Enter Password"
+      //             value={password}
+      //             onChange={this.handleFieldChange}
+      //           />
+      //         </FormGroup>
+      //         <FormGroup>
+      //           <MDBBtn rounded outline color="blue-grey"
+      //           size="lg"
+      //             type="submit"
+      //             className="loginBtn"
+      //             onClick={this.handleLoginSubmit}
+      //           >
+      //           {/* <MDBIcon icon="check-circle"/> */}
+      //           Submit
+      //           </MDBBtn>
+      //         </FormGroup>
+      //   </Form>
+      // </div>
     );
   }
 }
