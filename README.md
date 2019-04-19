@@ -44,4 +44,4 @@ If you no longer have a game in your real closet, you can remove it from your vi
 
 
 ### Nashville Software School Front End Capstone
-### &copy; Cole Bryant 2019
+### &copy; Hannah Neal 2019
