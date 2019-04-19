@@ -1,68 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Game Closet
 
-## Available Scripts
+Inspired by a tiny closet and over 60 board games, Game Closet is a single-page application that enables board game enthusiasts to track their collection by keeping the most relevant details of game play at the touch of one's fingertips.
 
-In the project directory, you can run:
+## Technologies Used
 
-### `npm start`
+This project was built with React with JSON server for persistent data storage and Reactstrap and Material Design libraries for styling.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Visual Studio Code (v. 1.33.0) was the editor chosen for this project and the project was set up using ```create-react-app```. For the list of installations that were done prior to beginning this project, please see [this](https://github.com/nashville-software-school/client-side-mastery/blob/master/book-1-the-novice/chapters/GETTING_STARTED_MAC.md).
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+1. To view the project, click the "Clone or download" button and copy the URL provided.
+2. From your command line, navigate to the directory you wish to clone this repo into. From this directory, type ```git clone```and paste the URL you just copied.
+3. Navigate to the root folder and type ```npm install```.
+4. When this is finished, type ```npm start``` to run the application.
+5. In another window or tab in your command line, type ```json-server -p 5002 -w database.json``` from the project's ```api``` directory.
+6. A browser window will open on ```localhost:3000```.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Login
+From the login screen, use the credentials "myusername" for the username and "pass" for the pass. You will be directed to the Dashboard on successful login.
 
-### `npm run build`
+![c0jdJW](https://i.makeagif.com/media/4-19-2019/c0jdJW.gif)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Alternatively, you may try to enter your own credentials. If you do not exist in the database, you will be redirected to a registration screen where you may create your own credentials. From this, you will be redirected back to login where you may enter your new credentials. You will be directed to your own dashboard where you can begin adding your games!
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Adding a Game
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![oV864v](https://i.makeagif.com/media/4-19-2019/oV864v.gif)
 
-### `npm run eject`
+To add a game to your game closet, simply click on "Add A Game" from the dashboard. When the add-game form appears, enter the details of your game (name, minimum and maximum players, whether the game is competitive or cooperative, and choose a category from the drop-down menu). When you are done, click "Submit". Voila! Your game is now saved to your closet.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Editing a Game
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![xVYqPB](https://i.makeagif.com/media/4-19-2019/xVYqPB.gif)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+If you wish to edit a game, click the green "edit" icon on the game you wish to edit. When the edit form appears, you may make changes to the desired fields. The form is pre-filled with the information used when the game was created, so if you only want to change one or two aspects of the game (such as a category only), you will not have to remember all the details and type them all over again. When you are finished, click "submit".
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Deleting a Game
 
-## Learn More
+![puQKJH](https://i.makeagif.com/media/4-19-2019/puQKJH.gif)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If you no longer have a game in your real closet, you can remove it from your virtual Game Closet as well. Simply click the red "trash" icon on the game you wish to delte. This will remove it from your database and from your dashboard.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Nashville Software School Front End Capstone
+### &copy; Cole Bryant 2019
